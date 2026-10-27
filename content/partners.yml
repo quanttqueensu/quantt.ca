@@ -20,6 +20,11 @@ current:
     url: "https://www.quantconnect.com"
     description: "Open-source algorithmic trading platform."
 
+  - name: "Tradermath"
+    logo: "/images/partners/tradermath.svg"
+    url: "https://www.tradermath.org"
+    description: "Trading and quant interview preparation platform used by over 50,000 students."
+
 past:
   - name: "Viewpoint Investment Partners"
     logo: ""
