@@ -1,0 +1,46 @@
+# Competition results by QUANTT members, shown on /achievements grouped by year.
+# Newest year first; within a year, entries keep the order below.
+#
+# - competition: "Competition name"
+#   result: "1st place"            # or "2nd place", "Finalist", "Top 10", ...
+#   year: "2026"
+#   members: ["First Last", "First Last"]   # optional
+#   url: "https://..."             # optional: results page or announcement
+#   summary: "One or two sentences about the result."   # optional
+#   media:                         # optional: images show as a photo strip, PDFs and links as cards
+#     - type: image
+#       url: "/achievements/fiam-2026/team.jpg"     # uploads go in public/achievements/<slug>/
+#       caption: "Team at the final"               # optional
+#     - type: pdf
+#       url: "/achievements/fiam-2026/paper.pdf"
+#       title: "Research paper"
+#     - type: link
+#       url: "https://www.linkedin.com/posts/..."
+#       title: "LinkedIn post"
+
+achievements:
+  - competition: "FIAM Asset Management Hackathon"
+    result: "1st place"
+    year: "2026"
+    members: ["Ethan Solnik", "Joffre Decore"]
+    media:
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/winning-team.jpg"
+        caption: "Winning team at the prize ceremony"
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
+        caption: "Top two teams at the prize ceremony"
+
+  - competition: "FIAM Asset Management Hackathon"
+    result: "2nd place"
+    year: "2026"
+    members: ["Jordan Odorico", "Gabriel Soler", "Benjamin Gorenc", "Zach Glazer"]
+    media:
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
+        caption: "Top two teams at the prize ceremony"
+
+  - competition: "RITC x Smith"
+    result: "1st place"
+    year: "2025"
+    members: ["Ethan Solnik", "Joffre Decore"]

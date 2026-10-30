@@ -53,7 +53,7 @@ export default function Footer() {
           </nav>
           <div className="cs-footer__col">
             <Link href="/partners">Partners</Link>
-            <Link href="/blog">Blog</Link>
+            <Link href="/achievements">Achievements</Link>
             <Link href="/contact">Contact</Link>
             <a href="mailto:quantt@clubs.queensu.ca">quantt@clubs.queensu.ca</a>
           </div>

@@ -43,6 +43,28 @@ export interface PartnersData {
   past: Partner[];
 }
 
+/** A photo, PDF or link attached to an achievement, like LinkedIn's media. */
+export interface AchievementMedia {
+  type: "image" | "pdf" | "link";
+  /** Uploads live in /public/achievements/<slug>/ and are served from /achievements/<slug>/. Links are external URLs. */
+  url: string;
+  title?: string;
+  caption?: string;
+}
+
+export interface Achievement {
+  competition: string;
+  /** Placing or award, e.g. "1st place", "Finalist". */
+  result: string;
+  /** Competition year, e.g. "2026". */
+  year: string;
+  members?: string[];
+  url?: string;
+  /** Short paragraph under the competition name. */
+  summary?: string;
+  media?: AchievementMedia[];
+}
+
 export interface TeamMember {
   name: string;
   role: string;
@@ -149,6 +171,15 @@ export function getEvents(): Event[] {
 
 export function getPartners(): PartnersData {
   return readYaml<PartnersData>("partners.yml");
+}
+
+/** Competition results by QUANTT members, newest year first (file order kept within a year). */
+export function getAchievements(): Achievement[] {
+  const list = readYaml<{ achievements?: Achievement[] | null }>("achievements.yml").achievements ?? [];
+  return list
+    .map((a, i) => ({ a, i }))
+    .sort((x, y) => String(y.a.year).localeCompare(String(x.a.year)) || x.i - y.i)
+    .map(({ a }) => ({ ...a, year: String(a.year) }));
 }
 
 export function getTeamMembers(): TeamMember[] {
