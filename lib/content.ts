@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
+import { isFeatureLive } from "./featured";
 
 const contentDir = path.join(process.cwd(), "content");
 
@@ -63,6 +64,10 @@ export interface Achievement {
   /** Short paragraph under the competition name. */
   summary?: string;
   media?: AchievementMedia[];
+  /** Shows this win in the "Latest win" row under the home hero. */
+  featured?: boolean;
+  /** Last day (YYYY-MM-DD) the win stays featured; blank keeps it up until unticked. */
+  featuredUntil?: string;
 }
 
 export interface TeamMember {
@@ -180,6 +185,11 @@ export function getAchievements(): Achievement[] {
     .map((a, i) => ({ a, i }))
     .sort((x, y) => String(y.a.year).localeCompare(String(x.a.year)) || x.i - y.i)
     .map(({ a }) => ({ ...a, year: String(a.year) }));
+}
+
+/** The win shown under the home hero: the newest one ticked "Feature on homepage", if any. */
+export function getFeaturedAchievement(now = new Date()): Achievement | undefined {
+  return getAchievements().find((a) => isFeatureLive(a, now));
 }
 
 export function getTeamMembers(): TeamMember[] {

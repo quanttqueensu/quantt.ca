@@ -356,6 +356,8 @@ const SECTIONS = {
         { key: "year", label: "Year" }, { key: "url", label: "Results link (optional)", blankDeletes: true },
         { key: "members", label: "Members (one per line)", type: "lines", hint: "Names as on the team page, so their LinkedIn links up." },
         { key: "summary", label: "Summary", type: "textarea", blankDeletes: true },
+        { key: "featured", label: "Feature on homepage (newest ticked win shows under the hero)", type: "bool", wide: true },
+        { key: "featuredUntil", label: "Stop featuring after (optional)", type: "date", blankDeletes: true },
         { key: "media", label: "Supporting materials", type: "list", addLabel: "Add photo, paper or link", blankDeletes: true,
           itemLabel: (m) => m.title || (m.url || "").split("/").pop(), itemMeta: (m) => m.type || "", newItem: () => ({ type: "image", url: "" }),
           fields: [
