@@ -7,4 +7,18 @@
 #   members: ["First Last", "First Last"]   # optional
 #   url: "https://..."             # optional: results page or announcement
 
-achievements: []
+achievements:
+  - competition: "FIAM Asset Management Hackathon"
+    result: "1st place"
+    year: "2026"
+    members: ["Ethan Solnik", "Joffre Decore"]
+
+  - competition: "FIAM Asset Management Hackathon"
+    result: "2nd place"
+    year: "2026"
+    members: ["Jordan Odorico", "Gabriel Soler", "Benjamin Gorenc", "Zach Glazer"]
+
+  - competition: "RITC x Smith"
+    result: "1st place"
+    year: "2025"
+    members: ["Ethan Solnik", "Joffre Decore"]
