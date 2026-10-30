@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PartnerCard from "@/components/PartnerCard";
-import { Button, PageIntro, Split, Stats, Wrap } from "@/components/ui";
+import { Button, PageIntro, Split, Wrap } from "@/components/ui";
 import { getPartners } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -23,14 +23,7 @@ export default function PartnersPage() {
           </p>
         }
         cta={<Button href="mailto:quantt@clubs.queensu.ca">Become a Partner</Button>}
-      >
-        <Stats
-          items={[
-            { value: partners.current.length, label: "Current partners" },
-            ...(partners.past.length ? [{ value: partners.past.length, label: "Past partners" }] : []),
-          ]}
-        />
-      </PageIntro>
+      />
 
       <section aria-labelledby="current-title" className="cs-section">
         <Wrap>

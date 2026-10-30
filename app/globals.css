@@ -238,7 +238,7 @@
   .cs-panel__intro p { margin-top: 48px; font-size: 18px; line-height: 28px; color: var(--cs-ink); }
   .cs-list { list-style: none; margin: 0; padding: 0; }
   .cs-list li + li { margin-top: 24px; }
-  .cs-list a { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
+  .cs-list a, .cs-list__row { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
   .cs-byline { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--cs-ink); margin-bottom: 16px; }
   .cs-byline span + span { padding-left: 8px; border-left: 1px solid #000; color: var(--cs-meta); }
   .cs-list h3 {
@@ -316,7 +316,7 @@
     .cs-split .cs-btn, .cs-hero__ctas .cs-btn { width: 100%; }
     .cs-panel { padding: 40px 24px; margin-inline: calc(-1 * var(--cs-gutter)); }
     .cs-band__media--inset { width: 100%; }
-    .cs-list a { column-gap: 16px; }
+    .cs-list a, .cs-list__row { column-gap: 16px; }
     .cs-play { width: 72px; height: 72px; }
     .cs-footer__bar { flex-direction: column; align-items: flex-start; }
   }

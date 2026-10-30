@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import YearTabs from "@/components/YearTabs";
-import { List, PageIntro, Stats, Wrap } from "@/components/ui";
+import { List, PageIntro, Wrap } from "@/components/ui";
 import type { TeamYear } from "@/lib/content";
 import { getTeamYears } from "@/lib/content";
 
@@ -43,11 +43,6 @@ function PapersList({ year }: { year: TeamYear }) {
 
 export default function CompetitionPage() {
   const years = getTeamYears().filter((year) => (year.config.projectTeams ?? []).length > 0);
-  const paperCount = years.reduce(
-    (sum, year) => sum + Object.keys(year.config.researchPapers ?? {}).length,
-    0
-  );
-  const latest = years[0];
 
   const tabs = years.map((year) => ({
     year: year.config.year,
@@ -65,15 +60,7 @@ export default function CompetitionPage() {
             on the results. All papers are available in full.
           </p>
         }
-      >
-        <Stats
-          large
-          items={[
-            { value: paperCount, label: "Papers published" },
-            { value: latest?.config.projectTeams?.length ?? 0, label: `Project teams in ${latest?.config.year ?? ""}` },
-          ]}
-        />
-      </PageIntro>
+      />
 
       <div className="cs-section">
         <Wrap>

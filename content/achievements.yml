@@ -1,0 +1,10 @@
+# Competition results by QUANTT members, shown on /achievements grouped by year.
+# Newest year first; within a year, entries keep the order below.
+#
+# - competition: "Competition name"
+#   result: "1st place"            # or "2nd place", "Finalist", "Top 10", ...
+#   year: "2026"
+#   members: ["First Last", "First Last"]   # optional
+#   url: "https://..."             # optional: results page or announcement
+
+achievements: []

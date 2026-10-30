@@ -7,6 +7,7 @@ import {
   getTeamYears,
   getPortfolios,
   getEducationChapters,
+  getAchievements,
   isRecruitingOpen,
 } from "@/lib/content";
 
@@ -24,6 +25,18 @@ describe("content loading", () => {
         Date.now()
       );
     }
+  });
+
+  it("loads achievements newest year first, each with the required fields", () => {
+    const list = getAchievements();
+    expect(Array.isArray(list)).toBe(true);
+    for (const a of list) {
+      expect(a.competition).toBeTruthy();
+      expect(a.result).toBeTruthy();
+      expect(a.year).toMatch(/^\d{4}/);
+    }
+    const years = list.map((a) => a.year);
+    expect(years).toEqual([...years].sort().reverse());
   });
 
   it("loads events as array", () => {
