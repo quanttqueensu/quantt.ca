@@ -1,43 +1,78 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowCircle, PageIntro, Wrap } from "@/components/ui";
+import { PageIntro, Wrap } from "@/components/ui";
 import type { Achievement } from "@/lib/content";
-import { getAchievements } from "@/lib/content";
+import { getAchievements, getTeamYears } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Achievements — QUANTT",
   description: "Competition wins and placings by QUANTT members.",
 };
 
-function Row({ a }: { a: Achievement }) {
-  const inner = (
-    <>
-      <div className="cs-byline">
-        <span>{a.result}</span>
-        {a.members && a.members.length > 0 && <span>{a.members.join(", ")}</span>}
-      </div>
-      <div>
-        <h3>{a.competition}</h3>
-      </div>
-      {a.url && <ArrowCircle />}
-    </>
-  );
+/** "1st place" → 1 with a superscript "st"; anything else ("Finalist") is shown as written. */
+function Placing({ result }: { result: string }) {
+  const m = result.match(/^(\d+)(st|nd|rd|th)\b/i);
+  if (!m) return <span className="cs-win__place cs-win__place--text">{result}</span>;
   return (
-    <li>
-      {a.url ? (
-        <a href={a.url} target="_blank" rel="noopener noreferrer" aria-label={`${a.competition}, ${a.result} (opens in new tab)`}>
-          {inner}
-        </a>
-      ) : (
-        <div className="cs-list__row">{inner}</div>
-      )}
+    <span className="cs-win__place" aria-label={result}>
+      {m[1]}
+      <sup>{m[2]}</sup>
+    </span>
+  );
+}
+
+function Members({ names, linkedin }: { names: string[]; linkedin: Map<string, string> }) {
+  return (
+    <ul className="cs-win__team" aria-label="Team">
+      {names.map((name) => {
+        const url = linkedin.get(name);
+        return (
+          <li key={name}>
+            {url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`${name} on LinkedIn (opens in new tab)`}>
+                {name}
+              </a>
+            ) : (
+              name
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function Win({ a, showYear, linkedin }: { a: Achievement; showYear: boolean; linkedin: Map<string, string> }) {
+  return (
+    <li className={`cs-win ${showYear ? "cs-win--first" : ""}`}>
+      <span className="cs-win__year" aria-hidden={!showYear}>
+        {showYear ? a.year : ""}
+      </span>
+      <Placing result={a.result} />
+      <h3 className="cs-win__name">
+        {a.url ? (
+          <a href={a.url} target="_blank" rel="noopener noreferrer">
+            {a.competition}
+          </a>
+        ) : (
+          a.competition
+        )}
+      </h3>
+      {a.members && a.members.length > 0 && <Members names={a.members} linkedin={linkedin} />}
     </li>
   );
 }
 
 export default function AchievementsPage() {
   const achievements = getAchievements();
-  const years = [...new Set(achievements.map((a) => a.year))];
+
+  // Member name → LinkedIn, from the newest team year that lists them.
+  const linkedin = new Map<string, string>();
+  for (const year of getTeamYears()) {
+    for (const m of year.members) {
+      if (m.linkedin && !linkedin.has(m.name)) linkedin.set(m.name, m.linkedin);
+    }
+  }
 
   return (
     <>
@@ -48,40 +83,28 @@ export default function AchievementsPage() {
 
       <div className="cs-section">
         <Wrap>
-          {years.length === 0 ? (
+          {achievements.length === 0 ? (
             <section className="cs-panel cs-reveal" aria-labelledby="wins-title">
               <div className="cs-panel__intro">
                 <h2 id="wins-title" className="cs-h2 cs-h2--md">
                   Coming Soon
                 </h2>
                 <p>
-                  See the{" "}
-                  <Link href="/competition" className="cs-link">
-                    research papers
-                  </Link>{" "}
-                  from past project teams.
+                  See the <Link href="/competition">research papers</Link> from past project teams.
                 </p>
               </div>
             </section>
           ) : (
-            <div className="flex flex-col gap-12">
-              {years.map((year) => (
-                <section key={year} className="cs-panel cs-reveal" aria-labelledby={`wins-${year}`}>
-                  <div className="cs-panel__intro">
-                    <h2 id={`wins-${year}`} className="cs-h2 cs-h2--md">
-                      {year}
-                    </h2>
-                  </div>
-                  <ul className="cs-list">
-                    {achievements
-                      .filter((a) => a.year === year)
-                      .map((a) => (
-                        <Row key={`${a.competition}-${a.result}`} a={a} />
-                      ))}
-                  </ul>
-                </section>
+            <ol className="cs-wins cs-reveal">
+              {achievements.map((a, i) => (
+                <Win
+                  key={`${a.year}-${a.competition}-${a.result}`}
+                  a={a}
+                  showYear={i === 0 || achievements[i - 1].year !== a.year}
+                  linkedin={linkedin}
+                />
               ))}
-            </div>
+            </ol>
           )}
         </Wrap>
       </div>

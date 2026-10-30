@@ -238,7 +238,7 @@
   .cs-panel__intro p { margin-top: 48px; font-size: 18px; line-height: 28px; color: var(--cs-ink); }
   .cs-list { list-style: none; margin: 0; padding: 0; }
   .cs-list li + li { margin-top: 24px; }
-  .cs-list a, .cs-list__row { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
+  .cs-list a { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
   .cs-byline { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--cs-ink); margin-bottom: 16px; }
   .cs-byline span + span { padding-left: 8px; border-left: 1px solid #000; color: var(--cs-meta); }
   .cs-list h3 {
@@ -247,6 +247,19 @@
     transition: background-size .4s var(--cs-ease);
   }
   .cs-list a:hover h3 { background-size: 100% 1px; }
+
+  /* ---------- achievements ledger: year | placing | competition | team ---------- */
+  .cs-wins { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--cs-line); }
+  .cs-win { display: grid; grid-template-columns: 112px 120px minmax(0, 5fr) minmax(0, 4fr); column-gap: 32px; align-items: baseline; padding: 32px 0; border-top: 1px solid var(--cs-line-soft); }
+  .cs-win--first { border-top-color: var(--cs-ink); }
+  .cs-win__year { font: 600 20px/28px var(--cs-font); color: var(--cs-ink); font-variant-numeric: tabular-nums; }
+  .cs-win__place { font: 600 clamp(40px, 3.6vw, 52px)/1 var(--cs-font); letter-spacing: -.03em; color: var(--cs-blue); font-variant-numeric: tabular-nums; }
+  .cs-win__place--text { font-size: 20px; line-height: 28px; letter-spacing: -.01em; }
+  .cs-win__name { font-size: 22px; line-height: 30px; letter-spacing: -.01em; color: var(--cs-ink); }
+  .cs-win__name a:hover { color: var(--cs-blue-hover); }
+  .cs-win__team { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 16px; line-height: 24px; color: var(--cs-meta); }
+  .cs-win__team a { color: var(--cs-blue-link); background: linear-gradient(currentColor, currentColor) left calc(100% - 1px) / 100% 1px no-repeat; }
+  .cs-win__team a:hover { color: var(--cs-blue-hover); }
 
   /* ---------- footer ---------- */
   .cs-footer { background: var(--cs-footer); color: #fff; padding: 80px 0 56px; margin-top: var(--cs-section); }
@@ -316,7 +329,14 @@
     .cs-split .cs-btn, .cs-hero__ctas .cs-btn { width: 100%; }
     .cs-panel { padding: 40px 24px; margin-inline: calc(-1 * var(--cs-gutter)); }
     .cs-band__media--inset { width: 100%; }
-    .cs-list a, .cs-list__row { column-gap: 16px; }
+    .cs-list a { column-gap: 16px; }
+    .cs-win { grid-template-columns: 64px minmax(0, 1fr); column-gap: 16px; row-gap: 8px; padding: 24px 0; }
+    .cs-win__year { grid-column: 1 / -1; }
+    .cs-win:not(.cs-win--first) .cs-win__year { display: none; }
+    .cs-win--first .cs-win__year { margin-bottom: 8px; }
+    .cs-win__place { grid-row: span 2; font-size: 40px; }
+    .cs-win__name { font-size: 20px; line-height: 28px; }
+    .cs-win__team { grid-column: 2; }
     .cs-play { width: 72px; height: 72px; }
     .cs-footer__bar { flex-direction: column; align-items: flex-start; }
   }
