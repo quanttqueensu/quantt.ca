@@ -1,13 +1,22 @@
-// quantt.ca on Cloudflare: the static export in out/ served as Worker static assets (no Worker code).
+// quantt.ca on Cloudflare: the static export in out/ served as Worker static assets.
 // Workers Builds: build command `npm run build`, deploy command `npx wrangler deploy`.
 // PR branches run `npx wrangler preview`, which needs the (empty) `previews` block.
+// Only /admin (the content editor, worker/index.js) runs Worker code; every other path is served straight from out/.
 {
   "name": "quantt-website",
+  "main": "worker/index.js",
   "compatibility_date": "2026-09-01",
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/admin", "/admin/*"]
   },
+  // Who is signed in: the shared member directory (repo quanttqueensu/auth.quantt.ca, Worker quantt-auth).
+  "services": [{ "binding": "AUTH", "service": "quantt-auth", "entrypoint": "Directory" }],
+  // GITHUB_TOKEN is a secret set in the dashboard; keep it (and any variables) on deploy.
+  "keep_vars": true,
+  "observability": { "enabled": true },
   "previews": {}
 }
