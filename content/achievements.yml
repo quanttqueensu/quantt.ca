@@ -23,11 +23,22 @@ achievements:
     result: "1st place"
     year: "2026"
     members: ["Ethan Solnik", "Joffre Decore"]
+    media:
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/winning-team.jpg"
+        caption: "Winning team at the prize ceremony"
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
+        caption: "Both QUANTT teams at the prize ceremony"
 
   - competition: "FIAM Asset Management Hackathon"
     result: "2nd place"
     year: "2026"
     members: ["Jordan Odorico", "Gabriel Soler", "Benjamin Gorenc", "Zach Glazer"]
+    media:
+      - type: image
+        url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
+        caption: "Both QUANTT teams at the prize ceremony"
 
   - competition: "RITC x Smith"
     result: "1st place"
