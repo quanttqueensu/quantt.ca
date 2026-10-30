@@ -9,7 +9,9 @@ import {
   getEducationChapters,
   getAchievements,
   isRecruitingOpen,
+  getFeaturedAchievement,
 } from "@/lib/content";
+import { isFeatureLive } from "@/lib/featured";
 
 describe("content loading", () => {
   it("loads site config", () => {
@@ -115,5 +117,22 @@ describe("isRecruitingOpen", () => {
   it("stays open through the last day and closes after it", () => {
     expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-30" }, now)).toBe(true);
     expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-29" }, now)).toBe(false);
+  });
+});
+
+describe("featured win", () => {
+  const now = new Date("2026-10-30T12:00:00");
+
+  it("is live only when ticked and not past its end date", () => {
+    expect(isFeatureLive({}, now)).toBe(false);
+    expect(isFeatureLive({ featured: false, featuredUntil: "2026-12-31" }, now)).toBe(false);
+    expect(isFeatureLive({ featured: true }, now)).toBe(true);
+    expect(isFeatureLive({ featured: true, featuredUntil: "2026-10-30" }, now)).toBe(true);
+    expect(isFeatureLive({ featured: true, featuredUntil: "2026-10-29" }, now)).toBe(false);
+  });
+
+  it("picks a live featured win from the achievements file, if any", () => {
+    const win = getFeaturedAchievement();
+    if (win) expect(isFeatureLive(win)).toBe(true);
   });
 });

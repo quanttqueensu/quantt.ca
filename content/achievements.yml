@@ -7,6 +7,8 @@
 #   members: ["First Last", "First Last"]   # optional
 #   url: "https://..."             # optional: results page or announcement
 #   summary: "One or two sentences about the result."   # optional
+#   featured: true                 # optional: show in the "Latest win" row on the home page
+#   featuredUntil: "2026-12-31"    # optional: last day it stays featured
 #   media:                         # optional: images show as a photo strip, PDFs and links as cards
 #     - type: image
 #       url: "/achievements/fiam-2026/team.jpg"     # uploads go in public/achievements/<slug>/
@@ -22,6 +24,7 @@ achievements:
   - competition: "FIAM Asset Management Hackathon"
     result: "1st place"
     year: "2026"
+    featured: true
     members:
       - "Ethan Solnik"
       - "Joffre Decore"

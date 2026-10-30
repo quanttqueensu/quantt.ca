@@ -1,14 +1,16 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
+import LatestWin from "@/components/LatestWin";
 import PartnerLogos from "@/components/PartnerLogos";
 import PricePaths from "@/components/PricePaths";
 import ResearchList from "@/components/ResearchList";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import { Button, ListPanel, Section, Split, Stats, Wrap } from "@/components/ui";
-import { getPartners, getPortfolios, getTeamYears } from "@/lib/content";
+import { getFeaturedAchievement, getPartners, getPortfolios, getTeamYears } from "@/lib/content";
 
 export default function Home() {
   const portfolios = getPortfolios();
+  const featured = getFeaturedAchievement();
   const partners = getPartners().current;
   // "A, B, and C" instead of "A, B, C".
   const partnerList = new Intl.ListFormat("en", { type: "conjunction" }).format(partners.map((p) => p.name));
@@ -28,6 +30,8 @@ export default function Home() {
   return (
     <>
       <Hero />
+
+      {featured && <LatestWin win={featured} />}
 
       <Wrap>
         <Stats

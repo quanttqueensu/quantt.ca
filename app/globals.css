@@ -513,6 +513,16 @@
   .cs-papers-list .cs-meta { margin-top: 6px; color: var(--cs-meta); }
   .cs-papers-list__pdf { color: var(--cs-blue-link); font-weight: 500; font-size: 15px; white-space: nowrap; }
 
+  /* Latest win: one slim row under the home hero, linking to /achievements. */
+  .cs-latest { background: var(--cs-panel); }
+  .cs-latest a { display: flex; align-items: baseline; gap: 24px; min-height: 64px; padding-block: 18px; color: var(--cs-ink); }
+  .cs-latest__tag { flex: none; font-size: 14px; line-height: 20px; color: var(--cs-meta); padding-right: 24px; border-right: 1px solid var(--cs-line); }
+  .cs-latest__place { flex: none; font-weight: 600; color: var(--cs-blue); }
+  .cs-latest__name { font-size: 18px; line-height: 26px; letter-spacing: -.01em; }
+  .cs-latest__team { color: var(--cs-meta); }
+  .cs-latest__more { margin-left: auto; flex: none; align-self: center; display: inline-flex; align-items: center; gap: 4px; color: var(--cs-blue-link); }
+  .cs-latest a:hover .cs-latest__name { color: var(--cs-blue); }
+
   /* Partner logos in one quiet greyscale row. */
   .cs-logo-row { list-style: none; margin: 48px 0 0; padding: 40px 0; display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); align-items: center; gap: 48px; border-block: 1px solid var(--cs-line); }
   .cs-logo-row li { position: relative; height: 48px; }
@@ -526,5 +536,9 @@
     .cs-papers-list h3 { font-size: 17px; }
     .cs-papers-list__pdf { grid-column: 2; }
     .cs-logo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+    .cs-latest a { flex-wrap: wrap; gap: 4px 12px; padding-block: 16px; }
+    .cs-latest__tag { flex-basis: 100%; border: 0; padding: 0; }
+    .cs-latest__team, .cs-latest__more-label { display: none; }
+    .cs-latest__name { flex: 1; min-width: 0; font-size: 16px; line-height: 22px; }
   }
 }
