@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>QUANTT Admin</title>
+<link rel="icon" href="/favicon.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+<style>
+  :root { --blue: #295caa; --blue-hover: #1d4682; --navy: #0f2547; --ink: #101213; --text: #373a3c; --meta: #696969;
+    --line: #d0d1d4; --panel: #f2f5fa; --bg: #fff; --red: #b42318; --green: #1a7f37; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--text); background: var(--panel); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--navy); color: #fff; }
+  header img { height: 26px; }
+  header .who { margin-left: auto; font-size: 13px; opacity: .85; }
+  header a { color: #fff; font-size: 13px; }
+  #deploy { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.12); }
+  #deploy:empty { display: none; }
+  .layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 46px); }
+  nav { background: #fff; border-right: 1px solid var(--line); padding: 12px 0; }
+  nav button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 9px 20px; font: inherit; color: var(--ink); cursor: pointer; }
+  nav button:hover { background: var(--panel); }
+  nav button.on { color: var(--blue); font-weight: 600; box-shadow: inset 3px 0 var(--blue); background: var(--panel); }
+  nav button .dot { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: #e09b00; vertical-align: middle; }
+  main { padding: 24px 28px 120px; max-width: 980px; width: 100%; }
+  h1 { margin: 0 0 4px; font-size: 22px; color: var(--ink); }
+  .sub { margin: 0 0 18px; color: var(--meta); font-size: 13px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  label.f { display: block; margin-bottom: 12px; }
+  label.f > span { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); margin-bottom: 4px; }
+  label.f.check { display: flex; gap: 8px; align-items: center; }
+  label.f.check > span { margin: 0; }
+  input[type=text], input[type=url], input[type=date], input[type=number], select, textarea { width: 100%; font: inherit; color: var(--ink); padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue); }
+  textarea { min-height: 70px; resize: vertical; }
+  textarea.md, textarea.raw { min-height: 260px; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .grid2 > .wide { grid-column: 1 / -1; }
+  button.b { font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 4px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+  button.b:hover { border-color: var(--blue); color: var(--blue); }
+  button.b.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  button.b.primary:hover { background: var(--blue-hover); color: #fff; }
+  button.b.danger { color: var(--red); }
+  button.b.small { padding: 3px 9px; font-size: 13px; }
+  button.b:disabled { opacity: .5; cursor: default; }
+  .item { border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px; background: #fff; }
+  .item > .head { display: flex; align-items: center; gap: 8px; padding: 9px 12px; cursor: pointer; }
+  .item > .head .t { flex: 1; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item > .head .m { color: var(--meta); font-size: 13px; }
+  .item > .body { padding: 4px 12px 8px; border-top: 1px solid var(--line); }
+  .item.closed > .body { display: none; }
+  fieldset { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px 2px; margin: 0 0 12px; }
+  legend { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); padding: 0 4px; }
+  .asset { display: flex; gap: 10px; align-items: center; }
+  .asset .thumb { width: 72px; height: 48px; flex: none; border: 1px solid var(--line); border-radius: 4px; background: var(--panel) center / contain no-repeat; display: grid; place-items: center; font-size: 11px; color: var(--meta); }
+  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); background: var(--panel); }
+  tr.click { cursor: pointer; }
+  tr.click:hover td { background: var(--panel); }
+  .tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 99px; background: #fff4d6; color: #7a5200; margin-left: 6px; font-weight: 600; }
+  .tag.del { background: #fde8e7; color: var(--red); }
+  .err { color: var(--red); font-size: 13px; margin: 4px 0 10px; }
+  .muted { color: var(--meta); }
+  .back { margin-bottom: 14px; }
+  #bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; display: none; align-items: center; gap: 12px; padding: 12px 24px; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(15,37,71,.08); }
+  #bar.on { display: flex; }
+  #bar .grow { font-size: 14px; }
+  #bar input { max-width: 420px; }
+  #toast { position: fixed; right: 20px; bottom: 80px; z-index: 7; max-width: 380px; padding: 12px 16px; border-radius: 6px; background: var(--navy); color: #fff; font-size: 14px; display: none; }
+  #toast.on { display: block; }
+  #toast.bad { background: var(--red); }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 0; }
+    nav button { white-space: nowrap; width: auto; padding: 12px 14px; }
+    nav button.on { box-shadow: inset 0 -3px var(--blue); }
+    main { padding: 16px 16px 140px; }
+    .grid2 { grid-template-columns: 1fr; }
+    header .who { display: none; }
+    #bar { flex-wrap: wrap; padding: 10px 16px; }
+    #bar input { max-width: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="/images/logos/quantt-full-white.png" alt="QUANTT">
+  <strong>Admin</strong>
+  <span id="deploy"></span>
+  <span class="who" id="who"></span>
+  <a href="/" target="_blank" rel="noopener">View site</a>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"><p class="muted">Loading…</p></main>
+</div>
+<div id="bar">
+  <span class="grow" id="barText"></span>
+  <input type="text" id="barMsg" placeholder="What changed? (optional)">
+  <button class="b" id="discard">Discard</button>
+  <button class="b primary" id="publish">Publish</button>
+</div>
+<div id="toast"></div>
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $ = (id) => document.getElementById(id);
+function h(tag, attrs = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "class") el.className = v;
+    else if (k === "style") el.style.cssText = v;
+    else if (k in el && k !== "list") el[k] = v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null && k !== false) el.append(k instanceof Node ? k : String(k));
+  return el;
+}
+const slug = (s) => String(s || "").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "untitled";
+let toastTimer;
+function toast(msg, bad) {
+  const t = $("toast");
+  t.textContent = msg; t.className = "on" + (bad ? " bad" : "");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => (t.className = ""), bad ? 9000 : 4000);
+}
+async function api(path, init) {
+  const res = await fetch("/admin/api" + path, init);
+  if (!res.ok) {
+    const j = await res.json().catch(() => ({}));
+    throw new Error(j.error || `Request failed (${res.status})`);
+  }
+  return (res.headers.get("content-type") || "").includes("json") ? res.json() : res.text();
+}
+
+/* ---------- repo state ---------- */
+// files: path -> blob sha on main. text: path -> loaded text. pending: path -> change waiting to be published.
+const S = { files: {}, text: {}, pending: new Map(), previews: {}, invalid: new Set(), section: "settings", view: null };
+
+async function refreshFiles() { S.files = (await api("/files")).files; }
+async function load(path) {
+  if (S.pending.has(path)) { const p = S.pending.get(path); if (p.text !== undefined) return p.text; }
+  if (!(path in S.text)) S.text[path] = S.files[path] ? await api("/file?path=" + encodeURIComponent(path)) : null;
+  return S.text[path];
+}
+const exists = (path) => (S.pending.has(path) ? !S.pending.get(path).delete : !!S.files[path]);
+// Stage new text for a file; dropping it again when it matches what's on main.
+function stage(path, text) {
+  const orig = S.text[path] ?? null;
+  if (text === orig) S.pending.delete(path);
+  else S.pending.set(path, { path, text, sha: S.files[path] ?? null });
+  updateBar();
+}
+function stageDelete(path) {
+  if (!S.files[path]) S.pending.delete(path);
+  else S.pending.set(path, { path, delete: true, sha: S.files[path] });
+  updateBar();
+}
+function stageUpload(path, base64, blob) {
+  S.pending.set(path, { path, base64, sha: S.files[path] ?? null });
+  S.previews[path] = URL.createObjectURL(blob);
+  updateBar();
+}
+function publicUrl(path) { return "/" + path.replace(/^public\//, ""); }
+function repoPath(url) { return url && url.startsWith("/") ? "public" + url : null; }
+function previewSrc(url) {
+  const p = repoPath(url);
+  return (p && S.previews[p]) || url;
+}
+
+/* ---------- YAML / front matter ---------- */
+// Core schema: dates stay strings, as the site reads them.
+const YAML_OPTS = { schema: jsyaml.CORE_SCHEMA };
+const DUMP = { ...YAML_OPTS, lineWidth: -1, noRefs: true, forceQuotes: true, quotingType: '"' };
+const loadYaml = (t) => jsyaml.load(t, YAML_OPTS);
+// The hand-written files explain their format in comments. Keep the comments (and blank lines) above each top-level
+// key, and the ones at the top of the file, when the editor rewrites it.
+function dumpYaml(obj, orig, spaced) {
+  let body = jsyaml.dump(obj, DUMP);
+  // A blank line between top-level list entries, as the hand-written files have.
+  if (spaced) body = body.replace(/\n(\s{0,2}- )/g, (m, d, i, s) => (/:\n$/.test(s.slice(0, i + 1)) ? m : "\n\n" + d));
+  const notes = {}; let block = [], head = null;
+  for (const line of (orig || "").split("\n")) {
+    if (/^\s*(#.*)?$/.test(line)) { block.push(line); continue; }
+    const key = (line.match(/^([\w-]+):/) || [])[1];
+    if (head === null) { head = block; block = []; }
+    if (key) notes[key] = block;
+    block = [];
+  }
+  if (head === null) head = block;
+  // Comments above the first key belong to the file, not that key.
+  const lines = body.replace(/\n$/, "").split("\n").flatMap((line, i) => {
+    const key = (line.match(/^([\w-]+):/) || [])[1];
+    return key && i > 0 && notes[key] ? [...notes[key], line] : [line];
+  });
+  return [...head, ...lines].join("\n") + "\n";
+}
+function parseMd(text) {
+  const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(text || "");
+  if (!m) return { fm: {}, body: text || "" };
+  return { fm: loadYaml(m[1]) || {}, body: m[2].replace(/^\r?\n/, "") };
+}
+function dumpMd(fm, body) {
+  return "---\n" + jsyaml.dump(fm, DUMP) + "---\n" + (body && body.trim() ? "\n" + body.replace(/\s*$/, "\n") : "");
+}
+
+/* ---------- form fields ---------- */
+// A field: { key, label, type, options, fields, dir, wide, hint, list }. render() edits obj in place and calls onChange.
+function setVal(obj, key, v, blankDeletes) {
+  if (v === "" || v == null || (Array.isArray(v) && !v.length)) { if (blankDeletes || !(key in obj)) delete obj[key]; else obj[key] = Array.isArray(obj[key]) ? [] : ""; }
+  else obj[key] = v;
+}
+function field(f, obj, onChange, ctx) {
+  const val = obj[f.key];
+  const wrap = (input, cls) => h("label", { class: "f" + (cls ? " " + cls : "") + (f.wide ? " wide" : "") }, h("span", {}, f.label), input, f.hint ? h("div", { class: "muted", style: "font-size:12px;margin-top:3px" }, f.hint) : null);
+  const changed = (v) => { setVal(obj, f.key, v, f.blankDeletes); onChange(); };
+  switch (f.type) {
+    case "bool": {
+      const i = h("input", { type: "checkbox", checked: !!val, onchange: () => { obj[f.key] = i.checked; onChange(); } });
+      return h("label", { class: "f check" + (f.wide ? " wide" : "") }, i, h("span", {}, f.label));
+    }
+    case "textarea": case "markdown":
+      return wrap(h("textarea", { class: f.type === "markdown" ? "md" : "", value: val ?? "", oninput: (e) => changed(e.target.value) }));
+    case "number":
+      return wrap(h("input", { type: "number", value: val ?? "", oninput: (e) => changed(e.target.value === "" ? "" : Number(e.target.value)) }));
+    case "select": {
+      const opts = [...new Set([...(typeof f.options === "function" ? f.options(ctx) : f.options), ...(val ? [val] : [])])];
+      return wrap(h("select", { onchange: (e) => changed(e.target.value) }, h("option", { value: "" }, "—"), opts.map((o) => h("option", { value: o, selected: o === val }, o))));
+    }
+    case "lines":
+      return wrap(h("textarea", { value: (val || []).join("\n"), oninput: (e) => changed(e.target.value.split("\n").map((s) => s.trim()).filter(Boolean)) }), null);
+    case "tags":
+      return wrap(h("input", { type: "text", value: (val || []).join(", "), oninput: (e) => changed(e.target.value.split(",").map((s) => s.trim()).filter(Boolean)) }));
+    case "asset": return wrap(assetInput(f, obj, onChange, ctx));
+    case "object": {
+      // Attached to the parent only once it has a value, so opening a form never adds an empty block.
+      const child = obj[f.key] && typeof obj[f.key] === "object" ? obj[f.key] : {};
+      const sub = () => { if (Object.keys(child).length) obj[f.key] = child; else delete obj[f.key]; onChange(); };
+      return h("fieldset", { class: "wide" }, h("legend", {}, f.label), h("div", { class: "grid2" }, f.fields.map((g) => field(g, child, sub, [child, ...ctx]))));
+    }
+    case "list": return listInput(f, obj, onChange, ctx);
+    default: {
+      const id = f.suggest ? "dl-" + Math.random().toString(36).slice(2) : null;
+      const input = h("input", { type: f.type === "date" ? "date" : "text", list: id, value: val ?? "", placeholder: f.placeholder || "", oninput: (e) => changed(e.target.value) });
+      return wrap(id ? [input, h("datalist", { id }, f.suggest(ctx).map((s) => h("option", { value: s })))] : input);
+    }
+  }
+}
+
+// A photo, logo or PDF: a path on the site, plus an upload that stages the file under f.dir.
+function assetInput(f, obj, onChange, ctx) {
+  const thumb = h("div", { class: "thumb" });
+  const text = h("input", { type: "text", value: obj[f.key] ?? "", placeholder: f.placeholder || "/images/… or https://…", oninput: () => { setVal(obj, f.key, text.value.trim()); show(); onChange(); } });
+  const file = h("input", { type: "file", accept: f.accept || "image/*,application/pdf", style: "display:none", onchange: async () => {
+    const picked = file.files[0]; if (!picked) return;
+    try {
+      const dir = typeof f.dir === "function" ? f.dir(ctx) : f.dir;
+      const { blob, name } = await prepareUpload(picked, f.resize !== false);
+      let path = `${dir}/${name}`;
+      for (let n = 2; exists(path) && !S.pending.get(path)?.base64; n++) path = `${dir}/${name.replace(/(\.\w+)$/, `-${n}$1`)}`;
+      stageUpload(path, await toBase64(blob), blob);
+      text.value = publicUrl(path); setVal(obj, f.key, text.value); show(); onChange();
+    } catch (e) { toast(e.message, true); }
+    file.value = "";
+  } });
+  function show() {
+    const v = text.value.trim();
+    thumb.style.backgroundImage = ""; thumb.textContent = "";
+    if (!v) thumb.textContent = "none";
+    else if (/\.pdf$/i.test(v)) thumb.textContent = "PDF";
+    else if (/^https?:/.test(v) && !/\.(png|jpe?g|webp|gif|svg)$/i.test(v)) thumb.textContent = "link";
+    else thumb.style.backgroundImage = `url("${previewSrc(v).replace(/"/g, "%22")}")`;
+  }
+  show();
+  return h("div", { class: "asset" }, thumb, text, h("button", { class: "b small", type: "button", onclick: (e) => { e.preventDefault(); file.click(); } }, "Upload"), file);
+}
+const toBase64 = (blob) => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = bad; r.readAsDataURL(blob); });
+// Photos over 2000px are scaled down (as JPEG) so pages stay fast; logos, SVGs and PDFs go up as they are.
+async function prepareUpload(file, resize) {
+  if (file.size > 8 * 1024 * 1024) throw new Error(`${file.name} is over 8 MB.`);
+  const ext = (file.name.match(/\.(\w+)$/) || [, ""])[1].toLowerCase();
+  if (!/^(png|jpe?g|webp|gif|svg|pdf)$/.test(ext)) throw new Error("Upload a PNG, JPG, WebP, GIF, SVG or PDF.");
+  const base = slug(file.name.replace(/\.\w+$/, ""));
+  if (resize && /^(jpe?g|png|webp)$/.test(ext)) {
+    const img = await createImageBitmap(file).catch(() => null);
+    if (img && Math.max(img.width, img.height) > 2000) {
+      const k = 2000 / Math.max(img.width, img.height);
+      const c = h("canvas", { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      const blob = await new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.85));
+      return { blob, name: base + ".jpg" };
+    }
+  }
+  return { blob: file, name: `${base}.${ext === "jpeg" ? "jpg" : ext}` };
+}
+
+// A list of entries (partners, events, wins, attachments): each one folds open, moves up or down, or is removed.
+function listInput(f, obj, onChange, ctx) {
+  const arr = Array.isArray(obj[f.key]) ? obj[f.key] : [];
+  // Like objects, a missing list is attached on the first entry; an optional one goes away when emptied.
+  const sync = () => { if (arr.length || !f.blankDeletes) obj[f.key] = arr; else delete obj[f.key]; onChange(); };
+  const box = h("div");
+  const open = new Set();
+  function draw() {
+    box.replaceChildren(
+      ...arr.map((item, i) => {
+        const title = h("span", { class: "t" }, f.itemLabel(item) || "(untitled)");
+        const meta = h("span", { class: "m" }, f.itemMeta ? f.itemMeta(item) : "");
+        const btn = (label, fn, cls) => h("button", { class: "b small " + (cls || ""), type: "button", onclick: (e) => { e.stopPropagation(); fn(); } }, label);
+        const body = h("div", { class: "body" }, h("div", { class: "grid2" }, f.fields.map((g) => field(g, item, () => { title.textContent = f.itemLabel(item) || "(untitled)"; if (f.itemMeta) meta.textContent = f.itemMeta(item); onChange(); }, [item, ...ctx]))));
+        const el = h("div", { class: "item" + (open.has(item) ? "" : " closed") },
+          h("div", { class: "head", onclick: () => { el.classList.toggle("closed"); el.classList.contains("closed") ? open.delete(item) : open.add(item); } },
+            title, meta,
+            i > 0 && btn("↑", () => { arr.splice(i - 1, 0, ...arr.splice(i, 1)); sync(); draw(); }),
+            i < arr.length - 1 && btn("↓", () => { arr.splice(i + 1, 0, ...arr.splice(i, 1)); sync(); draw(); }),
+            btn("Remove", () => { if (confirm(`Remove “${f.itemLabel(item) || "this entry"}”?`)) { arr.splice(i, 1); sync(); draw(); } }, "danger")),
+          body);
+        return el;
+      }),
+      h("button", { class: "b small", type: "button", onclick: () => { const item = f.newItem ? f.newItem() : {}; f.addFirst ? arr.unshift(item) : arr.push(item); open.add(item); sync(); draw(); } }, "+ " + (f.addLabel || "Add"))
+    );
+  }
+  draw();
+  return h("fieldset", { class: "wide" }, h("legend", {}, f.label), box);
+}
+
+/* ---------- sections ---------- */
+const IMG = (key, label, dir, extra) => ({ key, label, type: "asset", dir, accept: "image/*", ...extra });
+const SECTIONS = {
+  settings: { label: "Site settings", file: "content/config.yml", sub: "Recruiting banner and page photos.",
+    fields: [
+      { key: "recruiting", label: "Recruiting open (shows the banner)", type: "bool", wide: true },
+      { key: "recruitingDetails", label: "Recruiting message", type: "textarea", wide: true },
+      { key: "recruitingUrl", label: "Recruiting link", placeholder: "/portfolios" },
+      { key: "recruitingUntil", label: "Hide banner after", type: "date", blankDeletes: true },
+      { key: "media", label: "Page photos", type: "object", fields: ["hero", "partners", "education", "team"].map((k) => IMG(k, k[0].toUpperCase() + k.slice(1), "public/images/photos", { blankDeletes: true, wide: true })) },
+    ] },
+  events: { label: "Events", file: "content/events.yml", root: "list", sub: "Upcoming events on the home page. Empty list hides the section.",
+    list: { key: "items", label: "Events", addLabel: "Add event", itemLabel: (e) => e.title, itemMeta: (e) => [e.date, e.time].filter(Boolean).join(" · "),
+      fields: [{ key: "title", label: "Title", wide: true }, { key: "date", label: "Date", type: "date" }, { key: "time", label: "Time", placeholder: "6:00 PM" },
+        { key: "location", label: "Location" }, { key: "url", label: "Link (optional)", blankDeletes: true }] } },
+  partners: { label: "Partners", file: "content/partners.yml", spaced: true, sub: "Partner logos on the home and partners pages.",
+    fields: ["current", "past"].map((k) => ({ key: k, label: k === "current" ? "Current partners" : "Past partners", type: "list", addLabel: "Add partner", itemLabel: (p) => p.name,
+      fields: [{ key: "name", label: "Name" }, { key: "url", label: "Website", blankDeletes: true }, IMG("logo", "Logo", "public/images/partners", { resize: false, wide: true }), { key: "description", label: "Description", type: "textarea", wide: true }] })) },
+  achievements: { label: "Achievements", file: "content/achievements.yml", spaced: true, sub: "Competition results, with photos, papers and links.",
+    fields: [{ key: "achievements", label: "Wins", type: "list", addLabel: "Add win", addFirst: true, itemLabel: (a) => [a.competition, a.result].filter(Boolean).join(" — "), itemMeta: (a) => a.year || "",
+      newItem: () => ({ competition: "", result: "1st place", year: String(new Date().getFullYear()), members: [] }),
+      fields: [
+        { key: "competition", label: "Competition" }, { key: "result", label: "Result", type: "select", options: ["1st place", "2nd place", "3rd place", "Finalist", "Top 10"] },
+        { key: "year", label: "Year" }, { key: "url", label: "Results link (optional)", blankDeletes: true },
+        { key: "members", label: "Members (one per line)", type: "lines", hint: "Names as on the team page, so their LinkedIn links up." },
+        { key: "summary", label: "Summary", type: "textarea", blankDeletes: true },
+        { key: "media", label: "Supporting materials", type: "list", addLabel: "Add photo, paper or link", blankDeletes: true,
+          itemLabel: (m) => m.title || (m.url || "").split("/").pop(), itemMeta: (m) => m.type || "", newItem: () => ({ type: "image", url: "" }),
+          fields: [
+            { key: "type", label: "Type", type: "select", options: ["image", "pdf", "link"] },
+            { key: "title", label: "Title", blankDeletes: true },
+            { key: "url", label: "File or link", type: "asset", wide: true, dir: (ctx) => { const a = ctx.find((c) => c.competition !== undefined) || {}; return "public/achievements/" + slug(`${a.competition}-${a.year}`); } },
+            { key: "caption", label: "Caption", type: "textarea", wide: true, blankDeletes: true },
+          ] },
+      ] }] },
+  team: { label: "Team", sub: "Members by year. Year settings hold the titles, tiers and research papers." },
+  portfolios: { label: "Portfolios", dir: "content/portfolios", sub: "Portfolio pages.", newLabel: "Add portfolio", title: (fm) => fm.title,
+    meta: (fm) => [fm.manager, fm.status].filter(Boolean).join(" · "), sort: (a, b) => (a.fm.order ?? 99) - (b.fm.order ?? 99),
+    create: (name) => ({ title: name, slug: slug(name), manager: "", description: "", tech: [], status: "active", order: 99 }),
+    fields: [{ key: "title", label: "Title" }, { key: "slug", label: "Slug (URL)" }, { key: "manager", label: "Portfolio manager" },
+      { key: "status", label: "Status", type: "select", options: ["active", "completed"] }, { key: "order", label: "Order", type: "number" },
+      { key: "tech", label: "Tags (comma separated)", type: "tags" }, { key: "description", label: "Description", type: "textarea", wide: true }], body: "Page text (Markdown)" },
+  education: { label: "Curriculum", dir: "content/education", sub: "Weekly curriculum chapters.", newLabel: "Add chapter", title: (fm) => `${fm.chapter}. ${fm.title}`,
+    sort: (a, b) => (a.fm.chapter ?? 99) - (b.fm.chapter ?? 99), create: (name, all) => ({ chapter: all.length + 1, title: name }), fileName: (fm) => `week${fm.chapter}.md`,
+    fields: [{ key: "chapter", label: "Chapter", type: "number" }, { key: "title", label: "Title" }, { key: "topics", label: "Topics (one per line)", type: "lines", wide: true },
+      { key: "trading_track", label: "Trading track (one per line)", type: "lines" }, { key: "development_track", label: "Development track (one per line)", type: "lines" }], body: "Notes (Markdown)" },
+  files: { label: "All files", sub: "Every content file and upload. Edit raw text, or add and remove files." },
+};
+
+function renderNav() {
+  const dirty = (k) => {
+    const s = SECTIONS[k];
+    const prefix = s.file || s.dir || (k === "team" ? "content/team/" : null);
+    return [...S.pending.keys()].some((p) => (prefix ? p.startsWith(prefix) : k === "files"));
+  };
+  $("nav").replaceChildren(...Object.entries(SECTIONS).map(([k, s]) =>
+    h("button", { class: S.section === k ? "on" : "", onclick: () => go(k) }, s.label, dirty(k) && h("span", { class: "dot", title: "Unpublished changes" }))));
+}
+function go(section, view) { S.section = section; S.view = view || null; renderNav(); render(); window.scrollTo(0, 0); }
+function title(t, sub) { return [h("h1", {}, t), sub ? h("p", { class: "sub" }, sub) : null]; }
+
+async function render() {
+  const main = $("main");
+  const s = SECTIONS[S.section];
+  main.replaceChildren(h("p", { class: "muted" }, "Loading…"));
+  try {
+    const view = s.file ? yamlPage(s) : s.dir ? mdCollection(s, s.dir) : S.section === "team" ? teamPage() : filesPage();
+    main.replaceChildren(...(await view).filter(Boolean));
+  } catch (e) { main.replaceChildren(h("p", { class: "err" }, e.message)); }
+}
+
+// One YAML file as a form. Every edit re-writes the file and stages it.
+async function yamlPage(s) {
+  const text = await load(s.file);
+  if (text == null) return [...title(s.label, s.sub), h("div", { class: "card muted" }, `${s.file} isn't on the site yet.`)];
+  let data = loadYaml(text);
+  const save = () => stage(s.file, dumpYaml(s.root === "list" ? holder.items : data, S.text[s.file], s.spaced));
+  let holder, fields = s.fields;
+  if (s.root === "list") { holder = { items: Array.isArray(data) ? data : [] }; data = holder; fields = [{ ...s.list, type: "list" }]; }
+  return [...title(s.label, s.sub), h("div", { class: "card grid2" }, fields.map((f) => field(f, data, save, [data])))];
+}
+
+// A folder of Markdown files with front matter (team members, portfolios, curriculum).
+async function mdCollection(s, dir, extraTop = []) {
+  const paths = [...new Set([...Object.keys(S.files), ...S.pending.keys()])].filter((p) => p.startsWith(dir + "/") && p.endsWith(".md") && !p.slice(dir.length + 1).includes("/") && !p.split("/").pop().startsWith("_"));
+  if (S.view && S.view.startsWith(dir + "/")) return mdEditor(s, S.view);
+  const items = await Promise.all(paths.filter(exists).map(async (path) => ({ path, fm: parseMd(await load(path)).fm })));
+  items.sort(s.sort || ((a, b) => (a.fm.order ?? 99) - (b.fm.order ?? 99)));
+  const add = h("button", { class: "b primary", onclick: () => {
+    const name = prompt(s.newPrompt || "Name?"); if (!name) return;
+    const fm = s.create(name.trim(), items);
+    const path = `${dir}/${s.fileName ? s.fileName(fm) : slug(name) + ".md"}`;
+    if (exists(path)) return toast(`${path.split("/").pop()} already exists.`, true);
+    S.text[path] = S.text[path] ?? null;
+    stage(path, dumpMd(fm, ""));
+    S.view = path; renderNav(); render();
+  } }, s.newLabel || "Add");
+  const deleted = paths.filter((p) => !exists(p));
+  const rows = (s.group ? s.group(items) : [[null, items]]).map(([g, list]) => [
+    g ? h("tr", {}, h("th", { colspan: 3 }, g)) : null,
+    ...list.map((it) => h("tr", { class: "click", onclick: () => { S.view = it.path; render(); } },
+      h("td", {}, s.title(it.fm) || it.path.split("/").pop(), S.pending.has(it.path) && h("span", { class: "tag" }, S.files[it.path] ? "edited" : "new")),
+      h("td", { class: "muted" }, s.meta ? s.meta(it.fm) : ""),
+      h("td", { class: "muted", style: "width:60px" }, it.fm.order ?? "")))]);
+  return [...title(s.label, s.sub), ...extraTop, h("div", { class: "row", style: "margin-bottom:12px" }, add),
+    h("table", {}, h("tbody", {}, rows.flat())),
+    deleted.length ? h("p", { class: "muted" }, "To be deleted on publish: ", deleted.map((p) => p.split("/").pop()).join(", ")) : null];
+}
+async function mdEditor(s, path) {
+  const text = await load(path);
+  const { fm, body } = parseMd(text);
+  const doc = { fm, body };
+  const save = () => stage(path, dumpMd(doc.fm, doc.body));
+  const ctx = [doc.fm];
+  return [
+    h("div", { class: "row back" }, h("button", { class: "b small", onclick: () => { S.view = null; render(); } }, "← Back"), h("span", { class: "grow" }),
+      h("button", { class: "b small danger", onclick: () => { if (confirm(`Delete ${s.title(fm) || path}?`)) { stageDelete(path); S.view = null; renderNav(); render(); } } }, "Delete")),
+    ...title(s.title(fm) || path.split("/").pop(), path),
+    h("div", { class: "card grid2" }, (typeof s.fields === "function" ? s.fields() : s.fields).map((f) => field(f, doc.fm, save, ctx)),
+      s.body ? field({ key: "body", label: s.body, type: "markdown", wide: true }, doc, save, ctx) : null),
+  ];
+}
+
+// Team: pick a year, then the same Markdown collection for content/team/<year>.
+let teamYear = null;
+async function teamPage() {
+  const years = [...new Set(Object.keys(S.files).map((p) => (p.match(/^content\/team\/(\d{4}-\d{4})\/config\.yml$/) || [])[1]).filter(Boolean))].sort().reverse();
+  teamYear = teamYear && years.includes(teamYear) ? teamYear : years[0];
+  const dir = `content/team/${teamYear}`;
+  let config = {};
+  try { config = loadYaml(await load(`${dir}/config.yml`)) || {}; } catch (e) { /* shown in the year settings editor */ }
+  const tiers = (config.hierarchy || []).map((t) => t.tier).concat((config.leadershipTiers || []).map((t) => t.key));
+  const tierLabel = Object.fromEntries((config.hierarchy || []).map((t) => [t.tier, t.label]).concat((config.leadershipTiers || []).map((t) => [t.key, t.label])));
+  const all = await Promise.all(Object.keys(S.files).filter((p) => p.startsWith(dir + "/") && p.endsWith(".md") && !p.includes("/_")).map(async (p) => parseMd(await load(p)).fm));
+  const pick = (k) => [...new Set(all.map((m) => m[k]).filter(Boolean))].sort();
+  const leads = all.filter((m) => m.tier === "portfolio-manager").map((m) => m.name);
+  const s = {
+    label: "Team", sub: "Members by year.", newLabel: "Add member", newPrompt: "Full name?", title: (fm) => fm.name,
+    meta: (fm) => [fm.role, fm.department].filter(Boolean).join(" · "),
+    group: (items) => { const order = [...tiers, ...pick("tier").filter((t) => !tiers.includes(t)), undefined]; return order.map((t) => [tierLabel[t] || t || "No tier", items.filter((i) => i.fm.tier === t)]).filter(([, l]) => l.length); },
+    create: (name) => ({ name, role: "", tier: "analyst", department: "", order: 99, linkedin: "", bio: "" }),
+    fields: [
+      { key: "name", label: "Name" }, { key: "role", label: "Title", suggest: () => pick("role") },
+      { key: "tier", label: "Tier", type: "select", options: () => [...new Set([...tiers, ...pick("tier")])] },
+      { key: "department", label: "Team or portfolio", suggest: () => pick("department"), blankDeletes: false },
+      { key: "lead", label: "Portfolio manager (analysts)", suggest: () => leads, blankDeletes: true },
+      { key: "order", label: "Order", type: "number", hint: "Lower shows first." },
+      { key: "linkedin", label: "LinkedIn", wide: true }, IMG("photo", "Photo (optional)", "public/images/team", { wide: true, blankDeletes: true }),
+      { key: "bio", label: "Bio", type: "textarea", wide: true },
+    ],
+  };
+  const top = [h("div", { class: "row", style: "margin-bottom:12px" },
+    h("select", { style: "width:auto", onchange: (e) => { teamYear = e.target.value; S.view = null; render(); } }, years.map((y) => h("option", { value: y, selected: y === teamYear }, y))),
+    h("button", { class: "b small", onclick: () => go("files", `${dir}/config.yml`) }, "Year settings"))];
+  return mdCollection(s, dir, top);
+}
+
+// Every editable file: open one to edit its raw text, upload new files, or delete.
+async function filesPage() {
+  if (S.view) return rawEditor(S.view);
+  const paths = [...new Set([...Object.keys(S.files), ...S.pending.keys()])].sort();
+  const up = h("input", { type: "file", multiple: true, style: "display:none", onchange: async () => {
+    const dir = folder.value;
+    for (const f of up.files) {
+      try { const { blob, name } = await prepareUpload(f, dir.includes("photos")); stageUpload(`${dir}/${name}`, await toBase64(blob), blob); }
+      catch (e) { toast(e.message, true); }
+    }
+    up.value = ""; render(); renderNav();
+  } });
+  const folder = h("select", { style: "width:auto" }, ["public/images/photos", "public/images/partners", "public/images/team", "public/images/papers", "public/papers", "public/achievements"].map((d) => h("option", { value: d }, d.replace(/^public/, ""))));
+  return [...title("All files", SECTIONS.files.sub),
+    h("div", { class: "row", style: "margin-bottom:12px" }, folder, h("button", { class: "b primary", onclick: () => up.click() }, "Upload files"), up),
+    h("table", {}, h("thead", {}, h("tr", {}, h("th", {}, "File"), h("th", {}, ""))), h("tbody", {}, paths.map((p) => {
+      const pend = S.pending.get(p);
+      const text = /\.(ya?ml|md)$/.test(p);
+      return h("tr", { class: text ? "click" : "", onclick: () => { if (text && exists(p)) { S.view = p; render(); } } },
+        h("td", {}, p.replace(/^public/, "").replace(/^content\//, "content/"), pend && h("span", { class: "tag" + (pend.delete ? " del" : "") }, pend.delete ? "deleted" : S.files[p] ? "edited" : "new")),
+        h("td", { style: "text-align:right;white-space:nowrap" },
+          !text && exists(p) && h("a", { href: previewSrc(publicUrl(p)), target: "_blank", onclick: (e) => e.stopPropagation() }, "Open"), " ",
+          pend ? h("button", { class: "b small", onclick: (e) => { e.stopPropagation(); S.pending.delete(p); updateBar(); render(); } }, "Undo")
+            : h("button", { class: "b small danger", onclick: (e) => { e.stopPropagation(); if (confirm(`Delete ${p}?`)) { stageDelete(p); render(); } } }, "Delete")));
+    })))];
+}
+async function rawEditor(path) {
+  const text = await load(path);
+  const err = h("div", { class: "err" });
+  const ta = h("textarea", { class: "raw", value: text || "", style: "min-height:60vh", oninput: () => {
+    try { if (/\.ya?ml$/.test(path)) loadYaml(ta.value); else parseMd(ta.value); err.textContent = ""; S.invalid.delete(path); }
+    catch (e) { err.textContent = "Not valid YAML: " + e.message.split("\n")[0]; S.invalid.add(path); }
+    stage(path, ta.value);
+  } });
+  return [h("div", { class: "row back" }, h("button", { class: "b small", onclick: () => { S.view = null; render(); } }, "← All files")), ...title(path.split("/").pop(), path), err, ta];
+}
+
+/* ---------- publish ---------- */
+function updateBar() {
+  const n = S.pending.size;
+  $("bar").classList.toggle("on", n > 0);
+  $("barText").textContent = `${n} unpublished change${n === 1 ? "" : "s"}: ` + [...S.pending.keys()].map((p) => p.split("/").pop()).slice(0, 4).join(", ") + (n > 4 ? "…" : "");
+  renderNav();
+}
+$("discard").onclick = () => {
+  if (!confirm("Discard all unpublished changes?")) return;
+  S.pending.clear(); S.invalid.clear(); S.view = null; updateBar(); render();
+};
+$("publish").onclick = async () => {
+  if ([...S.invalid].some((p) => S.pending.has(p))) return toast("Fix the YAML error before publishing.", true);
+  const btn = $("publish"); btn.disabled = true; btn.textContent = "Publishing…";
+  const changes = [...S.pending.values()];
+  const names = [...new Set(changes.map((c) => c.path.split("/").pop()))];
+  const message = $("barMsg").value.trim() || `Edit ${names.slice(0, 3).join(", ")}${names.length > 3 ? ` and ${names.length - 3} more` : ""}`;
+  try {
+    const res = await api("/commit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message, changes }) });
+    for (const c of changes) { if (c.text !== undefined) S.text[c.path] = c.text; if (c.delete) delete S.text[c.path]; }
+    S.pending.clear(); $("barMsg").value = "";
+    await refreshFiles();
+    updateBar(); render();
+    toast("Published. The site updates in about two minutes.");
+    watchDeploy(res.sha);
+  } catch (e) { toast(e.message, true); }
+  btn.disabled = false; btn.textContent = "Publish";
+};
+async function watchDeploy(sha) {
+  const el = $("deploy");
+  el.textContent = "Building…";
+  for (let i = 0; i < 24; i++) {
+    await new Promise((r) => setTimeout(r, 10000));
+    const { state } = await api("/deploy?sha=" + sha).catch(() => ({ state: "unknown" }));
+    if (state === "live") { el.textContent = "Live ✓"; setTimeout(() => (el.textContent = ""), 15000); return; }
+    if (state === "failed") { el.textContent = "Build failed"; toast("The site build failed. Your change is saved; ask in the website thread.", true); return; }
+  }
+  el.textContent = "";
+}
+window.addEventListener("beforeunload", (e) => { if (S.pending.size) { e.preventDefault(); e.returnValue = ""; } });
+
+(async () => {
+  try {
+    const me = await api("/me");
+    $("who").textContent = me.name;
+    await refreshFiles();
+    if (!S.files["content/achievements.yml"]) delete SECTIONS.achievements;
+    renderNav(); render();
+  } catch (e) { $("main").replaceChildren(h("p", { class: "err" }, e.message)); }
+})();
+</script>
+</body>
+</html>
