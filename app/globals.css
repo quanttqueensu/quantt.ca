@@ -251,12 +251,20 @@
   /* ---------- achievements: member links and supporting materials ---------- */
   .cs-byline a { color: var(--cs-blue-link); }
   .cs-byline a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .cs-win__summary { grid-column: 1 / -1; margin-top: 12px; max-width: 40em; font-size: 16px; line-height: 24px; color: var(--cs-ink); }
-  .cs-media { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-  .cs-media a { display: block; width: 168px; color: var(--cs-ink); }
-  .cs-media img { display: block; width: 168px; height: 108px; object-fit: cover; border: 1px solid var(--cs-line-soft); background: #fff; }
+  /* Year as a narrow rail so entries get the width; photos sit beside the text. */
+  .cs-panel--wins { grid-template-columns: 120px minmax(0, 1fr); column-gap: 48px; }
+  .cs-panel--wins .cs-list__row { grid-template-columns: minmax(0, 1fr); }
+  .cs-panel--wins .cs-win--media { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 40px; align-items: start; }
+  .cs-win__text { min-width: 0; }
+  .cs-win__text .cs-byline { margin-bottom: 16px; }
+  .cs-win__summary { margin-top: 12px; max-width: 40em; font-size: 16px; line-height: 24px; color: var(--cs-ink); }
+  .cs-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .cs-media a { display: block; color: var(--cs-ink); }
+  .cs-media a:first-child { grid-column: 1 / -1; }
+  .cs-media img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: #fff; }
+  .cs-media a:first-child img { aspect-ratio: 16 / 9; }
   .cs-media__caption { display: block; margin-top: 6px; font-size: 13px; line-height: 18px; color: var(--cs-meta); }
-  .cs-attach { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+  .cs-attach { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-top: 24px; }
   .cs-attach a { display: flex; align-items: center; gap: 14px; padding: 12px 16px 12px 12px; background: #fff; border: 1px solid var(--cs-line-soft); color: var(--cs-ink); transition: border-color var(--cs-fast); }
   .cs-attach a:hover { border-color: var(--cs-blue); }
   .cs-attach__kind { flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--cs-panel); color: var(--cs-blue); font: 600 12px/1 var(--cs-font); }
@@ -300,6 +308,8 @@
     .cs-panel { grid-template-columns: 1fr; row-gap: 48px; padding: 56px 40px; }
   }
   @media (max-width: 900px) {
+    .cs-panel--wins { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+    .cs-panel--wins .cs-win--media { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
     .cs-header__row { min-height: 72px; }
     .cs-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: #fff; flex-direction: column; gap: 0; padding: 8px var(--cs-gutter) 24px; border-top: 1px solid var(--cs-line); }
     .cs-nav.is-open { display: flex; }
@@ -333,8 +343,6 @@
     .cs-panel { padding: 40px 24px; margin-inline: calc(-1 * var(--cs-gutter)); }
     .cs-band__media--inset { width: 100%; }
     .cs-list > li > a, .cs-list__row { column-gap: 16px; }
-    .cs-media a { width: calc(50% - 6px); }
-    .cs-media img { width: 100%; height: auto; aspect-ratio: 14 / 9; }
     .cs-play { width: 72px; height: 72px; }
     .cs-footer__bar { flex-direction: column; align-items: flex-start; }
   }

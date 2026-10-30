@@ -11,79 +11,81 @@ export const metadata: Metadata = {
 
 const newTab = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-/** Images as a photo strip, PDFs and links as cards, like LinkedIn's media. */
-function Media({ items }: { items: AchievementMedia[] }) {
-  const images = items.filter((m) => m.type === "image");
-  const files = items.filter((m) => m.type !== "image");
+function Photos({ items }: { items: AchievementMedia[] }) {
   return (
-    <>
-      {images.length > 0 && (
-        <div className="cs-media">
-          {images.map((m) => (
-            <a key={m.url} href={encodeURI(m.url)} {...newTab} aria-label={`${m.title ?? m.caption ?? "Photo"} (opens in new tab)`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={encodeURI(m.url)} alt={m.caption ?? m.title ?? ""} loading="lazy" />
-              {m.caption && <span className="cs-media__caption">{m.caption}</span>}
-            </a>
-          ))}
-        </div>
-      )}
-      {files.length > 0 && (
-        <div className="cs-attach">
-          {files.map((m) => (
-            <a key={m.url} href={m.type === "pdf" ? encodeURI(m.url) : m.url} {...newTab}>
-              <span className="cs-attach__kind">{m.type === "pdf" ? "PDF" : "Link"}</span>
-              <span className="cs-attach__text">
-                <span className="cs-attach__title">{m.title ?? m.url}</span>
-                {m.caption && <span className="cs-attach__caption">{m.caption}</span>}
-              </span>
-            </a>
-          ))}
-        </div>
-      )}
-    </>
+    <div className="cs-media">
+      {items.map((m) => (
+        <a key={m.url} href={encodeURI(m.url)} {...newTab} aria-label={`${m.title ?? m.caption ?? "Photo"} (opens in new tab)`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={encodeURI(m.url)} alt={m.caption ?? m.title ?? ""} loading="lazy" />
+          {m.caption && <span className="cs-media__caption">{m.caption}</span>}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/** PDFs and links as cards, like LinkedIn's media. */
+function Attachments({ items }: { items: AchievementMedia[] }) {
+  return (
+    <div className="cs-attach">
+      {items.map((m) => (
+        <a key={m.url} href={m.type === "pdf" ? encodeURI(m.url) : m.url} {...newTab}>
+          <span className="cs-attach__kind">{m.type === "pdf" ? "PDF" : "Link"}</span>
+          <span className="cs-attach__text">
+            <span className="cs-attach__title">{m.title ?? m.url}</span>
+            {m.caption && <span className="cs-attach__caption">{m.caption}</span>}
+          </span>
+        </a>
+      ))}
+    </div>
   );
 }
 
 function Row({ a, linkedin }: { a: Achievement; linkedin: Map<string, string> }) {
+  const photos = (a.media ?? []).filter((m) => m.type === "image");
+  const files = (a.media ?? []).filter((m) => m.type !== "image");
   return (
     <li>
-      <div className="cs-list__row">
-        <div className="cs-byline">
-          <span>{a.result}</span>
-          {a.members && a.members.length > 0 && (
-            <span>
-              {a.members.map((name, i) => {
-                const url = linkedin.get(name);
-                return (
-                  <span key={name}>
-                    {i > 0 && ", "}
-                    {url ? (
-                      <a href={url} {...newTab} aria-label={`${name} on LinkedIn (opens in new tab)`}>
-                        {name}
-                      </a>
-                    ) : (
-                      name
-                    )}
-                  </span>
-                );
-              })}
-            </span>
-          )}
-        </div>
-        <div>
-          <h3>
-            {a.url ? (
-              <a href={a.url} {...newTab}>
-                {a.competition}
-              </a>
-            ) : (
-              a.competition
+      <div className={`cs-list__row ${photos.length > 0 ? "cs-win--media" : ""}`}>
+        <div className="cs-win__text">
+          <div className="cs-byline">
+            <span>{a.result}</span>
+            {a.members && a.members.length > 0 && (
+              <span>
+                {a.members.map((name, i) => {
+                  const url = linkedin.get(name);
+                  return (
+                    <span key={name}>
+                      {i > 0 && ", "}
+                      {url ? (
+                        <a href={url} {...newTab} aria-label={`${name} on LinkedIn (opens in new tab)`}>
+                          {name}
+                        </a>
+                      ) : (
+                        name
+                      )}
+                    </span>
+                  );
+                })}
+              </span>
             )}
-          </h3>
+          </div>
+          <div>
+            <h3>
+              {a.url ? (
+                <a href={a.url} {...newTab}>
+                  {a.competition}
+                </a>
+              ) : (
+                a.competition
+              )}
+            </h3>
+          </div>
+          {a.summary && <p className="cs-win__summary">{a.summary}</p>}
+          {files.length > 0 && <Attachments items={files} />}
         </div>
-        {a.summary && <p className="cs-win__summary">{a.summary}</p>}
-        {a.media && a.media.length > 0 && <Media items={a.media} />}
+        {photos.length > 0 && <Photos items={photos} />}
       </div>
     </li>
   );
@@ -124,7 +126,7 @@ export default function AchievementsPage() {
           ) : (
             <div className="flex flex-col gap-12">
               {years.map((year) => (
-                <section key={year} className="cs-panel cs-reveal" aria-labelledby={`wins-${year}`}>
+                <section key={year} className="cs-panel cs-panel--wins cs-reveal" aria-labelledby={`wins-${year}`}>
                   <div className="cs-panel__intro">
                     <h2 id={`wins-${year}`} className="cs-h2 cs-h2--md">
                       {year}
