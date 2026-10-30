@@ -29,7 +29,7 @@ achievements:
         caption: "Winning team at the prize ceremony"
       - type: image
         url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
-        caption: "Both QUANTT teams at the prize ceremony"
+        caption: "Top two teams at the prize ceremony"
 
   - competition: "FIAM Asset Management Hackathon"
     result: "2nd place"
@@ -38,7 +38,7 @@ achievements:
     media:
       - type: image
         url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
-        caption: "Both QUANTT teams at the prize ceremony"
+        caption: "Top two teams at the prize ceremony"
 
   - competition: "RITC x Smith"
     result: "1st place"
