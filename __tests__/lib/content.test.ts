@@ -34,6 +34,10 @@ describe("content loading", () => {
       expect(a.competition).toBeTruthy();
       expect(a.result).toBeTruthy();
       expect(a.year).toMatch(/^\d{4}/);
+      for (const m of a.media ?? []) {
+        expect(["image", "pdf", "link"]).toContain(m.type);
+        expect(m.url).toBeTruthy();
+      }
     }
     const years = list.map((a) => a.year);
     expect(years).toEqual([...years].sort().reverse());

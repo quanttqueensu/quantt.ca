@@ -237,29 +237,32 @@
   .cs-panel { background: var(--cs-panel); padding: 80px 56px; margin-top: 0; display: grid; grid-template-columns: minmax(0, 446fr) minmax(0, 703fr); column-gap: 67px; }
   .cs-panel__intro p { margin-top: 48px; font-size: 18px; line-height: 28px; color: var(--cs-ink); }
   .cs-list { list-style: none; margin: 0; padding: 0; }
-  .cs-list li + li { margin-top: 24px; }
-  .cs-list a { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
+  .cs-list > li + li { margin-top: 24px; }
+  .cs-list > li > a, .cs-list__row { display: grid; grid-template-columns: 1fr auto; column-gap: 32px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); }
   .cs-byline { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--cs-ink); margin-bottom: 16px; }
-  .cs-byline span + span { padding-left: 8px; border-left: 1px solid #000; color: var(--cs-meta); }
+  .cs-byline > span + span { padding-left: 8px; border-left: 1px solid #000; color: var(--cs-meta); }
   .cs-list h3 {
     display: inline; font-size: 20px; line-height: 28px; max-width: 30em; color: var(--cs-ink);
     background: linear-gradient(currentColor, currentColor) left calc(100% - 1px) / 0 1px no-repeat;
     transition: background-size .4s var(--cs-ease);
   }
-  .cs-list a:hover h3 { background-size: 100% 1px; }
+  .cs-list > li > a:hover h3 { background-size: 100% 1px; }
 
-  /* ---------- achievements ledger: year | placing | competition | team ---------- */
-  .cs-wins { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--cs-line); }
-  .cs-win { display: grid; grid-template-columns: 112px 120px minmax(0, 5fr) minmax(0, 4fr); column-gap: 32px; align-items: baseline; padding: 32px 0; border-top: 1px solid var(--cs-line-soft); }
-  .cs-win--first { border-top-color: var(--cs-ink); }
-  .cs-win__year { font: 600 20px/28px var(--cs-font); color: var(--cs-ink); font-variant-numeric: tabular-nums; }
-  .cs-win__place { font: 600 clamp(40px, 3.6vw, 52px)/1 var(--cs-font); letter-spacing: -.03em; color: var(--cs-blue); font-variant-numeric: tabular-nums; }
-  .cs-win__place--text { font-size: 20px; line-height: 28px; letter-spacing: -.01em; }
-  .cs-win__name { font-size: 22px; line-height: 30px; letter-spacing: -.01em; color: var(--cs-ink); }
-  .cs-win__name a:hover { color: var(--cs-blue-hover); }
-  .cs-win__team { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 16px; line-height: 24px; color: var(--cs-meta); }
-  .cs-win__team a { color: var(--cs-blue-link); background: linear-gradient(currentColor, currentColor) left calc(100% - 1px) / 100% 1px no-repeat; }
-  .cs-win__team a:hover { color: var(--cs-blue-hover); }
+  /* ---------- achievements: member links and supporting materials ---------- */
+  .cs-byline a { color: var(--cs-blue-link); }
+  .cs-byline a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .cs-win__summary { grid-column: 1 / -1; margin-top: 12px; max-width: 40em; font-size: 16px; line-height: 24px; color: var(--cs-ink); }
+  .cs-media { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .cs-media a { display: block; width: 168px; color: var(--cs-ink); }
+  .cs-media img { display: block; width: 168px; height: 108px; object-fit: cover; border: 1px solid var(--cs-line-soft); background: #fff; }
+  .cs-media__caption { display: block; margin-top: 6px; font-size: 13px; line-height: 18px; color: var(--cs-meta); }
+  .cs-attach { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+  .cs-attach a { display: flex; align-items: center; gap: 14px; padding: 12px 16px 12px 12px; background: #fff; border: 1px solid var(--cs-line-soft); color: var(--cs-ink); transition: border-color var(--cs-fast); }
+  .cs-attach a:hover { border-color: var(--cs-blue); }
+  .cs-attach__kind { flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--cs-panel); color: var(--cs-blue); font: 600 12px/1 var(--cs-font); }
+  .cs-attach__text { min-width: 0; display: flex; flex-direction: column; }
+  .cs-attach__title { font-size: 15px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cs-attach__caption { font-size: 13px; line-height: 18px; color: var(--cs-meta); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* ---------- footer ---------- */
   .cs-footer { background: var(--cs-footer); color: #fff; padding: 80px 0 56px; margin-top: var(--cs-section); }
@@ -325,18 +328,13 @@
     .cs-stats--strip .cs-stat + .cs-stat { padding-left: 12px; }
     .cs-stats--strip .cs-stat__label { font-size: 14px; line-height: 19px; }
     .cs-byline { flex-direction: column; align-items: flex-start; gap: 2px; }
-    .cs-byline span + span { padding-left: 0; border-left: 0; }
+    .cs-byline > span + span { padding-left: 0; border-left: 0; }
     .cs-split .cs-btn, .cs-hero__ctas .cs-btn { width: 100%; }
     .cs-panel { padding: 40px 24px; margin-inline: calc(-1 * var(--cs-gutter)); }
     .cs-band__media--inset { width: 100%; }
-    .cs-list a { column-gap: 16px; }
-    .cs-win { grid-template-columns: 64px minmax(0, 1fr); column-gap: 16px; row-gap: 8px; padding: 24px 0; }
-    .cs-win__year { grid-column: 1 / -1; }
-    .cs-win:not(.cs-win--first) .cs-win__year { display: none; }
-    .cs-win--first .cs-win__year { margin-bottom: 8px; }
-    .cs-win__place { grid-row: span 2; font-size: 40px; }
-    .cs-win__name { font-size: 20px; line-height: 28px; }
-    .cs-win__team { grid-column: 2; }
+    .cs-list > li > a, .cs-list__row { column-gap: 16px; }
+    .cs-media a { width: calc(50% - 6px); }
+    .cs-media img { width: 100%; height: auto; aspect-ratio: 14 / 9; }
     .cs-play { width: 72px; height: 72px; }
     .cs-footer__bar { flex-direction: column; align-items: flex-start; }
   }

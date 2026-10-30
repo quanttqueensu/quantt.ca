@@ -6,6 +6,17 @@
 #   year: "2026"
 #   members: ["First Last", "First Last"]   # optional
 #   url: "https://..."             # optional: results page or announcement
+#   summary: "One or two sentences about the result."   # optional
+#   media:                         # optional: images show as a photo strip, PDFs and links as cards
+#     - type: image
+#       url: "/achievements/fiam-2026/team.jpg"     # uploads go in public/achievements/<slug>/
+#       caption: "Team at the final"               # optional
+#     - type: pdf
+#       url: "/achievements/fiam-2026/paper.pdf"
+#       title: "Research paper"
+#     - type: link
+#       url: "https://www.linkedin.com/posts/..."
+#       title: "LinkedIn post"
 
 achievements:
   - competition: "FIAM Asset Management Hackathon"
