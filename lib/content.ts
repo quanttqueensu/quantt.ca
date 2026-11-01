@@ -51,6 +51,10 @@ export interface AchievementMedia {
   url: string;
   title?: string;
   caption?: string;
+  /** PDFs only: also list this paper on the Research page. */
+  research?: boolean;
+  /** PDFs only: image of the first page, shown as the paper's cover on Achievements and Research. */
+  cover?: string;
 }
 
 export interface Achievement {
@@ -185,6 +189,21 @@ export function getAchievements(): Achievement[] {
     .map((a, i) => ({ a, i }))
     .sort((x, y) => String(y.a.year).localeCompare(String(x.a.year)) || x.i - y.i)
     .map(({ a }) => ({ ...a, year: String(a.year) }));
+}
+
+/** A competition paper ticked "Also show on the Research page", with the win it came from. */
+export interface CompetitionPaper {
+  achievement: Achievement;
+  pdf: AchievementMedia;
+}
+
+/** Papers from achievements marked for the Research page, newest year first. */
+export function getCompetitionPapers(): CompetitionPaper[] {
+  return getAchievements().flatMap((achievement) =>
+    (achievement.media ?? [])
+      .filter((m) => m.type === "pdf" && m.research && m.url)
+      .map((pdf) => ({ achievement, pdf }))
+  );
 }
 
 /** The win shown under the home hero: the newest one ticked "Feature on homepage", if any. */

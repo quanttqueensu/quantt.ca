@@ -79,9 +79,20 @@ export default function AchievementsList({ rows }: { rows: WinRow[] }) {
                   {files.length > 0 && (
                     <div className="cs-win__files">
                       {files.map((m) => (
-                        <a key={m.url} href={m.type === "pdf" ? encodeURI(m.url) : m.url} {...newTab}>
-                          <b>{m.type === "pdf" ? "PDF" : "Link"}</b>
-                          {m.title ?? m.caption ?? m.url}
+                        <a
+                          key={m.url}
+                          href={m.type === "pdf" ? encodeURI(m.url) : m.url}
+                          className={m.type === "pdf" && m.cover ? "has-cover" : undefined}
+                          {...newTab}
+                        >
+                          {m.type === "pdf" && m.cover && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={encodeURI(m.cover)} alt="" loading="lazy" />
+                          )}
+                          <span>
+                            <b>{m.type === "pdf" ? "PDF" : "Link"}</b>
+                            {m.title ?? m.caption ?? m.url}
+                          </span>
                         </a>
                       ))}
                     </div>
