@@ -5,6 +5,7 @@ import { PageIntro, Wrap } from "@/components/ui";
 import { getAchievements, getTeamYears } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/achievements" },
   title: "Achievements — QUANTT",
   description: "Competition wins and placings by QUANTT members.",
 };

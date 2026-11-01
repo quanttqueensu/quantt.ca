@@ -3,6 +3,7 @@ import { Button, List, PageIntro, Split, Wrap } from "@/components/ui";
 import { getSiteConfig, isRecruitingOpen } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact — QUANTT",
   description: "Get in touch with the QUANTT team at Queen's University.",
 };

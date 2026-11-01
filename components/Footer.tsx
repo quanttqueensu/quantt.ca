@@ -33,7 +33,8 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="cs-footer on-blue">
+    // data-nosnippet: keep Google from using footer links as a search-result snippet.
+    <footer className="cs-footer on-blue" data-nosnippet>
       <div className="cs-wrap">
         <div className="cs-footer__top">
           <Link href="/" aria-label="QUANTT home" className="inline-flex min-h-11 items-start">
@@ -55,7 +56,6 @@ export default function Footer() {
             <Link href="/partners">Partners</Link>
             <Link href="/achievements">Achievements</Link>
             <Link href="/contact">Contact</Link>
-            <a href="mailto:quantt@clubs.queensu.ca">quantt@clubs.queensu.ca</a>
           </div>
         </div>
 

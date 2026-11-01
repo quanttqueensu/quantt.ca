@@ -57,6 +57,7 @@ export default function Navbar() {
 
   return (
     <header
+      data-nosnippet
       className={`cs-header ${hidden && !menuOpen ? "is-hidden" : ""} ${overHero ? "is-over-hero" : ""}`}
     >
       <div className="cs-wrap cs-header__row relative">
