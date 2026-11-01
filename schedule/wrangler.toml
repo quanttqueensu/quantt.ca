@@ -1,0 +1,20 @@
+name = "quantt-calendar"
+main = "src/worker.js"
+compatibility_date = "2026-09-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[kv_namespaces]]
+binding = "SCHEDULE_KV"
+
+# Events, attendance and reminder settings. No database_id: wrangler creates it in the Worker's account on the first deploy.
+[[d1_databases]]
+binding = "DB"
+database_name = "quantt-calendar-events"
+
+# Reminder emails: checks every 15 minutes for events with a reminder due.
+[triggers]
+crons = ["*/15 * * * *"]
