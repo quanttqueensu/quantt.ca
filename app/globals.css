@@ -275,11 +275,13 @@
   .cs-win__files b { font-size: 12px; font-weight: 600; color: var(--cs-blue); }
   .cs-win__files a > span { display: inline-flex; align-items: center; gap: 8px; }
   /* A PDF with a cover shows its first page, like the Research shelf. */
-  .cs-win__files a.has-cover { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0; border: 0; }
-  .cs-win__files a.has-cover img { display: block; width: 96px; aspect-ratio: 17 / 22; object-fit: cover; object-position: top; background: #fff; box-shadow: 0 0 0 1px var(--cs-line); transition: box-shadow var(--cs-fast) var(--cs-ease); }
+  .cs-win__files a.has-cover { flex-direction: column; align-items: flex-start; gap: 10px; min-height: 0; padding: 0; border: 0; line-height: 20px; }
+  .cs-win__files a.has-cover img { display: block; height: calc(var(--cs-win-media) - 30px); width: auto; aspect-ratio: 17 / 22; object-fit: cover; object-position: top; background: #fff; box-shadow: 0 0 0 1px var(--cs-line); transition: box-shadow var(--cs-fast) var(--cs-ease); }
   .cs-win__files a.has-cover:hover img { box-shadow: 0 0 0 2px var(--cs-blue); }
   .cs-win__photos { grid-column: 4; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-  .cs-win__photos img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  /* Photos and a paper's cover + label share one height, so the row's media line up. */
+  .cs-win__detail { --cs-win-media: 136px; }
+  .cs-win__photos img { display: block; width: 100%; height: var(--cs-win-media); object-fit: cover; }
 
   /* ---------- footer ---------- */
   .cs-footer { background: var(--cs-footer); color: #fff; padding: 80px 0 56px; margin-top: var(--cs-section); }
@@ -324,6 +326,7 @@
     .cs-win__end { grid-column: 3; grid-row: 1 / span 3; }
     .cs-win__detail { grid-template-columns: minmax(0, 1fr); row-gap: 16px; padding-top: 0; }
     .cs-win__text, .cs-win__photos { grid-column: 1; }
+    .cs-win__photos img { height: auto; aspect-ratio: 4 / 3; }
     .cs-header__row { min-height: 72px; }
     .cs-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: #fff; flex-direction: column; gap: 0; padding: 8px var(--cs-gutter) 24px; border-top: 1px solid var(--cs-line); }
     .cs-nav.is-open { display: flex; }
