@@ -5,6 +5,7 @@ import { Button, PageIntro, Wrap } from "@/components/ui";
 import { getEducationChapters, getSiteConfig } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/education" },
   title: "Education — QUANTT",
   description:
     "QUANTT's curriculum: markets and strategy types, coding and problem solving, strategy infrastructure from data to automation, and the math and probability underneath.",

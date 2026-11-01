@@ -4,6 +4,7 @@ import { Button, PageIntro, Split, Wrap } from "@/components/ui";
 import { getPartners } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/partners" },
   title: "Partners — QUANTT",
   description:
     "QUANTT partners with leading financial institutions to provide real-world quantitative finance experience.",

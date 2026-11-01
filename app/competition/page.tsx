@@ -5,6 +5,7 @@ import type { TeamYear } from "@/lib/content";
 import { getTeamYears } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/competition" },
   title: "Research — QUANTT",
   description: "Research papers from QUANTT's project teams, by competition year.",
 };
