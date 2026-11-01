@@ -3,3 +3,9 @@
 # as its own page next recruiting cycle.
 /hiring /portfolios 302
 /hiring/ /portfolios 302
+
+# The blog was replaced by Achievements (PR #23). 301 so Google drops the old
+# Blog sitelink and moves it to /achievements.
+/blog /achievements 301
+/blog/ /achievements 301
+/blog/* /achievements 301

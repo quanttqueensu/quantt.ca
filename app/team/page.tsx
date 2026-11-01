@@ -8,6 +8,7 @@ import type { TeamMember, TeamYear } from "@/lib/content";
 import { getSiteConfig, getTeamYears } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/team" },
   title: "Team — QUANTT",
   description: "Meet the QUANTT leadership team and project teams, by academic year.",
 };
