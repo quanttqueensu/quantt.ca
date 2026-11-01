@@ -16,6 +16,8 @@
 #     - type: pdf
 #       url: "/achievements/fiam-2026/paper.pdf"
 #       title: "Research paper"
+#       research: true                             # optional: also list it on the Research page
+#       cover: "/achievements/fiam-2026/cover.png" # optional: first-page image shown with the paper
 #     - type: link
 #       url: "https://www.linkedin.com/posts/..."
 #       title: "LinkedIn post"
@@ -35,6 +37,8 @@ achievements:
       - type: "pdf"
         url: "/achievements/fiam-asset-management-hackathon-2026/fiam-quantt-2026.pdf"
         title: "Research Paper"
+        research: true
+        cover: "/achievements/fiam-asset-management-hackathon-2026/paper-cover.png"
 
   - competition: "FIAM Asset Management Hackathon"
     result: "2nd place"

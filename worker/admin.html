@@ -222,7 +222,7 @@ function field(f, obj, onChange, ctx) {
   const changed = (v) => { setVal(obj, f.key, v, f.blankDeletes); onChange(); };
   switch (f.type) {
     case "bool": {
-      const i = h("input", { type: "checkbox", checked: !!val, onchange: () => { obj[f.key] = i.checked; onChange(); } });
+      const i = h("input", { type: "checkbox", checked: !!val, onchange: () => { if (i.checked || !f.blankDeletes) obj[f.key] = i.checked; else delete obj[f.key]; onChange(); } });
       return h("label", { class: "f check" + (f.wide ? " wide" : "") }, i, h("span", {}, f.label));
     }
     case "textarea": case "markdown":
@@ -313,7 +313,15 @@ function listInput(f, obj, onChange, ctx) {
         const title = h("span", { class: "t" }, f.itemLabel(item) || "(untitled)");
         const meta = h("span", { class: "m" }, f.itemMeta ? f.itemMeta(item) : "");
         const btn = (label, fn, cls) => h("button", { class: "b small " + (cls || ""), type: "button", onclick: (e) => { e.stopPropagation(); fn(); } }, label);
-        const body = h("div", { class: "body" }, h("div", { class: "grid2" }, f.fields.map((g) => field(g, item, () => { title.textContent = f.itemLabel(item) || "(untitled)"; if (f.itemMeta) meta.textContent = f.itemMeta(item); onChange(); }, [item, ...ctx]))));
+        // A field with when(item) shows only while it applies, e.g. PDF-only options.
+        const shown = [];
+        const refresh = () => shown.forEach(([g, el]) => { el.hidden = !g.when(item); });
+        const body = h("div", { class: "body" }, h("div", { class: "grid2" }, f.fields.map((g) => {
+          const el = field(g, item, () => { title.textContent = f.itemLabel(item) || "(untitled)"; if (f.itemMeta) meta.textContent = f.itemMeta(item); refresh(); onChange(); }, [item, ...ctx]);
+          if (g.when) shown.push([g, el]);
+          return el;
+        })));
+        refresh();
         const el = h("div", { class: "item" + (open.has(item) ? "" : " closed") },
           h("div", { class: "head", onclick: () => { el.classList.toggle("closed"); el.classList.contains("closed") ? open.delete(item) : open.add(item); } },
             title, meta,
@@ -365,6 +373,9 @@ const SECTIONS = {
             { key: "title", label: "Title", blankDeletes: true },
             { key: "url", label: "File or link", type: "asset", wide: true, dir: (ctx) => { const a = ctx.find((c) => c.competition !== undefined) || {}; return "public/achievements/" + slug(`${a.competition}-${a.year}`); } },
             { key: "caption", label: "Caption", type: "textarea", wide: true, blankDeletes: true },
+            { key: "research", label: "Also show this paper on the Research page", type: "bool", wide: true, blankDeletes: true, when: (m) => m.type === "pdf" },
+            { key: "cover", label: "Cover (optional: an image of the first page, shown with the paper here and on Research)", type: "asset", accept: "image/*", wide: true, blankDeletes: true, when: (m) => m.type === "pdf",
+              dir: (ctx) => { const a = ctx.find((c) => c.competition !== undefined) || {}; return "public/achievements/" + slug(`${a.competition}-${a.year}`); } },
           ] },
       ] }] },
   team: { label: "Team", sub: "Members by year. Year settings hold the titles, tiers and research papers." },

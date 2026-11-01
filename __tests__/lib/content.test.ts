@@ -10,6 +10,7 @@ import {
   getAchievements,
   isRecruitingOpen,
   getFeaturedAchievement,
+  getCompetitionPapers,
 } from "@/lib/content";
 import { isFeatureLive } from "@/lib/featured";
 
@@ -134,5 +135,13 @@ describe("featured win", () => {
   it("picks a live featured win from the achievements file, if any", () => {
     const win = getFeaturedAchievement();
     if (win) expect(isFeatureLive(win)).toBe(true);
+  });
+  it("lists only PDFs ticked for the Research page as competition papers", () => {
+    for (const { achievement, pdf } of getCompetitionPapers()) {
+      expect(pdf.type).toBe("pdf");
+      expect(pdf.research).toBe(true);
+      expect(pdf.url).toMatch(/\.pdf$/i);
+      expect(achievement.competition).toBeTruthy();
+    }
   });
 });

@@ -273,6 +273,11 @@
   .cs-win__files a { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 1px solid var(--cs-line); color: var(--cs-navy); font-size: 14px; }
   .cs-win__files a:hover { border-color: var(--cs-blue); color: var(--cs-blue); }
   .cs-win__files b { font-size: 12px; font-weight: 600; color: var(--cs-blue); }
+  .cs-win__files a > span { display: inline-flex; align-items: center; gap: 8px; }
+  /* A PDF with a cover shows its first page, like the Research shelf. */
+  .cs-win__files a.has-cover { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0; border: 0; }
+  .cs-win__files a.has-cover img { display: block; width: 96px; aspect-ratio: 17 / 22; object-fit: cover; object-position: top; background: #fff; box-shadow: 0 0 0 1px var(--cs-line); transition: box-shadow var(--cs-fast) var(--cs-ease); }
+  .cs-win__files a.has-cover:hover img { box-shadow: 0 0 0 2px var(--cs-blue); }
   .cs-win__photos { grid-column: 4; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .cs-win__photos img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 
@@ -512,6 +517,34 @@
   .cs-papers-list a:hover h3 { color: var(--cs-blue-link); }
   .cs-papers-list .cs-meta { margin-top: 6px; color: var(--cs-meta); }
   .cs-papers-list__pdf { color: var(--cs-blue-link); font-weight: 500; font-size: 15px; white-space: nowrap; }
+
+  /* Research: papers as a shelf of first-page covers, grouped by year or source. */
+  .cs-shelf-group + .cs-shelf-group { margin-top: var(--cs-section); }
+  .cs-shelf-group__head { display: flex; align-items: baseline; gap: 16px; padding-bottom: 16px; margin-bottom: 40px; border-bottom: 1px solid var(--cs-line); }
+  .cs-shelf-group__head h2 { font-size: 28px; line-height: 36px; font-weight: 500; letter-spacing: -.02em; color: var(--cs-ink); }
+  .cs-shelf-group__head p { font-size: 15px; color: var(--cs-meta); }
+  .cs-shelf { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 48px 24px; }
+  .cs-shelf a { display: block; color: var(--cs-ink); }
+  .cs-shelf__cover { position: relative; aspect-ratio: 17 / 22; background: #fff; box-shadow: 0 0 0 1px var(--cs-line); overflow: hidden; transition: box-shadow var(--cs-fast) var(--cs-ease); }
+  .cs-shelf__cover img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .cs-shelf a:hover .cs-shelf__cover, .cs-shelf a:focus-visible .cs-shelf__cover { box-shadow: 0 0 0 2px var(--cs-blue); }
+  .cs-shelf__blank { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 20px; background: var(--cs-navy); color: #fff; font-size: 18px; line-height: 24px; font-weight: 500; }
+  .cs-shelf__tag { position: absolute; left: 0; top: 0; background: var(--cs-blue); color: #fff; font-size: 13px; line-height: 18px; font-weight: 500; padding: 5px 10px; }
+  .cs-shelf__heading { margin-top: 16px; font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -.01em; }
+  .cs-shelf a:hover .cs-shelf__heading { color: var(--cs-blue); }
+  .cs-shelf__note { margin-top: 4px; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--cs-blue); }
+  .cs-shelf__title { margin-top: 6px; font-size: 15px; line-height: 22px; color: var(--cs-text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .cs-shelf__meta { margin-top: 8px; font-size: 14px; line-height: 20px; color: var(--cs-meta); }
+  @media (max-width: 1100px) { .cs-shelf { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .cs-shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
+    .cs-shelf-group__head { margin-bottom: 28px; }
+    .cs-shelf-group__head h2 { font-size: 22px; line-height: 28px; }
+    .cs-shelf__heading { margin-top: 12px; font-size: 16px; line-height: 22px; }
+    .cs-shelf__note, .cs-shelf__meta { font-size: 13px; line-height: 18px; }
+    .cs-shelf__title { font-size: 14px; line-height: 20px; }
+    .cs-shelf__blank { padding: 14px; font-size: 15px; line-height: 20px; }
+  }
 
   /* Latest win: one slim row under the home hero, linking to /achievements. */
   .cs-latest { background: var(--cs-panel); }

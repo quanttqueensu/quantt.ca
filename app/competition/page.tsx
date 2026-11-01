@@ -1,54 +1,76 @@
 import type { Metadata } from "next";
-import YearTabs from "@/components/YearTabs";
-import { List, PageIntro, Wrap } from "@/components/ui";
+import PaperShelf, { type ShelfPaper } from "@/components/PaperShelf";
+import { PageIntro, Wrap } from "@/components/ui";
 import type { TeamYear } from "@/lib/content";
-import { getTeamYears } from "@/lib/content";
+import { getCompetitionPapers, getTeamYears } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Research — QUANTT",
   description: "Research papers from QUANTT's project teams, by competition year.",
 };
 
-function PapersList({ year }: { year: TeamYear }) {
+/** One year's project team papers, the competition winner first. */
+function projectPapers(year: TeamYear): ShelfPaper[] {
   const teams = year.config.projectTeams ?? [];
   const papers = year.config.researchPapers ?? {};
   const details = year.config.researchPaperDetails ?? {};
   const winner = year.config.winner;
-
-  // The winning team leads; the rest keep their configured order.
   const ordered =
     winner && teams.includes(winner) ? [winner, ...teams.filter((t) => t !== winner)] : teams;
 
+  return ordered
+    .filter((team) => papers[team])
+    .map((team) => {
+      const pm = year.members.find((m) => m.tier === "project-manager" && m.department === team);
+      const d = details[team];
+      const won = team === winner;
+      return {
+        key: team,
+        pdf: papers[team],
+        cover: d?.image,
+        tag: won ? "Winner" : undefined,
+        heading: team,
+        note: won ? `Won QUANTT's ${year.config.year} project competition` : undefined,
+        title: d?.title,
+        meta: [pm && `Led by ${pm.name}`, d?.date].filter(Boolean).join(", ") || undefined,
+      };
+    });
+}
+
+/** Papers from members' external competitions, ticked for this page in the admin. */
+function competitionPapers(): ShelfPaper[] {
+  return getCompetitionPapers().map(({ achievement: a, pdf }) => ({
+    key: `${a.competition}-${a.year}-${pdf.url}`,
+    pdf: pdf.url,
+    cover: pdf.cover,
+    tag: a.result,
+    heading: a.competition,
+    note: `${a.result}, ${a.year}`,
+    // "Research paper" says nothing the page doesn't; show only real titles.
+    title: pdf.title && !/^(research )?paper$/i.test(pdf.title.trim()) ? pdf.title : undefined,
+    meta: a.members?.length ? a.members.join(", ") : undefined,
+  }));
+}
+
+function Shelf({ id, title, count, papers }: { id: string; title: string; count: string; papers: ShelfPaper[] }) {
   return (
-    <List
-      items={ordered
-        .filter((team) => papers[team])
-        .map((team) => {
-          const pm = year.members.find((m) => m.tier === "project-manager" && m.department === team);
-          const title = details[team]?.title ?? `${team}`;
-          return {
-            href: encodeURI(papers[team]),
-            external: true,
-            title,
-            byline: [
-              team === winner ? `${year.config.year} winner` : team,
-              [details[team]?.date, pm && `Led by ${pm.name}`].filter(Boolean).join(" · ") || "PDF",
-            ],
-            label: `${title}, ${team} team${team === winner ? `, ${year.config.year} winner` : ""} (PDF, opens in new tab)`,
-          };
-        })}
-    />
+    <section className="cs-shelf-group" aria-labelledby={id}>
+      <div className="cs-shelf-group__head">
+        <h2 id={id}>{title}</h2>
+        <p>{count}</p>
+      </div>
+      <PaperShelf papers={papers} />
+    </section>
   );
 }
 
-export default function CompetitionPage() {
-  const years = getTeamYears().filter((year) => (year.config.projectTeams ?? []).length > 0);
+const count = (n: number) => `${n} ${n === 1 ? "paper" : "papers"}`;
 
-  const tabs = years.map((year) => ({
-    year: year.config.year,
-    current: year.config.current,
-    content: <PapersList year={year} />,
-  }));
+export default function CompetitionPage() {
+  const years = getTeamYears()
+    .map((year) => ({ year: year.config.year, papers: projectPapers(year) }))
+    .filter((y) => y.papers.length > 0);
+  const external = competitionPapers();
 
   return (
     <>
@@ -57,24 +79,31 @@ export default function CompetitionPage() {
         lede={
           <p>
             Each year, project teams research and test a quantitative strategy and publish a paper
-            on the results. All papers are available in full.
+            on the results. Members also publish papers in outside competitions. All papers are
+            available in full.
           </p>
         }
       />
 
       <div className="cs-section">
         <Wrap>
-          <section className="cs-panel cs-reveal" aria-labelledby="papers-title">
-            <div className="cs-panel__intro">
-              <h2 id="papers-title" className="cs-h2 cs-h2--md">
-                Papers
-              </h2>
-              <p>PDF. The competition winner is listed first.</p>
-            </div>
-            <div>
-              <YearTabs tabs={tabs} label="Competition year" />
-            </div>
-          </section>
+          {years.map((y) => (
+            <Shelf
+              key={y.year}
+              id={`papers-${y.year}`}
+              title={`${y.year} project teams`}
+              count={count(y.papers.length)}
+              papers={y.papers}
+            />
+          ))}
+          {external.length > 0 && (
+            <Shelf
+              id="papers-competitions"
+              title="Competition papers"
+              count={count(external.length)}
+              papers={external}
+            />
+          )}
         </Wrap>
       </div>
     </>
