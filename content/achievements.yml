@@ -49,6 +49,21 @@ achievements:
         url: "/achievements/fiam-asset-management-hackathon-2026/both-teams.jpg"
         caption: "Top two teams at the prize ceremony"
 
+  - competition: "YC Fast Hackathon"
+    result: "3rd place"
+    year: "2026"
+    members:
+      - "Ethan Solnik"
+      - "Gabriel Soler"
+    summary: "Built Repo World in San Francisco, August 2026."
+    media:
+      - type: "link"
+        url: "https://repo-world.vercel.app"
+        title: "Repo World"
+      - type: "link"
+        url: "https://lnkd.in/p/gFdyNP-4"
+        title: "LinkedIn post"
+
   - competition: "RITC x Smith"
     result: "1st place"
     year: "2025"
