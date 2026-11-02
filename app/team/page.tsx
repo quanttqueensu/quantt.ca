@@ -23,14 +23,25 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
+type Row = { role: string; name?: string; note?: string; href?: string; photo?: string };
+
+/** Headshots come from the member directory (auth.quantt.ca) through worker/photos.js; a photo in the front matter wins. */
+const slugify = (name: string) =>
+  name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const photoSrc = (m: TeamMember) => m.photo || `/team/photos/${slugify(m.name)}`;
+
 /** Role on the left, person (or placeholder) on the right, 1px rule between rows. */
-function Rows({ rows }: { rows: { role: string; name?: string; note?: string; href?: string }[] }) {
+function Rows({ rows }: { rows: Row[] }) {
   return (
     <dl className="divide-y divide-line-soft border-b border-line-soft">
       {rows.map((r, i) => (
         <div key={`${r.role}-${i}`} className="grid gap-1 py-4 sm:grid-cols-2 sm:gap-4">
           <dt className="text-base text-meta">{r.role}</dt>
-          <dd className="text-lg leading-7 tracking-[-0.02em] text-ink">
+          <dd className="flex items-center gap-3 text-lg leading-7 tracking-[-0.02em] text-ink">
+            {r.photo && r.name && (
+              // eslint-disable-next-line @next/next/no-img-element -- served by the Worker, not the static export
+              <img src={r.photo} alt="" width={40} height={40} loading="lazy" decoding="async" className="size-10 shrink-0 rounded-full bg-line-soft object-cover" />
+            )}
             {r.href && r.name ? (
               <a href={r.href} target="_blank" rel="noopener noreferrer" className="cs-link">
                 {r.name}
@@ -46,7 +57,9 @@ function Rows({ rows }: { rows: { role: string; name?: string; note?: string; hr
   );
 }
 
-const memberRow = (m: TeamMember, role = m.role) => ({ role, name: m.name, href: m.linkedin });
+const memberRow = (m: TeamMember, role = m.role): Row => ({ role, name: m.name, href: m.linkedin, photo: photoSrc(m) });
+/** Past years: those members aren't in the directory any more, so no headshots unless the front matter has one. */
+const pastRow = (m: TeamMember, role = m.role): Row => ({ role, name: m.name, href: m.linkedin, photo: m.photo });
 
 function TieredView({ year }: { year: TeamYear }) {
   const { config, members } = year;
@@ -58,7 +71,7 @@ function TieredView({ year }: { year: TeamYear }) {
     <>
       {tiers.map((t) => (
         <Group key={t.label} title={t.label}>
-          <Rows rows={t.members.map((m) => memberRow(m))} />
+          <Rows rows={t.members.map((m) => pastRow(m))} />
         </Group>
       ))}
       {(config.projectTeams ?? []).length > 0 && (
@@ -71,8 +84,8 @@ function TieredView({ year }: { year: TeamYear }) {
           <Group key={team} title={team}>
             <Rows
               rows={[
-                ...(pm ? [memberRow(pm, "Project manager")] : []),
-                ...gms.map((m) => memberRow(m, "Member")),
+                ...(pm ? [pastRow(pm, "Project manager")] : []),
+                ...gms.map((m) => pastRow(m, "Member")),
               ]}
             />
           </Group>

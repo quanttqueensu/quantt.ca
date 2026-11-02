@@ -13,7 +13,9 @@ Preview locally: `npm run build && npx wrangler dev`.
 
 ## Admin editor (quantt.ca/admin)
 
-A form editor for everything in `content/` (site settings, events, partners, achievements, team, portfolios, curriculum) and uploads to `public/images`, `public/achievements` and `public/papers`. Publishing commits to `main`, which redeploys the site. Code lives in `worker/` and is the only Worker code on the site (`run_worker_first` is `/admin` only).
+A form editor for everything in `content/` (site settings, events, partners, achievements, team, portfolios, curriculum) and uploads to `public/images`, `public/achievements` and `public/papers`. Publishing commits to `main`, which redeploys the site. Code lives in `worker/`, the only Worker code on the site (`run_worker_first` is `/admin` and `/team/photos/*`).
+
+Team headshots aren't in this repo. They're uploaded once on auth.quantt.ca (the member directory), and `/team/photos/<name-slug>` (`worker/photos.js`) reads them through the `AUTH` binding; anyone without one gets an initials circle. A `photo:` path in a member's front matter overrides it. Past years show no headshots.
 
 - Sign-in: Cloudflare Access on `quantt.ca/admin` (the same Queen's one-time PIN as the other QUANTT sites). The shared directory (Worker `quantt-auth`, service binding `AUTH`) says who it is; only members with **Website: Admin** on auth.quantt.ca can open it. Anyone else gets "No editor access".
 - Setup (once):
