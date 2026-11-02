@@ -1,10 +1,11 @@
-// quantt.ca: the static site in out/ is served straight from Worker static assets. Only /admin reaches this code
+// quantt.ca: the static site in out/ is served straight from Worker static assets. Only /admin and /team/photos/* (photos.js) reach this code
 // (run_worker_first in wrangler.jsonc): the content editor, for members with the Website: Admin role on auth.quantt.ca.
 //
 // Sign-in: Cloudflare Access on quantt.ca/admin (Queen's email one-time PIN), and the shared member directory
 // (Worker quantt-auth, service binding AUTH) says who that is and their role. Saves are commits to main on GitHub.
 import page from "./admin.html";
 import { GitHub, editable } from "./github.js";
+import { PHOTO_PATH, photo } from "./photos.js";
 
 const MAX_UPLOAD = 8 * 1024 * 1024;
 
@@ -69,6 +70,8 @@ async function api(request, env, url, who) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const pic = url.pathname.match(PHOTO_PATH);
+    if (pic && request.method === "GET") return photo(pic[1], env);
     if (url.pathname !== "/admin" && !url.pathname.startsWith("/admin/")) return env.ASSETS.fetch(request);
 
     const who = await editor(request, env);
