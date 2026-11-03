@@ -23,7 +23,6 @@ export default function ContactPage() {
     <>
       <PageIntro
         title="Contact"
-        lede={<p>For partnership, recruiting, or general inquiries, email the executive team.</p>}
         cta={<Button href="mailto:quantt@clubs.queensu.ca">Email quantt@clubs.queensu.ca</Button>}
       />
 

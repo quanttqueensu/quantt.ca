@@ -18,12 +18,6 @@ export default function PartnersPage() {
     <>
       <PageIntro
         title="Partners"
-        lede={
-          <p>
-            Firms that partner with QUANTT work with students who research, build, and trade
-            quantitative strategies.
-          </p>
-        }
         cta={<Button href="mailto:quantt@clubs.queensu.ca">Become a Partner</Button>}
       />
 

@@ -34,7 +34,6 @@ export default function AchievementsPage() {
     <>
       <PageIntro
         title="Achievements"
-        lede={<p>Competitions QUANTT members have won or placed in.</p>}
       />
 
       <div className="cs-section">

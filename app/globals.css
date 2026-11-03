@@ -427,10 +427,23 @@
     background: var(--cs-panel);
   }
   .cs-intro--strip .cs-intro__text {
-    padding: 40px 0 36px;
+    align-items: center;
+    padding: 32px 0;
   }
+  /* Title left, any button at the right edge (below the title on phones). */
+  .cs-intro--strip .cs-intro__text {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px 32px;
+  }
+  .cs-intro--strip .cs-intro__lede { max-width: 60ch; margin-top: 0; }
+  .cs-intro--strip .cs-intro__lede .cs-btn { margin-top: 0; }
+  .cs-intro--strip .cs-intro__lede > .cs-lede + * { margin-top: 16px; }
   @media (max-width: 900px) {
     .cs-intro--strip .cs-intro__text { padding: 24px 0; }
+    /* One column of cards: the strip's edge already separates the first card. */
+    .cs-intro + .cs-section > .cs-cards > .cs-row:first-child { border-top: 0; padding-top: 0; }
   }
 
   /* With a photo: a short navy band, title and lede left, the photo beside them (never under the text). */
