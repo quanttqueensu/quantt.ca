@@ -249,7 +249,6 @@
   .cs-list > li > a:hover h3 { background-size: 100% 1px; }
 
   /* ---------- achievements: one line per result, details open in place ---------- */
-  .cs-wins { border-top: 1px solid var(--cs-ink); }
   .cs-win, .cs-win__detail { display: grid; grid-template-columns: 64px 120px minmax(0, 1.2fr) minmax(0, 1.3fr) 44px; column-gap: 24px; }
   .cs-win { align-items: center; min-height: 68px; padding: 12px 0; border-bottom: 1px solid var(--cs-line-soft); }
   .cs-win.is-open { border-bottom-color: transparent; }
