@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PortfolioList from "@/components/PortfolioList";
 import { PageIntro, Wrap } from "@/components/ui";
 import { getPortfolios } from "@/lib/content";
 
@@ -19,38 +20,8 @@ export default function PortfoliosPage() {
       />
 
       <section aria-label="Portfolios" className="cs-section">
-        <Wrap className="cs-cards cs-cards--2">
-          {portfolios.map((portfolio) => (
-            <article
-              key={portfolio.slug}
-              id={portfolio.slug}
-              aria-labelledby={`${portfolio.slug}-title`}
-              className="cs-row cs-grid cs-split cs-reveal scroll-mt-32"
-            >
-              <h2 id={`${portfolio.slug}-title`} className="cs-row__title">
-                {portfolio.title}
-              </h2>
-              <div>
-                <p className="cs-lede">{portfolio.description}</p>
-                {portfolio.manager && (
-                  <p className="cs-meta mt-4 text-meta">Portfolio manager: {portfolio.manager}</p>
-                )}
-                {portfolio.body && (
-                  <div className="mt-6 max-w-[65ch] space-y-4 text-base leading-relaxed text-body">
-                    {portfolio.body.split("\n\n").map((para, j) => (
-                      <p key={j}>{para}</p>
-                    ))}
-                  </div>
-                )}
-                {portfolio.tech.length > 0 && (
-                  <p className="cs-meta mt-6 text-meta">
-                    <span className="sr-only">Focus areas: </span>
-                    {portfolio.tech.join(" | ")}
-                  </p>
-                )}
-              </div>
-            </article>
-          ))}
+        <Wrap>
+          <PortfolioList portfolios={portfolios} />
         </Wrap>
       </section>
     </>

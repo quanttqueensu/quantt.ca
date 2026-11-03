@@ -504,6 +504,45 @@
     .cs-intro__band--photo .cs-intro__text { padding-left: 16px; padding-right: 16px; }
   }
 
+  /* Portfolios: dropdown rows. Title and summary on the left, manager on the right, details open below. */
+  .cs-pf { list-style: none; margin: 0; padding: 0; }
+  .cs-pf__item + .cs-pf__item { border-top: 1px solid var(--cs-line-soft); }
+  .cs-pf__item:last-child { border-bottom: 1px solid var(--cs-line-soft); }
+  .cs-pf__head {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr) minmax(0, 4fr) 24px;
+    column-gap: 32px;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+    text-align: left;
+    color: var(--cs-ink);
+  }
+  .cs-pf__title { font-size: 20px; line-height: 1.3; letter-spacing: -.01em; }
+  .cs-pf__desc { font-size: 15px; line-height: 1.5; color: var(--cs-text); }
+  .cs-pf__pm { font-size: 14px; line-height: 1.4; color: var(--cs-meta); }
+  .cs-pf__chev { transition: transform .3s var(--cs-ease); }
+  .cs-pf__item.is-open .cs-pf__chev { transform: rotate(180deg); }
+  .cs-pf__head:hover .cs-pf__title { color: var(--cs-blue); }
+  .cs-pf__body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr) minmax(0, 4fr) 24px;
+    column-gap: 32px;
+    padding: 0 0 28px;
+  }
+  .cs-pf__body > * { grid-column: 2 / 4; max-width: 70ch; font-size: 16px; line-height: 1.6; color: var(--cs-text); }
+  .cs-pf__body > * + * { margin-top: 12px; }
+  .cs-pf__body .cs-pf__tags { font-size: 14px; color: var(--cs-meta); margin-top: 16px; }
+  .cs-pf__body[hidden] { display: none; }
+  @media (max-width: 900px) {
+    .cs-pf__head { grid-template-columns: minmax(0, 1fr) 24px; row-gap: 6px; padding: 16px 0; }
+    .cs-pf__head > :not(.cs-pf__chev) { grid-column: 1; }
+    .cs-pf__chev { grid-column: 2; grid-row: 1; }
+    .cs-pf__title { font-size: 18px; }
+    .cs-pf__body { display: block; padding-bottom: 20px; }
+    .cs-pf__body > * { font-size: 15px; }
+  }
+
   /* Card grids: rows that sit side by side, title on top of the text. Portfolios (2) and focus areas (3). */
   .cs-cards {
     display: grid;
