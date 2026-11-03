@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PaperShelf, { type ShelfPaper } from "@/components/PaperShelf";
 import ResearchFeed from "@/components/ResearchFeed";
+import ResearchTabs from "@/components/ResearchTabs";
 import { getResearchArticles } from "@/lib/research";
 import { PageIntro, Wrap } from "@/components/ui";
 import type { TeamYear } from "@/lib/content";
@@ -91,35 +92,54 @@ export default function CompetitionPage() {
 
       <div className="cs-section">
         <Wrap>
-          {articles.length > 0 && (
-            <section className="cs-shelf-group" id="articles" aria-labelledby="articles-head">
-              <div className="cs-shelf-group__head">
-                <h2 id="articles-head">Articles</h2>
-                <p>{articles.length} {articles.length === 1 ? "article" : "articles"}</p>
-              </div>
-              <p className="ra-feed-note">
-                Members&apos; own opinions, for education only. Not financial advice.
-              </p>
-              <ResearchFeed articles={articles} />
-            </section>
-          )}
-          {years.map((y) => (
-            <Shelf
-              key={y.year}
-              id={`papers-${y.year}`}
-              title={`${y.year} project teams`}
-              count={count(y.papers.length)}
-              papers={y.papers}
-            />
-          ))}
-          {external.length > 0 && (
-            <Shelf
-              id="papers-competitions"
-              title="Competition papers"
-              count={count(external.length)}
-              papers={external}
-            />
-          )}
+          <ResearchTabs
+            tabs={[
+              ...(articles.length > 0
+                ? [
+                    {
+                      id: "articles",
+                      label: "Articles",
+                      content: (
+                        <>
+                          <p className="ra-feed-note">
+                            Members&apos; own opinions, for education only. Not financial advice.
+                          </p>
+                          <ResearchFeed articles={articles} />
+                        </>
+                      ),
+                    },
+                  ]
+                : []),
+              ...(years.length > 0
+                ? [
+                    {
+                      id: "papers",
+                      label: "Project team papers",
+                      short: "Project teams",
+                      content: years.map((y) => (
+                        <Shelf
+                          key={y.year}
+                          id={`papers-${y.year}`}
+                          title={`${y.year} project teams`}
+                          count={count(y.papers.length)}
+                          papers={y.papers}
+                        />
+                      )),
+                    },
+                  ]
+                : []),
+              ...(external.length > 0
+                ? [
+                    {
+                      id: "competitions",
+                      label: "Competition papers",
+                      short: "Competitions",
+                      content: <PaperShelf papers={external} />,
+                    },
+                  ]
+                : []),
+            ]}
+          />
         </Wrap>
       </div>
     </>
