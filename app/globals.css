@@ -378,19 +378,52 @@
     color: var(--cs-blue-hover);
   }
 
-  /* Page intro for inner pages: H1 set at the section-heading scale, on white. */
+  /* Page intro for inner pages: H1 set at the section-heading scale, on white, kept short so content starts on the first screen. */
   .cs-intro {
-    padding-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(24px, 3vw, 40px);
   }
-  .cs-intro .cs-lede + .cs-btn {
-    margin-top: 32px;
+  .cs-intro + .cs-section {
+    padding-top: clamp(40px, 4vw, 56px);
   }
-  .cs-intro__media {
-    margin-top: clamp(40px, 5vw, 64px);
-    width: 100%;
-    aspect-ratio: 16 / 7;
-    object-fit: cover;
-    background: var(--cs-blue);
+  .cs-intro .cs-split .cs-btn {
+    margin-top: 24px;
+  }
+
+  /* Intro with a photo: a short navy band, title and lede on the left, the photo beside them (never under the text). */
+  .cs-intro--photo {
+    padding-top: clamp(8px, 1vw, 16px);
+  }
+  .cs-intro__band {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    min-height: clamp(280px, 24vw, 340px);
+    background: var(--cs-navy);
+    color: #fff;
+  }
+  .cs-intro__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(28px, 3vw, 44px);
+  }
+  .cs-intro__text .cs-lede {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, .88);
+  }
+  .cs-intro__text .cs-btn {
+    align-self: flex-start;
+    margin-top: 24px;
+  }
+  .cs-intro__photo {
+    min-height: 100%;
+  }
+  @media (max-width: 900px) {
+    .cs-intro .cs-split > :last-child { margin-top: 16px; }
+    .cs-intro__band { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .cs-intro__photo { order: -1; min-height: 0; aspect-ratio: 2 / 1; }
+    .cs-intro__text { padding: 20px 20px 24px; }
+    .cs-intro__text .cs-lede { margin-top: 8px; font-size: 16px; }
+    .cs-intro__text .cs-btn { margin-top: 16px; }
   }
 
   /* Split rows: 1px top rule, headline left, text right. Used for portfolios, tracks, team groups. */
@@ -506,6 +539,9 @@
     .cs-intro .cs-btn,
     .cs-band .cs-btn {
       width: 100%;
+    }
+    .cs-intro__text .cs-btn {
+      width: auto;
     }
   }
 

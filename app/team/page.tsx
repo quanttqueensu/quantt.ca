@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import Link from "next/link";
-import MediaSlot from "@/components/MediaSlot";
 import YearTabs from "@/components/YearTabs";
 import { PageIntro, Wrap } from "@/components/ui";
 import type { TeamMember, TeamYear } from "@/lib/content";
@@ -235,15 +234,12 @@ export default function TeamPage() {
       <PageIntro
         title="Team"
         lede={<p>Executive team, portfolio managers, and analysts by academic year.</p>}
-      >
-        <MediaSlot
-          src={media?.team}
-          alt="QUANTT members at an industry partner's office"
-          className="mt-[clamp(40px,5vw,64px)] aspect-[16/7] w-full"
-          imgClassName="object-[center_65%]"
-          sizes="(max-width: 1440px) 100vw, 1328px"
-        />
-      </PageIntro>
+        photo={{
+          src: media?.team,
+          alt: "QUANTT members at an industry partner's office",
+          position: "object-[center_78%]",
+        }}
+      />
 
       <section aria-label="Team by year" className="cs-section">
         <Wrap>

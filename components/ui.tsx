@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MediaSlot from "./MediaSlot";
 import type { CSSProperties, ReactNode } from "react";
 
 /* ---------- Buttons & arrows ---------- */
@@ -82,18 +83,50 @@ export function Split({
   );
 }
 
-/** First block of every inner page: the page's H1 as a split, optional stats and media. */
+/** A photo shown beside the title in a page intro. `position` is an object-position class that keeps the subject in frame. */
+export type IntroPhoto = { src?: string; alt: string; position?: string };
+
+/**
+ * First block of every inner page: the page's H1 as a split, optional stats and media.
+ * With a photo, the title sits in a short navy band with the photo beside it, never on top of it.
+ */
 export function PageIntro({
   title,
   lede,
   cta,
+  photo,
   children,
 }: {
   title: string;
   lede?: ReactNode;
   cta?: ReactNode;
+  photo?: IntroPhoto;
   children?: ReactNode;
 }) {
+  if (photo?.src) {
+    return (
+      <section className="cs-intro cs-intro--photo">
+        <Wrap>
+          <div className="cs-intro__band cs-reveal">
+            <div className="cs-intro__text on-blue">
+              <h1 className="cs-h2 cs-h2--on-blue">{title}</h1>
+              {lede && <div className="cs-lede">{lede}</div>}
+              {cta}
+            </div>
+            <MediaSlot
+              src={photo.src}
+              alt={photo.alt}
+              className="cs-intro__photo"
+              imgClassName={photo.position}
+              sizes="(max-width: 900px) 100vw, 800px"
+              priority
+            />
+          </div>
+          {children}
+        </Wrap>
+      </section>
+    );
+  }
   return (
     <section className="cs-intro">
       <Wrap>

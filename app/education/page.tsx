@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Accordion from "@/components/Accordion";
-import MediaSlot from "@/components/MediaSlot";
 import { Button, PageIntro, Wrap } from "@/components/ui";
 import { getEducationChapters, getSiteConfig } from "@/lib/content";
 
@@ -78,15 +77,17 @@ export default function EducationPage() {
             infrastructure behind a strategy, from data to automation, taught alongside portfolio work.
           </p>
         }
-        cta={<Button href="#modules">Explore Every Module</Button>}
-      >
-        <MediaSlot
-          src={media?.education}
-          alt="Aerial view of Queen's University campus in Kingston"
-          className="cs-intro__media"
-          sizes="(max-width: 1440px) 100vw, 1328px"
-        />
-      </PageIntro>
+        cta={
+          <Button href="#modules" variant="accent">
+            Explore Every Module
+          </Button>
+        }
+        photo={{
+          src: media?.education,
+          alt: "Aerial view of Queen's University campus in Kingston",
+          position: "object-[center_60%]",
+        }}
+      />
 
       <section aria-label="Focus areas" className="cs-section">
         <Wrap>
