@@ -14,7 +14,7 @@ export interface SiteConfig {
   /** "YYYY-MM-DD". When set, the banner expires at the end of this day. */
   recruitingUntil?: string;
   /** Optional photo overrides per media slot; each slot has a built-in fallback. */
-  media?: Partial<Record<"hero" | "research" | "partners" | "education" | "team" | "contact", string>>;
+  media?: Partial<Record<"hero" | "research" | "partners" | "education" | "team", string>>;
 }
 
 export interface ResearchPaperDetail {

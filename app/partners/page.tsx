@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PartnerCard from "@/components/PartnerCard";
 import { Button, PageIntro, Split, Wrap } from "@/components/ui";
-import { getPartners, getSiteConfig } from "@/lib/content";
+import { getPartners } from "@/lib/content";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/partners" },
@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 export default function PartnersPage() {
   const partners = getPartners();
-  const { media } = getSiteConfig();
 
   return (
     <>
@@ -24,16 +23,7 @@ export default function PartnersPage() {
             quantitative strategies.
           </p>
         }
-        cta={
-          <Button href="mailto:quantt@clubs.queensu.ca" variant="accent">
-            Become a Partner
-          </Button>
-        }
-        photo={{
-          src: media?.partners,
-          alt: "QUANTT members gathered in a campus atrium",
-          position: "object-[center_40%]",
-        }}
+        cta={<Button href="mailto:quantt@clubs.queensu.ca">Become a Partner</Button>}
       />
 
       <section aria-labelledby="current-title" className="cs-section">

@@ -24,16 +24,7 @@ export default function ContactPage() {
       <PageIntro
         title="Contact"
         lede={<p>For partnership, recruiting, or general inquiries, email the executive team.</p>}
-        cta={
-          <Button href="mailto:quantt@clubs.queensu.ca" variant="accent">
-            Email quantt@clubs.queensu.ca
-          </Button>
-        }
-        photo={{
-          src: config.media?.contact,
-          alt: "QUANTT members meeting professionals on a visit to an industry partner's office",
-          position: "object-[center_45%]",
-        }}
+        cta={<Button href="mailto:quantt@clubs.queensu.ca">Email quantt@clubs.queensu.ca</Button>}
       />
 
       {recruiting && (
