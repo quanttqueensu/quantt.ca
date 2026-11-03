@@ -391,15 +391,12 @@
   main:has(> .cs-intro) + .cs-footer .cs-footer__col { gap: 10px; }
   main:has(> .cs-band:last-child) + .cs-footer { margin-top: 0; }
 
-  /* Page intro: a compact title bar (title left, lede right, rule underneath). */
+  /* Page intro: a compact title bar (title left, lede right). No rule of its own: the content below brings its own. */
   .cs-intro {
     padding-top: clamp(8px, 1vw, 16px);
   }
   .cs-intro + .cs-section {
     padding-top: 32px;
-  }
-  .cs-intro__band {
-    border-bottom: 1px solid var(--cs-line);
   }
   .cs-intro__text {
     display: grid;
@@ -424,6 +421,18 @@
     padding-top: 0;
   }
 
+  /* No photo: the title bar sits on a pale full-width strip. */
+  .cs-intro--strip {
+    padding-top: 0;
+    background: var(--cs-panel);
+  }
+  .cs-intro--strip .cs-intro__text {
+    padding: 40px 0 36px;
+  }
+  @media (max-width: 900px) {
+    .cs-intro--strip .cs-intro__text { padding: 24px 0; }
+  }
+
   /* With a photo: a short navy band, title and lede left, the photo beside them (never under the text). */
   .cs-intro__band--photo {
     display: grid;
@@ -431,7 +440,6 @@
     min-height: clamp(280px, 24vw, 340px);
     background: var(--cs-navy);
     color: #fff;
-    border-bottom: 0;
   }
   .cs-intro__band--photo .cs-intro__text {
     display: flex;
@@ -497,7 +505,9 @@
   .cs-team > .cs-row { display: block; padding-top: 16px; }
   .cs-team > .cs-row > :last-child { margin-top: 8px; }
   .cs-team > .cs-row:first-child { grid-column: 1 / -1; border-top: 0; padding-top: 0; }
-  .cs-people > div { border-bottom: 1px solid var(--cs-line-soft); }
+  /* Soft rules between people, none after the last one, so stacked cards never show two lines together. */
+  .cs-people > div + div { border-top: 1px solid var(--cs-line-soft); }
+  .cs-team > .cs-row:first-child .cs-people > div + div { border-top: 0; }
   .cs-team > .cs-row:first-child dl {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -547,6 +557,22 @@
     color: var(--cs-blue);
     background-size: 100% 2px;
   }
+
+  /* Tabs that stay on one line and swipe sideways on phones. */
+  .cs-tabs--scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cs-tabs--scroll::-webkit-scrollbar { display: none; }
+  .cs-tabs--scroll button { white-space: nowrap; flex-shrink: 0; }
+  .cs-tabs__short { display: none; }
+  @media (max-width: 640px) {
+    .cs-tabs--scroll { gap: 20px; }
+    .cs-tabs--scroll button { font-size: 16px; }
+    .cs-tabs__long { display: none; }
+    .cs-tabs__short { display: inline; }
+  }
+  [role="tabpanel"] > .ra-feed-note:first-child { margin-top: 0; }
 
   /* Band texture: animated price paths sit behind band text. */
   .cs-band--texture {
@@ -849,3 +875,25 @@
     .ra-val__pt em { font-size: 12px; }
   }
 }
+
+/* Home below the hero: denser sections, papers and portfolios in two columns. The hero itself is untouched. */
+@layer components {
+  main:has(> .cs-hero) { --cs-section: clamp(40px, 4vw, 64px); }
+  main:has(> .cs-hero) .cs-research { padding: clamp(40px, 4vw, 64px) 0; }
+  main:has(> .cs-hero) .cs-research__head { margin-bottom: 24px; }
+  main:has(> .cs-hero) .cs-papers-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
+  main:has(> .cs-hero) .cs-papers-list a { gap: 16px; padding: 16px 0; }
+  main:has(> .cs-hero) .cs-papers-list img { width: 64px; }
+  @media (min-width: 901px) {
+    main:has(> .cs-hero) .cs-papers-list a { grid-template-columns: 64px minmax(0, 1fr) auto; }
+  }
+  main:has(> .cs-hero) .cs-panel { padding: 40px; }
+  main:has(> .cs-hero) .cs-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
+  main:has(> .cs-hero) .cs-list > li { margin: 0; }
+  main:has(> .cs-hero) .cs-list > li > a { padding-bottom: 16px; }
+  @media (max-width: 900px) {
+    main:has(> .cs-hero) .cs-papers-list,
+    main:has(> .cs-hero) .cs-list { grid-template-columns: minmax(0, 1fr); }
+  }
+}
+

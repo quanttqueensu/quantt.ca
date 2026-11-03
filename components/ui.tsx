@@ -87,7 +87,7 @@ export function Split({
 export type IntroPhoto = { src?: string; alt: string; position?: string };
 
 /**
- * First block of every inner page: a compact title bar (title left, lede right, rule underneath). With a photo,
+ * First block of every inner page: a compact title bar (title left, lede right). With a photo,
  * it becomes a short navy band with the title and lede on the left and the photo beside them (above them on
  * phones), never under the text.
  */
@@ -106,7 +106,7 @@ export function PageIntro({
 }) {
   const hasPhoto = Boolean(photo?.src);
   return (
-    <section className="cs-intro">
+    <section className={`cs-intro ${hasPhoto ? "" : "cs-intro--strip"}`}>
       <Wrap>
         <div className={`cs-intro__band cs-reveal ${hasPhoto ? "cs-intro__band--photo" : ""}`}>
           <div className={`cs-intro__text ${hasPhoto ? "on-blue" : ""}`}>

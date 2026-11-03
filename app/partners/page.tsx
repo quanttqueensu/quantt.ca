@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PartnerCard from "@/components/PartnerCard";
+import PricePaths from "@/components/PricePaths";
 import { Button, PageIntro, Split, Wrap } from "@/components/ui";
 import { getPartners } from "@/lib/content";
 
@@ -39,7 +40,8 @@ export default function PartnersPage() {
         </Wrap>
       </section>
 
-      <section className="cs-band cs-band--flat on-blue" aria-labelledby="partner-cta">
+      <section className="cs-band cs-band--flat cs-band--texture on-blue" aria-labelledby="partner-cta">
+        <PricePaths />
         <Wrap>
           <Split
             onBlue
