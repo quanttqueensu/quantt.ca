@@ -90,7 +90,7 @@ export default function EducationPage() {
       />
 
       <section aria-label="Focus areas" className="cs-section">
-        <Wrap>
+        <Wrap className="cs-cards cs-cards--3">
           {focusAreas.map((t) => (
             <div key={t.name} className="cs-row cs-grid cs-split cs-reveal">
               <div>
@@ -105,7 +105,7 @@ export default function EducationPage() {
 
       <section id="modules" aria-labelledby="modules-title" className="cs-section scroll-mt-28">
         <Wrap>
-          <h2 id="modules-title" className="cs-h2 cs-reveal mb-12">
+          <h2 id="modules-title" className="cs-h2 cs-reveal mb-6">
             Modules
           </h2>
           {items.length > 0 ? (

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Meet the QUANTT leadership team and project teams, by academic year.",
 };
 
-/** A group is a split: its title on the left, hairline rows on the right. */
+/** A group: its title, then hairline rows. Groups sit three across on wide screens (see .cs-team). */
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="cs-row cs-grid cs-split cs-reveal">
@@ -32,14 +32,14 @@ const photoSrc = (m: TeamMember) => m.photo || `/team/photos/${slugify(m.name)}`
 /** Role on the left, person (or placeholder) on the right, 1px rule between rows. */
 function Rows({ rows }: { rows: Row[] }) {
   return (
-    <dl className="divide-y divide-line-soft border-b border-line-soft">
+    <dl className="cs-people">
       {rows.map((r, i) => (
-        <div key={`${r.role}-${i}`} className="grid gap-1 py-4 sm:grid-cols-2 sm:gap-4">
-          <dt className="text-base text-meta">{r.role}</dt>
-          <dd className="flex items-center gap-3 text-lg leading-7 tracking-[-0.02em] text-ink">
+        <div key={`${r.role}-${i}`} className="grid items-center gap-1 py-2 sm:grid-cols-[2fr_3fr] sm:gap-4">
+          <dt className="text-sm text-meta">{r.role}</dt>
+          <dd className="flex items-center gap-3 text-base leading-6 tracking-[-0.02em] text-ink">
             {r.photo && r.name && (
               // eslint-disable-next-line @next/next/no-img-element -- served by the Worker, not the static export
-              <img src={r.photo} alt="" width={40} height={40} loading="lazy" decoding="async" className="size-10 shrink-0 rounded-full bg-line-soft object-cover" />
+              <img src={r.photo} alt="" width={32} height={32} loading="lazy" decoding="async" className="size-8 shrink-0 rounded-full bg-line-soft object-cover" />
             )}
             {r.href && r.name ? (
               <a href={r.href} target="_blank" rel="noopener noreferrer" className="cs-link">
@@ -74,7 +74,7 @@ function TieredView({ year }: { year: TeamYear }) {
         </Group>
       ))}
       {(config.projectTeams ?? []).length > 0 && (
-        <h2 className="cs-h2 cs-h2--md cs-reveal pt-16 pb-10">Project Teams</h2>
+        <h2 className="cs-h2 cs-h2--md cs-reveal pt-10 pb-4">Project Teams</h2>
       )}
       {(config.projectTeams ?? []).map((team) => {
         const pm = members.find((m) => m.tier === "project-manager" && m.department === team);
@@ -166,7 +166,7 @@ function CorporateView({ year }: { year: TeamYear }) {
             .filter((t) => t.people.length > 0 || !tierMembers.some((m) => m.department === t.team));
           return (
             <Fragment key={tier.tier}>
-              <h2 className="cs-h2 cs-h2--md cs-reveal pt-16 pb-10">Analyst Teams</h2>
+              <h2 className="cs-h2 cs-h2--md cs-reveal pt-10 pb-4">Analyst Teams</h2>
               {teams.map(({ team, people }) => (
                 <Group key={team} title={team}>
                   {people.length ? (
@@ -183,7 +183,7 @@ function CorporateView({ year }: { year: TeamYear }) {
           const analysts = members.filter((m) => m.tier === "analyst" && m.lead);
           return (
             <Fragment key={tier.tier}>
-              <h2 className="cs-h2 cs-h2--md cs-reveal pt-16 pb-10">Portfolio Teams</h2>
+              <h2 className="cs-h2 cs-h2--md cs-reveal pt-10 pb-4">Portfolio Teams</h2>
               {buildDesks(tierMembers, analysts).map((desk) => (
                 // A joint desk lists each distinct project once.
                 <Group
@@ -225,8 +225,11 @@ export default function TeamPage() {
   const tabs = years.map((year) => ({
     year: year.config.year,
     current: year.config.current,
-    content:
-      year.config.structure === "corporate" ? <CorporateView year={year} /> : <TieredView year={year} />,
+    content: (
+      <div className="cs-team">
+        {year.config.structure === "corporate" ? <CorporateView year={year} /> : <TieredView year={year} />}
+      </div>
+    ),
   }));
 
   return (

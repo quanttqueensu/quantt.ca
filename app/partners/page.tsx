@@ -28,10 +28,10 @@ export default function PartnersPage() {
 
       <section aria-labelledby="current-title" className="cs-section">
         <Wrap>
-          <h2 id="current-title" className="cs-h2 cs-h2--md cs-reveal mb-12">
+          <h2 id="current-title" className="cs-h2 cs-h2--md cs-reveal mb-6">
             Current Partners
           </h2>
-          <ul className="cs-logos cs-reveal">
+          <ul className="cs-logos cs-logos--4 cs-reveal">
             {partners.current.map((p) => (
               <PartnerCard key={p.name} partner={p} />
             ))}
@@ -57,10 +57,10 @@ export default function PartnersPage() {
       {partners.past.length > 0 && (
         <section aria-labelledby="past-title" className="cs-section">
           <Wrap>
-            <h2 id="past-title" className="cs-h2 cs-h2--md cs-reveal mb-12">
+            <h2 id="past-title" className="cs-h2 cs-h2--md cs-reveal mb-6">
               Past Partners
             </h2>
-            <ul className="cs-logos cs-reveal">
+            <ul className="cs-logos cs-logos--4 cs-reveal">
               {partners.past.map((p) => (
                 <PartnerCard key={p.name} partner={p} past />
               ))}

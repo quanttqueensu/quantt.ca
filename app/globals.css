@@ -378,56 +378,141 @@
     color: var(--cs-blue-hover);
   }
 
-  /* Page intro for inner pages: the H1 in a short navy band so content starts on the first screen.
-     Without a photo, title left and lede right; with one, title and lede left and the photo beside them. */
+  /* Inner pages run on a tighter rhythm than the home page: shorter section gaps, rows and footer. */
+  main:has(> .cs-intro) { --cs-section: clamp(40px, 4vw, 64px); }
+  main:has(> .cs-intro) .cs-row { padding-top: 20px; padding-bottom: 28px; }
+  main:has(> .cs-intro) .cs-row__title { font-size: clamp(20px, 1.7vw, 26px); }
+  main:has(> .cs-intro) .cs-h2--md { font-size: clamp(24px, 2.2vw, 32px); }
+  main:has(> .cs-intro) .cs-panel { padding: 40px; }
+  main:has(> .cs-intro) .cs-shelf-group__head { margin-bottom: 24px; }
+  main:has(> .cs-intro) .cs-shelf { gap: 32px 24px; }
+  main:has(> .cs-intro) + .cs-footer { padding: 48px 0 24px; margin-top: 64px; }
+  main:has(> .cs-intro) + .cs-footer .cs-footer__top { padding-bottom: 40px; }
+  main:has(> .cs-intro) + .cs-footer .cs-footer__col { gap: 10px; }
+  main:has(> .cs-band:last-child) + .cs-footer { margin-top: 0; }
+
+  /* Page intro: a compact title bar (title left, lede right, rule underneath). */
   .cs-intro {
     padding-top: clamp(8px, 1vw, 16px);
   }
   .cs-intro + .cs-section {
-    padding-top: clamp(40px, 4vw, 56px);
+    padding-top: 32px;
   }
   .cs-intro__band {
-    background: var(--cs-navy);
-    color: #fff;
+    border-bottom: 1px solid var(--cs-line);
   }
   .cs-intro__text {
     display: grid;
     grid-template-columns: minmax(0, 11fr) minmax(0, 13fr);
     column-gap: 32px;
     align-items: end;
-    padding: clamp(28px, 3vw, 44px);
+    padding: 20px 0 24px;
+  }
+  .cs-intro__text .cs-h2 {
+    font-size: clamp(30px, 2.8vw, 40px);
   }
   .cs-intro__lede .cs-lede {
-    color: rgba(255, 255, 255, .88);
+    font-size: 17px;
+    color: var(--cs-text);
   }
   .cs-intro__lede .cs-btn {
-    margin-top: 20px;
+    margin-top: 16px;
   }
+  /* The first row under a title bar doesn't need its own rule. */
+  .cs-intro + .cs-section > .cs-wrap:not(.cs-cards) > .cs-row:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  /* With a photo: a short navy band, title and lede left, the photo beside them (never under the text). */
   .cs-intro__band--photo {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     min-height: clamp(280px, 24vw, 340px);
+    background: var(--cs-navy);
+    color: #fff;
+    border-bottom: 0;
   }
   .cs-intro__band--photo .cs-intro__text {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-end;
+    padding: clamp(28px, 3vw, 44px);
+  }
+  .cs-intro__band--photo .cs-intro__text .cs-h2 {
+    font-size: clamp(32px, 3.4vw, 48px);
   }
   .cs-intro__band--photo .cs-intro__lede {
     margin-top: 16px;
+  }
+  .cs-intro__band--photo .cs-intro__lede .cs-lede {
+    font-size: clamp(18px, 1.39vw, 20px);
+    color: rgba(255, 255, 255, .88);
+  }
+  .cs-intro__band--photo .cs-intro__lede .cs-btn {
+    margin-top: 24px;
   }
   .cs-intro__photo {
     min-height: 100%;
   }
   @media (max-width: 900px) {
-    .cs-intro__text { display: block; padding: 20px 20px 24px; }
+    .cs-intro__text { display: block; padding: 16px 0 20px; }
     .cs-intro__lede { margin-top: 8px; }
     .cs-intro__lede .cs-lede { font-size: 16px; }
-    .cs-intro__lede .cs-btn { margin-top: 16px; }
     .cs-intro__band--photo { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .cs-intro__band--photo .cs-intro__text { padding: 20px 20px 24px; }
+    .cs-intro__band--photo .cs-intro__lede .cs-lede { font-size: 16px; }
+    .cs-intro__band--photo .cs-intro__lede .cs-btn { margin-top: 16px; }
     .cs-intro__photo { order: -1; min-height: 0; aspect-ratio: 2 / 1; }
   }
+
+  /* Card grids: rows that sit side by side, title on top of the text. Portfolios (2) and focus areas (3). */
+  .cs-cards {
+    display: grid;
+    column-gap: clamp(32px, 3.3vw, 48px);
+    align-items: start;
+  }
+  .cs-cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cs-cards > .cs-row { display: block; }
+  .cs-cards > .cs-row > :last-child { margin-top: 12px; }
+  .cs-cards--3 .cs-lede { font-size: 17px; }
+  @media (max-width: 1100px) {
+    .cs-cards--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .cs-cards--2, .cs-cards--3 { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* Team: each group is a card (title, then its people); cards sit three across. The first group (C-Suite)
+     spans the full width with its people in three columns. */
+  .cs-team {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 40px;
+    align-items: start;
+  }
+  .cs-team > :not(.cs-row) { grid-column: 1 / -1; }
+  .cs-team > .cs-row { display: block; padding-top: 16px; }
+  .cs-team > .cs-row > :last-child { margin-top: 8px; }
+  .cs-team > .cs-row:first-child { grid-column: 1 / -1; border-top: 0; padding-top: 0; }
+  .cs-people > div { border-bottom: 1px solid var(--cs-line-soft); }
+  .cs-team > .cs-row:first-child dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 40px;
+  }
+  @media (max-width: 1100px) {
+    .cs-team, .cs-team > .cs-row:first-child dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .cs-team, .cs-team > .cs-row:first-child dl { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* Partners page: four logos across. */
+  .cs-logos--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cs-logos--4 > li { padding: 24px; }
 
   /* Split rows: 1px top rule, headline left, text right. Used for portfolios, tracks, team groups. */
   .cs-row {
