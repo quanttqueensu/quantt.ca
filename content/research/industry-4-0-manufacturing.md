@@ -145,7 +145,7 @@ I believe at an EV/Rev multiple of a 75x , resulting in a share price of roughly
 
 [13] Musk, E. (2026, February 2). SpaceX acquires xAI – announcement statement. Fortune / CoinDesk: “Global electricity demand for AI simply cannot be met with terrestrial solutions, even in the near term, without imposing hardship on communities and the environment.” https://fortune.com/2026/02/02/elon-musk-spacex-xai-ipo-trillion/
 
-[14] SpaceX Starship Payload Users Guide; Wikipedia – SpaceX Starship. Baseline reusable design: 100–150 metric tons to LEO. https://en.wikipedia.org/wiki/SpaceX\_Starship
+[14] SpaceX Starship Payload Users Guide; Wikipedia – SpaceX Starship. Baseline reusable design: 100–150 metric tons to LEO. https://en.wikipedia.org/wiki/SpaceX_Starship
 
 [15] Netizen / Payload Space. (2025). Cost per Kilogram to Low Earth Orbit Over Time. https://www.netizen.page/2025/05/cost-per-kilogram-to-low-earth-orbit.html
 

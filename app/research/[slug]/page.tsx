@@ -112,7 +112,7 @@ export default async function ResearchArticlePage({ params }: { params: Promise<
               <ValuationRange key={i} data={p.data} />
             ),
           )}
-          <Disclaimer />
+          <Disclaimer disclosure={a.disclosure} />
         </div>
       </div>
     </article>

@@ -386,6 +386,7 @@ const SECTIONS = {
       { key: "authors", label: "Authors (one per line)", type: "lines", hint: "Names as on the team page, so their photo and role show." },
       { key: "sector", label: "Sector or topic", placeholder: "Mining" }, { key: "company", label: "Company (optional)", blankDeletes: true },
       { key: "ticker", label: "Ticker (optional)", placeholder: "NYSE: BHP", blankDeletes: true },
+      { key: "disclosure", label: "Author's holdings (required if they own any)", wide: true, placeholder: "The author holds BHP shares.", blankDeletes: true, hint: "Shown in the disclaimer. Leave blank only if the author holds nothing they write about." },
       { key: "rating", label: "Rating (only if the article gives one)", type: "select", options: ["Buy", "Hold", "Sell"], blankDeletes: true },
       { key: "cover", label: "Figure for sharing (optional)", type: "asset", accept: "image/*", dir: () => "public/research", blankDeletes: true },
       { key: "pdf", label: "Original PDF (optional download)", type: "asset", dir: () => "public/research", blankDeletes: true }],

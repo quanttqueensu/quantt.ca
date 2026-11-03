@@ -51,27 +51,20 @@ export function ValuationRange({ data }: { data: Valuation }) {
   );
 }
 
-/** Legal notice shown under every research article. */
-export function Disclaimer() {
+/**
+ * Legal notice under every research article. Kept to what matters for publishing stock views in Canada:
+ * general, non-tailored information (the "advising generally" exemption, NI 31-103 s. 8.25), the author's
+ * own view, no liability, and the author's holdings when they have any (that exemption requires it).
+ */
+export function Disclaimer({ disclosure }: { disclosure?: string }) {
   return (
-    <aside id="disclaimer" className="ra-disclaimer" aria-labelledby="disclaimer-head">
-      <h2 id="disclaimer-head">Disclaimer</h2>
+    <aside id="disclaimer" className="ra-disclaimer" aria-label="Disclaimer">
       <p>
-        This article is the author&apos;s own research and opinion, published for educational and informational
-        purposes only. It is not financial, investment, legal, tax or accounting advice, and it is not a
-        recommendation or an offer to buy or sell any security. Ratings, valuations and price targets are the
-        author&apos;s views at the time of writing; they may be wrong and are not updated.
-      </p>
-      <p>
-        Information may be incomplete or inaccurate. Do your own research and speak with a licensed professional
-        before making any investment decision. Investing involves risk, including the loss of principal, and past
-        performance does not guarantee future results. The author or other QUANTT members may hold positions in
-        securities discussed.
-      </p>
-      <p>
-        Views are the author&apos;s own and do not represent QUANTT or Queen&apos;s University. QUANTT, Queen&apos;s
-        University and the authors accept no liability for any loss or damage arising from use of, or reliance on,
-        this content.
+        <b>For education only.</b>{" "}
+        This is the author&apos;s opinion, not financial or investment advice or a
+        recommendation to buy or sell any security. Do your own research. Views are not those of QUANTT or
+        Queen&apos;s University, and neither they nor the author accept liability for any loss from its use.
+        {disclosure && ` ${disclosure}`}
       </p>
     </aside>
   );
