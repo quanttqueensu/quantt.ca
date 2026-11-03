@@ -453,28 +453,39 @@
     background: var(--cs-navy);
     color: #fff;
   }
+  /* Title left, any button to its right, both at the bottom of the band. */
   .cs-intro__band--photo .cs-intro__text {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
     padding: clamp(28px, 3vw, 44px);
   }
   .cs-intro__band--photo .cs-intro__text .cs-h2 {
     font-size: clamp(32px, 3.4vw, 48px);
   }
   .cs-intro__band--photo .cs-intro__lede {
-    margin-top: 16px;
+    margin-top: 0;
   }
   .cs-intro__band--photo .cs-intro__lede .cs-lede {
     font-size: clamp(18px, 1.39vw, 20px);
     color: rgba(255, 255, 255, .88);
   }
   .cs-intro__band--photo .cs-intro__lede .cs-btn {
-    margin-top: 24px;
+    margin-top: 0;
   }
   .cs-intro__photo {
     min-height: 100%;
+  }
+  .cs-intro__band--photo .cs-intro__lede .cs-btn { white-space: nowrap; }
+  @media (min-width: 901px) and (max-width: 1439px) {
+    .cs-intro__band--photo { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .cs-intro__band--photo .cs-intro__text .cs-h2 { font-size: 34px; }
+    .cs-intro__band--photo .cs-intro__lede .cs-btn { min-height: 40px; padding: 8px 14px; font-size: 14px; }
   }
   @media (max-width: 900px) {
     .cs-intro__text { display: block; padding: 16px 0 20px; }
@@ -483,8 +494,14 @@
     .cs-intro__band--photo { grid-template-columns: minmax(0, 1fr); min-height: 0; }
     .cs-intro__band--photo .cs-intro__text { padding: 20px 20px 24px; }
     .cs-intro__band--photo .cs-intro__lede .cs-lede { font-size: 16px; }
-    .cs-intro__band--photo .cs-intro__lede .cs-btn { margin-top: 16px; }
+    /* Keep the button beside the title on phones. */
+    .cs-intro__band--photo .cs-intro__text { gap: 12px 8px; }
+    .cs-intro__band--photo .cs-intro__text .cs-h2 { font-size: clamp(24px, 6.6vw, 34px); }
+    .cs-intro__band--photo .cs-intro__lede .cs-btn { min-height: 40px; padding: 8px 12px; font-size: 13px; }
     .cs-intro__photo { order: -1; min-height: 0; aspect-ratio: 2 / 1; }
+  }
+  @media (max-width: 400px) {
+    .cs-intro__band--photo .cs-intro__text { padding-left: 16px; padding-right: 16px; }
   }
 
   /* Card grids: rows that sit side by side, title on top of the text. Portfolios (2) and focus areas (3). */
