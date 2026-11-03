@@ -378,52 +378,55 @@
     color: var(--cs-blue-hover);
   }
 
-  /* Page intro for inner pages: H1 set at the section-heading scale, on white, kept short so content starts on the first screen. */
+  /* Page intro for inner pages: the H1 in a short navy band so content starts on the first screen.
+     Without a photo, title left and lede right; with one, title and lede left and the photo beside them. */
   .cs-intro {
-    padding-top: clamp(24px, 3vw, 40px);
+    padding-top: clamp(8px, 1vw, 16px);
   }
   .cs-intro + .cs-section {
     padding-top: clamp(40px, 4vw, 56px);
   }
-  .cs-intro .cs-split .cs-btn {
-    margin-top: 24px;
-  }
-
-  /* Intro with a photo: a short navy band, title and lede on the left, the photo beside them (never under the text). */
-  .cs-intro--photo {
-    padding-top: clamp(8px, 1vw, 16px);
-  }
   .cs-intro__band {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    min-height: clamp(280px, 24vw, 340px);
     background: var(--cs-navy);
     color: #fff;
   }
   .cs-intro__text {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 13fr);
+    column-gap: 32px;
+    align-items: end;
     padding: clamp(28px, 3vw, 44px);
   }
-  .cs-intro__text .cs-lede {
-    margin-top: 16px;
+  .cs-intro__lede .cs-lede {
     color: rgba(255, 255, 255, .88);
   }
-  .cs-intro__text .cs-btn {
-    align-self: flex-start;
-    margin-top: 24px;
+  .cs-intro__lede .cs-btn {
+    margin-top: 20px;
+  }
+  .cs-intro__band--photo {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    min-height: clamp(280px, 24vw, 340px);
+  }
+  .cs-intro__band--photo .cs-intro__text {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+  .cs-intro__band--photo .cs-intro__lede {
+    margin-top: 16px;
   }
   .cs-intro__photo {
     min-height: 100%;
   }
   @media (max-width: 900px) {
-    .cs-intro .cs-split > :last-child { margin-top: 16px; }
-    .cs-intro__band { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .cs-intro__text { display: block; padding: 20px 20px 24px; }
+    .cs-intro__lede { margin-top: 8px; }
+    .cs-intro__lede .cs-lede { font-size: 16px; }
+    .cs-intro__lede .cs-btn { margin-top: 16px; }
+    .cs-intro__band--photo { grid-template-columns: minmax(0, 1fr); min-height: 0; }
     .cs-intro__photo { order: -1; min-height: 0; aspect-ratio: 2 / 1; }
-    .cs-intro__text { padding: 20px 20px 24px; }
-    .cs-intro__text .cs-lede { margin-top: 8px; font-size: 16px; }
-    .cs-intro__text .cs-btn { margin-top: 16px; }
   }
 
   /* Split rows: 1px top rule, headline left, text right. Used for portfolios, tracks, team groups. */
@@ -536,11 +539,10 @@
     .cs-logos > li {
       padding: 24px;
     }
-    .cs-intro .cs-btn,
     .cs-band .cs-btn {
       width: 100%;
     }
-    .cs-intro__text .cs-btn {
+    .cs-intro .cs-btn {
       width: auto;
     }
   }

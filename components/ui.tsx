@@ -87,8 +87,8 @@ export function Split({
 export type IntroPhoto = { src?: string; alt: string; position?: string };
 
 /**
- * First block of every inner page: the page's H1 as a split, optional stats and media.
- * With a photo, the title sits in a short navy band with the photo beside it, never on top of it.
+ * First block of every inner page: the page's H1 in a short navy band. With a photo, the title and lede
+ * sit on the left and the photo beside them (above them on phones), never under the text.
  */
 export function PageIntro({
   title,
@@ -103,16 +103,21 @@ export function PageIntro({
   photo?: IntroPhoto;
   children?: ReactNode;
 }) {
-  if (photo?.src) {
-    return (
-      <section className="cs-intro cs-intro--photo">
-        <Wrap>
-          <div className="cs-intro__band cs-reveal">
-            <div className="cs-intro__text on-blue">
-              <h1 className="cs-h2 cs-h2--on-blue">{title}</h1>
-              {lede && <div className="cs-lede">{lede}</div>}
-              {cta}
-            </div>
+  const hasPhoto = Boolean(photo?.src);
+  return (
+    <section className="cs-intro">
+      <Wrap>
+        <div className={`cs-intro__band cs-reveal ${hasPhoto ? "cs-intro__band--photo" : ""}`}>
+          <div className="cs-intro__text on-blue">
+            <h1 className="cs-h2 cs-h2--on-blue">{title}</h1>
+            {(lede || cta) && (
+              <div className="cs-intro__lede">
+                {lede && <div className="cs-lede">{lede}</div>}
+                {cta}
+              </div>
+            )}
+          </div>
+          {hasPhoto && photo && (
             <MediaSlot
               src={photo.src}
               alt={photo.alt}
@@ -121,16 +126,8 @@ export function PageIntro({
               sizes="(max-width: 900px) 100vw, 800px"
               priority
             />
-          </div>
-          {children}
-        </Wrap>
-      </section>
-    );
-  }
-  return (
-    <section className="cs-intro">
-      <Wrap>
-        <Split as="h1" title={title} lede={lede} cta={cta} />
+          )}
+        </div>
         {children}
       </Wrap>
     </section>

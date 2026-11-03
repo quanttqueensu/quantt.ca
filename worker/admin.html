@@ -347,7 +347,7 @@ const SECTIONS = {
       { key: "recruitingDetails", label: "Recruiting message", type: "textarea", wide: true },
       { key: "recruitingUrl", label: "Recruiting link", placeholder: "/portfolios" },
       { key: "recruitingUntil", label: "Hide banner after", type: "date", blankDeletes: true },
-      { key: "media", label: "Page photos", type: "object", fields: ["hero", "partners", "education", "team"].map((k) => IMG(k, k[0].toUpperCase() + k.slice(1), "public/images/photos", { blankDeletes: true, wide: true })) },
+      { key: "media", label: "Page photos", type: "object", fields: ["hero", "partners", "education", "team", "contact"].map((k) => IMG(k, k[0].toUpperCase() + k.slice(1), "public/images/photos", { blankDeletes: true, wide: true })) },
     ] },
   events: { label: "Events", file: "content/events.yml", root: "list", sub: "Upcoming events on the home page. Empty list hides the section.",
     list: { key: "items", label: "Events", addLabel: "Add event", itemLabel: (e) => e.title, itemMeta: (e) => [e.date, e.time].filter(Boolean).join(" · "),

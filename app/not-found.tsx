@@ -6,9 +6,9 @@ export default function NotFound() {
       title="Page Not Found"
       lede={<p>The page you requested doesn&apos;t exist or has moved.</p>}
       cta={
-        <div className="flex flex-wrap gap-x-4">
-          <Button href="/">Go Home</Button>
-          <Button href="/competition">Explore Our Research</Button>
+        <div className="mt-5 flex flex-wrap gap-x-4 gap-y-3">
+          <Button href="/" variant="accent">Go Home</Button>
+          <Button href="/competition" variant="ghost">Explore Our Research</Button>
         </div>
       }
     />
