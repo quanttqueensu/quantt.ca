@@ -81,13 +81,6 @@ export default function CompetitionPage() {
     <>
       <PageIntro
         title="Research"
-        lede={
-          <p>
-            Members write research on companies and industries. Each year, project teams also
-            research and test a quantitative strategy and publish a paper on the results, and members
-            publish papers in outside competitions.
-          </p>
-        }
       />
 
       <div className="cs-section">
@@ -99,14 +92,7 @@ export default function CompetitionPage() {
                     {
                       id: "articles",
                       label: "Articles",
-                      content: (
-                        <>
-                          <p className="ra-feed-note">
-                            Members&apos; own opinions, for education only. Not financial advice.
-                          </p>
-                          <ResearchFeed articles={articles} />
-                        </>
-                      ),
+                      content: <ResearchFeed articles={articles} />,
                     },
                   ]
                 : []),

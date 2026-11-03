@@ -16,12 +16,6 @@ export default function PortfoliosPage() {
     <>
       <PageIntro
         title="This Year’s Portfolios"
-        lede={
-          <p>
-            Each portfolio is a live strategy with its own thesis, data, and tooling. Here is what
-            every desk is building for 2026–2027.
-          </p>
-        }
       />
 
       <section aria-label="Portfolios" className="cs-section">
