@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -10,6 +10,15 @@ const inter = Inter({
   subsets: ["latin"],
   axes: ["opsz"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+// Reading face for long-form research articles only.
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  axes: ["opsz"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -86,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`no-js ${inter.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`no-js ${inter.variable} ${serif.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: NO_JS }} />
       </head>

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import PaperShelf, { type ShelfPaper } from "@/components/PaperShelf";
+import ResearchFeed from "@/components/ResearchFeed";
+import { getResearchArticles } from "@/lib/research";
 import { PageIntro, Wrap } from "@/components/ui";
 import type { TeamYear } from "@/lib/content";
 import { getCompetitionPapers, getTeamYears } from "@/lib/content";
@@ -7,7 +9,7 @@ import { getCompetitionPapers, getTeamYears } from "@/lib/content";
 export const metadata: Metadata = {
   alternates: { canonical: "/competition" },
   title: "Research — QUANTT",
-  description: "Research papers from QUANTT's project teams, by competition year.",
+  description: "Research articles by QUANTT members, and papers from QUANTT's project teams and outside competitions.",
 };
 
 /** One year's project team papers, the competition winner first. */
@@ -72,6 +74,7 @@ export default function CompetitionPage() {
     .map((year) => ({ year: year.config.year, papers: projectPapers(year) }))
     .filter((y) => y.papers.length > 0);
   const external = competitionPapers();
+  const articles = getResearchArticles();
 
   return (
     <>
@@ -79,15 +82,24 @@ export default function CompetitionPage() {
         title="Research"
         lede={
           <p>
-            Each year, project teams research and test a quantitative strategy and publish a paper
-            on the results. Members also publish papers in outside competitions. All papers are
-            available in full.
+            Members write research on companies and industries. Each year, project teams also
+            research and test a quantitative strategy and publish a paper on the results, and members
+            publish papers in outside competitions.
           </p>
         }
       />
 
       <div className="cs-section">
         <Wrap>
+          {articles.length > 0 && (
+            <section className="cs-shelf-group" id="articles" aria-labelledby="articles-head">
+              <div className="cs-shelf-group__head">
+                <h2 id="articles-head">Articles</h2>
+                <p>{articles.length} {articles.length === 1 ? "article" : "articles"}</p>
+              </div>
+              <ResearchFeed articles={articles} />
+            </section>
+          )}
           {years.map((y) => (
             <Shelf
               key={y.year}

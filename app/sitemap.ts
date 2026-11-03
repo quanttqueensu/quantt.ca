@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getResearchArticles } from "@/lib/research";
 
 // Static export: generated once at build time as out/sitemap.xml.
 export const dynamic = "force-static";
@@ -18,7 +19,7 @@ const pages = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return pages.map((path) => ({
+  return [...pages, ...getResearchArticles().map((a) => `/research/${a.slug}`)].map((path) => ({
     url: `${siteUrl}${path === "/" ? "" : path}`,
     changeFrequency: "monthly",
     priority: path === "/" ? 1 : 0.7,

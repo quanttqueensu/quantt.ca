@@ -16,7 +16,10 @@ const navLinks = [
 ];
 
 const isActive = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
+  pathname === href ||
+  pathname.startsWith(`${href}/`) ||
+  // Research articles live under /research but belong to the Research tab.
+  (href === "/competition" && pathname.startsWith("/research/"));
 
 export default function Navbar() {
   const pathname = usePathname();
