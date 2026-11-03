@@ -97,6 +97,10 @@ export default function CompetitionPage() {
                 <h2 id="articles-head">Articles</h2>
                 <p>{articles.length} {articles.length === 1 ? "article" : "articles"}</p>
               </div>
+              <p className="ra-feed-note">
+                Members&apos; own research and opinions, for education only. Not financial or investment advice;
+                QUANTT accepts no liability for its use. Each article carries the full disclaimer.
+              </p>
               <ResearchFeed articles={articles} />
             </section>
           )}

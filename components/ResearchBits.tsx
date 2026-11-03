@@ -50,3 +50,29 @@ export function ValuationRange({ data }: { data: Valuation }) {
     </figure>
   );
 }
+
+/** Legal notice shown under every research article. */
+export function Disclaimer() {
+  return (
+    <aside id="disclaimer" className="ra-disclaimer" aria-labelledby="disclaimer-head">
+      <h2 id="disclaimer-head">Disclaimer</h2>
+      <p>
+        This article is the author&apos;s own research and opinion, published for educational and informational
+        purposes only. It is not financial, investment, legal, tax or accounting advice, and it is not a
+        recommendation or an offer to buy or sell any security. Ratings, valuations and price targets are the
+        author&apos;s views at the time of writing; they may be wrong and are not updated.
+      </p>
+      <p>
+        Information may be incomplete or inaccurate. Do your own research and speak with a licensed professional
+        before making any investment decision. Investing involves risk, including the loss of principal, and past
+        performance does not guarantee future results. The author or other QUANTT members may hold positions in
+        securities discussed.
+      </p>
+      <p>
+        Views are the author&apos;s own and do not represent QUANTT or Queen&apos;s University. QUANTT, Queen&apos;s
+        University and the authors accept no liability for any loss or damage arising from use of, or reliance on,
+        this content.
+      </p>
+    </aside>
+  );
+}

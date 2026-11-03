@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Avatar, ValuationRange } from "@/components/ResearchBits";
+import ArticleToc from "@/components/ArticleToc";
+import { Avatar, Disclaimer, ValuationRange } from "@/components/ResearchBits";
 import { getTeamYears } from "@/lib/content";
 import {
   coverImage,
@@ -92,18 +93,10 @@ export default async function ResearchArticlePage({ params }: { params: Promise<
               </div>
             )}
           </dl>
-          {headings.length > 2 && (
-            <nav className="ra-toc" aria-label="Sections">
-              <p>Sections</p>
-              <ol>
-                {headings.map((h) => (
-                  <li key={h.id}>
-                    <a href={`#${h.id}`}>{h.text}</a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          )}
+          <p className="ra-note">
+            Not financial advice. <a href="#disclaimer">Disclaimer</a>
+          </p>
+          {headings.length > 2 && <ArticleToc headings={headings} />}
           {a.pdf && (
             <a className="ra-pdf" href={encodeURI(a.pdf)} target="_blank" rel="noopener noreferrer">
               Download PDF
@@ -119,6 +112,7 @@ export default async function ResearchArticlePage({ params }: { params: Promise<
               <ValuationRange key={i} data={p.data} />
             ),
           )}
+          <Disclaimer />
         </div>
       </div>
     </article>
