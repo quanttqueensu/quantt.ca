@@ -50,3 +50,22 @@ export function ValuationRange({ data }: { data: Valuation }) {
     </figure>
   );
 }
+
+/**
+ * Legal notice under every research article. Kept to what matters for publishing stock views in Canada:
+ * general, non-tailored information (the "advising generally" exemption, NI 31-103 s. 8.25), the author's
+ * own view, no liability, and the author's holdings when they have any (that exemption requires it).
+ */
+export function Disclaimer({ disclosure }: { disclosure?: string }) {
+  return (
+    <aside id="disclaimer" className="ra-disclaimer" aria-label="Disclaimer">
+      <p>
+        <b>For education only.</b>{" "}
+        This is the author&apos;s opinion, not financial or investment advice or a
+        recommendation to buy or sell any security. Do your own research. Views are not those of QUANTT or
+        Queen&apos;s University, and neither they nor the author accept liability for any loss from its use.
+        {disclosure && ` ${disclosure}`}
+      </p>
+    </aside>
+  );
+}

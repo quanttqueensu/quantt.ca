@@ -30,6 +30,8 @@ export interface ResearchArticle {
   rating?: string;
   /** Thumbnail on the list; defaults to the first figure. */
   cover?: string;
+  /** The author's position in what they cover, e.g. "The author holds BHP shares." Required whenever they hold one. */
+  disclosure?: string;
   /** Optional original file, offered as a download. */
   pdf?: string;
   body: string;

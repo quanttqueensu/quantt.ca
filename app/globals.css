@@ -611,7 +611,9 @@
   .ra-kicker span { color: var(--cs-blue); font-weight: 600; }
   .ra-title { margin-top: 12px; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12; font-weight: 500; letter-spacing: -.025em; color: var(--cs-ink); text-wrap: balance; }
 
-  .ra-rail { grid-column: 1; grid-row: 1 / span 2; align-self: start; position: sticky; top: 104px; padding-top: 128px; }
+  /* The rail sits beside the text and follows it, below the header when the header shows. */
+  .ra-rail { grid-column: 1; grid-row: 2; align-self: start; position: sticky; top: 32px; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 4px 8px 4px 0; transition: top .3s ease-in, max-height .3s ease-in; }
+  :root:has(.cs-header:not(.is-hidden)) .ra-rail { top: 136px; max-height: calc(100vh - 160px); }
   .ra-authors { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
   .ra-authors li { display: flex; align-items: center; gap: 12px; }
   .ra-authors b { display: block; font-size: 16px; font-weight: 500; color: var(--cs-ink); }
@@ -626,7 +628,15 @@
   .ra-toc p { font-size: 14px; color: var(--cs-meta); margin-bottom: 8px; }
   .ra-toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--cs-line-soft); }
   .ra-toc a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border-left: 1px solid transparent; font-size: 14px; line-height: 20px; color: var(--cs-text); }
-  .ra-toc a:hover { color: var(--cs-blue); border-left-color: var(--cs-blue); }
+  .ra-toc a:hover { color: var(--cs-blue); }
+  .ra-toc a[aria-current] { color: var(--cs-ink); font-weight: 500; border-left-color: var(--cs-blue); }
+  .ra-note { margin-top: 20px; font-size: 14px; line-height: 20px; color: var(--cs-meta); }
+  .ra-note a { color: var(--cs-blue); }
+  .ra-disclaimer { margin-top: 64px; padding: 20px 24px; background: var(--cs-panel); font-family: var(--cs-font); font-size: 14px; line-height: 22px; color: var(--cs-text); }
+  .ra-disclaimer p { margin-top: 0 !important; }
+  .ra-disclaimer b { color: var(--cs-ink); font-weight: 600; }
+  .ra-feed-note { margin: -24px 0 32px; font-size: 14px; line-height: 20px; color: var(--cs-meta); }
+  .ra-feed-note + .ra-feed { margin-top: 0; }
   .ra-pdf { display: inline-flex; margin-top: 28px; min-height: 40px; align-items: center; padding: 0 14px; border: 1px solid var(--cs-line); font-size: 14px; color: var(--cs-navy); }
   .ra-pdf:hover { border-color: var(--cs-blue); color: var(--cs-blue); }
 
@@ -687,7 +697,7 @@
     .ra-item__call { margin-top: 0; }
     .ra-grid { grid-template-columns: minmax(0, 700px); }
     .ra-head, .ra-body { grid-column: 1; }
-    .ra-rail { grid-column: 1; grid-row: auto; position: static; padding: 0 0 32px; }
+    .ra-rail { grid-column: 1; grid-row: auto; position: static; max-height: none; overflow: visible; padding: 0 0 32px; }
     .ra-toc { display: none; }
     .ra-facts { display: flex; flex-wrap: wrap; gap: 0 24px; border-top: 0; margin-top: 20px; }
     .ra-facts > div { border: 0; padding: 0; gap: 6px; }
@@ -708,6 +718,8 @@
     .ra-body > div:first-child > p:first-child { font-size: 20px; }
     .ra-body h2 { font-size: 22px; }
     .ra-figure { padding: 10px; margin: 1.6em 0; }
+    .ra-disclaimer { padding: 20px 16px; margin-top: 48px; }
+    .ra-feed-note { margin: -16px 0 20px; }
     .ra-val { padding: 20px 16px 24px; }
     .ra-val__track { margin: 8px 20px 0; }
     .ra-val__pt b, .ra-val__now b { font-size: 13px; }

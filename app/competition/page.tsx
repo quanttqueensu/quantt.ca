@@ -97,6 +97,9 @@ export default function CompetitionPage() {
                 <h2 id="articles-head">Articles</h2>
                 <p>{articles.length} {articles.length === 1 ? "article" : "articles"}</p>
               </div>
+              <p className="ra-feed-note">
+                Members&apos; own opinions, for education only. Not financial advice.
+              </p>
               <ResearchFeed articles={articles} />
             </section>
           )}
