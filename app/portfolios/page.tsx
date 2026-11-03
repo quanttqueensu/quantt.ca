@@ -25,7 +25,7 @@ export default function PortfoliosPage() {
       />
 
       <section aria-label="Portfolios" className="cs-section">
-        <Wrap>
+        <Wrap className="cs-cards cs-cards--2">
           {portfolios.map((portfolio) => (
             <article
               key={portfolio.slug}

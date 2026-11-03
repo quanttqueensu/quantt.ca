@@ -27,7 +27,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                 aria-expanded={open}
                 aria-controls={panelId}
                 onClick={() => setOpenIndex(open ? null : i)}
-                className="group flex min-h-20 w-full items-center justify-between gap-6 py-5 text-left"
+                className="group flex min-h-14 w-full items-center justify-between gap-6 py-3 text-left"
               >
                 <span className="text-xl leading-7 tracking-[-0.02em] text-ink">{item.title}</span>
                 <span

@@ -33,7 +33,7 @@ export default function YearTabs({ tabs, label = "Academic year" }: { tabs: Year
       <div
         role="tablist"
         aria-label={label}
-        className="cs-tabs mb-12"
+        className="cs-tabs mb-6"
       >
         {tabs.map((tab, i) => {
           const isSelected = selected === tab.year;

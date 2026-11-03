@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MediaSlot from "./MediaSlot";
 import type { CSSProperties, ReactNode } from "react";
 
 /* ---------- Buttons & arrows ---------- */
@@ -82,22 +83,52 @@ export function Split({
   );
 }
 
-/** First block of every inner page: the page's H1 as a split, optional stats and media. */
+/** A photo shown beside the title in a page intro. `position` is an object-position class that keeps the subject in frame. */
+export type IntroPhoto = { src?: string; alt: string; position?: string };
+
+/**
+ * First block of every inner page: a compact title bar (title left, lede right, rule underneath). With a photo,
+ * it becomes a short navy band with the title and lede on the left and the photo beside them (above them on
+ * phones), never under the text.
+ */
 export function PageIntro({
   title,
   lede,
   cta,
+  photo,
   children,
 }: {
   title: string;
   lede?: ReactNode;
   cta?: ReactNode;
+  photo?: IntroPhoto;
   children?: ReactNode;
 }) {
+  const hasPhoto = Boolean(photo?.src);
   return (
     <section className="cs-intro">
       <Wrap>
-        <Split as="h1" title={title} lede={lede} cta={cta} />
+        <div className={`cs-intro__band cs-reveal ${hasPhoto ? "cs-intro__band--photo" : ""}`}>
+          <div className={`cs-intro__text ${hasPhoto ? "on-blue" : ""}`}>
+            <h1 className={`cs-h2 ${hasPhoto ? "cs-h2--on-blue" : ""}`}>{title}</h1>
+            {(lede || cta) && (
+              <div className="cs-intro__lede">
+                {lede && <div className="cs-lede">{lede}</div>}
+                {cta}
+              </div>
+            )}
+          </div>
+          {hasPhoto && photo && (
+            <MediaSlot
+              src={photo.src}
+              alt={photo.alt}
+              className="cs-intro__photo"
+              imgClassName={photo.position}
+              sizes="(max-width: 900px) 100vw, 800px"
+              priority
+            />
+          )}
+        </div>
         {children}
       </Wrap>
     </section>
