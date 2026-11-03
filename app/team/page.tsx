@@ -236,7 +236,6 @@ export default function TeamPage() {
     <>
       <PageIntro
         title="Team"
-        lede={<p>Executive team, portfolio managers, and analysts by academic year.</p>}
         photo={{
           src: media?.team,
           alt: "QUANTT members at an industry partner's office",

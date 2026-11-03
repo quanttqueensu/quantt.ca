@@ -71,12 +71,6 @@ export default function EducationPage() {
     <>
       <PageIntro
         title="Education"
-        lede={
-          <p>
-            Coverage of asset classes and strategy types, coding and problem solving, and the
-            infrastructure behind a strategy, from data to automation, taught alongside portfolio work.
-          </p>
-        }
         cta={
           <Button href="#modules" variant="accent">
             Explore Every Module
