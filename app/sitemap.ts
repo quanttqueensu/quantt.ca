@@ -14,6 +14,7 @@ const pages = [
   "/competition",
   "/team",
   "/achievements",
+  "/gallery",
   "/partners",
   "/contact",
 ];

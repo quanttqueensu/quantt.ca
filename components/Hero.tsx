@@ -1,14 +1,19 @@
+import HeroSlides from "./HeroSlides";
 import MediaSlot from "./MediaSlot";
 import RotatingPhrase from "./RotatingPhrase";
 import { Button } from "./ui";
-import { getSiteConfig } from "@/lib/content";
+import { getHeroPhotos, getSiteConfig } from "@/lib/content";
 
-/** Full-bleed team photo with the headline set on it over a navy fade. The header sits on top. */
+/** Full-bleed photo (rotating through the gallery when it has photos) with the headline over a navy fade. The header sits on top. */
 export default function Hero() {
   const { media } = getSiteConfig();
+  const slides = getHeroPhotos().map((p) => ({ src: p.src, position: p.position }));
 
   return (
     <section className="cs-hero cs-reveal on-blue" aria-labelledby="hero-title">
+      {slides.length > 0 ? (
+        <HeroSlides photos={slides} />
+      ) : (
       <MediaSlot
         src={media?.hero}
         alt="QUANTT members on a visit to an industry partner's office"
@@ -18,6 +23,7 @@ export default function Hero() {
       >
         <div className="cs-hero__media" aria-hidden="true" />
       </MediaSlot>
+      )}
 
       <div className="cs-wrap cs-hero__body">
         <h1 id="hero-title" className="cs-h1">

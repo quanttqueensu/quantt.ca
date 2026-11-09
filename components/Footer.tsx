@@ -55,6 +55,7 @@ export default function Footer() {
           <div className="cs-footer__col">
             <Link href="/partners">Partners</Link>
             <Link href="/achievements">Achievements</Link>
+            <Link href="/gallery">Gallery</Link>
             <Link href="/contact">Contact</Link>
           </div>
         </div>

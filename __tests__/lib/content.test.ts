@@ -145,3 +145,42 @@ describe("featured win", () => {
     }
   });
 });
+
+describe("gallery", () => {
+  it("has a title, a YYYY-MM date and photos with alt text per set, newest first", async () => {
+    const { getGallery } = await import("@/lib/content");
+    const sets = getGallery();
+    expect(sets.map((e) => e.date)).toEqual([...sets.map((e) => e.date)].sort().reverse());
+    for (const e of sets) {
+      expect(e.title).toBeTruthy();
+      expect(e.date).toMatch(/^\d{4}-\d{2}$/);
+      expect(e.photos.length).toBeGreaterThan(0);
+      for (const p of e.photos) {
+        expect(p.src).toMatch(/^\//);
+        expect(p.alt).toBeTruthy();
+      }
+    }
+  });
+
+  it("only serves photos that exist in /public", async () => {
+    const fs = await import("fs");
+    const path = await import("path");
+    const { getGallery } = await import("@/lib/content");
+    for (const e of getGallery())
+      for (const p of e.photos) expect(fs.existsSync(path.join(process.cwd(), "public", p.src))).toBe(true);
+  });
+
+  it("labels months and leaves other text alone", async () => {
+    const { monthLabel } = await import("@/lib/content");
+    expect(monthLabel("2026-10")).toBe("October 2026");
+    expect(monthLabel("2026-01")).toBe("January 2026");
+    expect(monthLabel("Fall 2026")).toBe("Fall 2026");
+  });
+
+  it("hero rotation skips photos marked hero: false", async () => {
+    const { getGallery, getHeroPhotos } = await import("@/lib/content");
+    const hidden = getGallery().flatMap((e) => e.photos.filter((p) => p.hero === false).map((p) => p.src));
+    const hero = getHeroPhotos().map((p) => p.src);
+    for (const src of hidden) expect(hero).not.toContain(src);
+  });
+});

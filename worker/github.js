@@ -6,7 +6,7 @@ const API = "https://api.github.com";
 const BRANCH = "main";
 
 // What the editor may read and write. Code, config and everything else in the repo stay out of reach.
-const EDITABLE = [/^content\/[\w./-]+\.(ya?ml|md)$/, /^public\/(images|achievements|papers)\/[\w./ ()&-]+\.(png|jpe?g|webp|gif|svg|pdf)$/i];
+const EDITABLE = [/^content\/[\w./-]+\.(ya?ml|md)$/, /^public\/(images|achievements|papers|gallery)\/[\w./ ()&-]+\.(png|jpe?g|webp|gif|svg|pdf)$/i];
 
 export function editable(path) {
   return typeof path === "string" && !path.includes("..") && !path.includes("//") && EDITABLE.some((re) => re.test(path));

@@ -34,7 +34,7 @@
   label.f > span { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); margin-bottom: 4px; }
   label.f.check { display: flex; gap: 8px; align-items: center; }
   label.f.check > span { margin: 0; }
-  input[type=text], input[type=url], input[type=date], input[type=number], select, textarea { width: 100%; font: inherit; color: var(--ink); padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+  input[type=text], input[type=url], input[type=date], input[type=month], input[type=number], select, textarea { width: 100%; font: inherit; color: var(--ink); padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
   input:focus, select:focus, textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue); }
   textarea { min-height: 70px; resize: vertical; }
   textarea.md, textarea.raw { min-height: 260px; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -74,7 +74,49 @@
   #toast { position: fixed; right: 20px; bottom: 80px; z-index: 7; max-width: 380px; padding: 12px 16px; border-radius: 6px; background: var(--navy); color: #fff; font-size: 14px; display: none; }
   #toast.on { display: block; }
   #toast.bad { background: var(--red); }
+  .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 12px; }
+  .photo { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; }
+  .photo .img { aspect-ratio: 3 / 2; background: var(--panel) center / cover no-repeat; position: relative; }
+  .photo .img .lead { position: absolute; left: 6px; top: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--navy); color: #fff; }
+  .photo.off .img { opacity: .35; filter: grayscale(1); }
+  .photo .opts { padding: 6px 8px; font-size: 13px; display: grid; gap: 2px; }
+  .photo .opts label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .photo .opts .row { justify-content: space-between; margin-top: 2px; }
+  .photo .opts button { border: 0; background: none; padding: 0; font: inherit; font-size: 12px; color: var(--blue); cursor: pointer; }
+  .photo .opts button.danger { color: var(--red); }
+  .drop { border: 1px dashed var(--line); border-radius: 6px; padding: 14px; background: #fff; }
+  .progress { font-size: 13px; color: var(--meta); margin-top: 8px; }
+  .opts-line { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; margin: 6px 0; }
+  .opts-line label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .overlay { position: fixed; inset: 0; z-index: 8; background: rgba(15,37,71,.55); display: grid; place-items: center; padding: 20px; }
+  .sheet { background: #fff; border-radius: 8px; width: min(1100px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+  .sheet > .top, .sheet > .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 14px 18px; }
+  .sheet > .top { border-bottom: 1px solid var(--line); }
+  .sheet > .top h2 { margin: 0 0 2px; font-size: 18px; color: var(--ink); }
+  .sheet > .top p { margin: 0; font-size: 13px; }
+  .sheet > .foot { border-top: 1px solid var(--line); }
+  .sheet > .mid { overflow: auto; padding: 14px 18px; }
+  .grow { flex: 1; }
+  .lab { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); margin-bottom: 6px; }
+  .grp { margin-bottom: 16px; }
+  .picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .pick { position: relative; aspect-ratio: 3 / 2; padding: 0; border: 0; border-radius: 4px; cursor: pointer; background: var(--panel) center / cover no-repeat; opacity: .4; }
+  .pick.on { opacity: 1; box-shadow: 0 0 0 3px var(--blue); }
+  .pick:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+  .pick .tick { position: absolute; right: 6px; top: 6px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.9); color: transparent; font-size: 12px; line-height: 20px; text-align: center; }
+  .pick.on .tick { background: var(--blue); color: #fff; }
+  .pick .best { position: absolute; left: 6px; bottom: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--navy); color: #fff; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .seg button { border: 0; background: #fff; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; color: var(--ink); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--blue); color: #fff; }
+  .crop { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 18px; align-items: start; }
+  .crop .stage { position: relative; justify-self: center; cursor: crosshair; touch-action: none; }
+  .crop .stage img { display: block; max-width: 100%; max-height: 62vh; user-select: none; }
+  .crop .dot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px var(--blue), 0 1px 6px rgba(0,0,0,.4); pointer-events: none; }
+  .crop .pv { background: var(--panel) center / cover no-repeat; border: 1px solid var(--line); border-radius: 4px; margin-bottom: 12px; }
   @media (max-width: 760px) {
+    .crop { grid-template-columns: 1fr; }
     .layout { grid-template-columns: 1fr; }
     nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 0; }
     nav button { white-space: nowrap; width: auto; padding: 12px 14px; }
@@ -402,6 +444,8 @@ const SECTIONS = {
     sort: (a, b) => (a.fm.chapter ?? 99) - (b.fm.chapter ?? 99), create: (name, all) => ({ chapter: all.length + 1, title: name }), fileName: (fm) => `week${fm.chapter}.md`,
     fields: [{ key: "chapter", label: "Chapter", type: "number" }, { key: "title", label: "Title" }, { key: "topics", label: "Topics (one per line)", type: "lines", wide: true },
       { key: "trading_track", label: "Trading track (one per line)", type: "lines" }, { key: "development_track", label: "Development track (one per line)", type: "lines" }], body: "Notes (Markdown)" },
+  gallery: { label: "Gallery", file: "content/gallery.yml", also: "public/gallery/", custom: () => galleryPage(),
+    sub: "Photo sets on /gallery, newest month first. Every shown photo also rotates on the home page in random order." },
   files: { label: "All files", sub: "Every content file and upload. Edit raw text, or add and remove files." },
 };
 
@@ -409,7 +453,7 @@ function renderNav() {
   const dirty = (k) => {
     const s = SECTIONS[k];
     const prefix = s.file || s.dir || (k === "team" ? "content/team/" : null);
-    return [...S.pending.keys()].some((p) => (prefix ? p.startsWith(prefix) : k === "files"));
+    return [...S.pending.keys()].some((p) => (prefix ? p.startsWith(prefix) || (s.also && p.startsWith(s.also)) : k === "files"));
   };
   $("nav").replaceChildren(...Object.entries(SECTIONS).map(([k, s]) =>
     h("button", { class: S.section === k ? "on" : "", onclick: () => go(k) }, s.label, dirty(k) && h("span", { class: "dot", title: "Unpublished changes" }))));
@@ -422,7 +466,7 @@ async function render() {
   const s = SECTIONS[S.section];
   main.replaceChildren(h("p", { class: "muted" }, "Loading…"));
   try {
-    const view = s.file ? yamlPage(s) : s.dir ? mdCollection(s, s.dir) : S.section === "team" ? teamPage() : filesPage();
+    const view = s.custom ? s.custom() : s.file ? yamlPage(s) : s.dir ? mdCollection(s, s.dir) : S.section === "team" ? teamPage() : filesPage();
     main.replaceChildren(...(await view).filter(Boolean));
   } catch (e) { main.replaceChildren(h("p", { class: "err" }, e.message)); }
 }
@@ -525,7 +569,7 @@ async function filesPage() {
     }
     up.value = ""; render(); renderNav();
   } });
-  const folder = h("select", { style: "width:auto" }, ["public/images/photos", "public/images/partners", "public/images/team", "public/images/papers", "public/papers", "public/achievements"].map((d) => h("option", { value: d }, d.replace(/^public/, ""))));
+  const folder = h("select", { style: "width:auto" }, ["public/images/photos", "public/images/partners", "public/images/team", "public/images/papers", "public/papers", "public/achievements", "public/gallery"].map((d) => h("option", { value: d }, d.replace(/^public/, ""))));
   return [...title("All files", SECTIONS.files.sub),
     h("div", { class: "row", style: "margin-bottom:12px" }, folder, h("button", { class: "b primary", onclick: () => up.click() }, "Upload files"), up),
     h("table", {}, h("thead", {}, h("tr", {}, h("th", {}, "File"), h("th", {}, ""))), h("tbody", {}, paths.map((p) => {
@@ -548,6 +592,470 @@ async function rawEditor(path) {
     stage(path, ta.value);
   } });
   return [h("div", { class: "row back" }, h("button", { class: "b small", onclick: () => { S.view = null; render(); } }, "← All files")), ...title(path.split("/").pop(), path), err, ta];
+}
+
+/* ---------- gallery ---------- */
+// Outside code, loaded only when needed: HEIC decoding (iPhone photos; Chrome can't read them) and the face finder.
+const LIBS = {
+  heif: "https://cdn.jsdelivr.net/npm/libheif-js@1.18.2/libheif-wasm/libheif-bundle.mjs",
+  vision: "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14",
+  face: "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+};
+const PHOTO_RE = /\.(jpe?g|png|webp|heic|heif)$/i;
+
+// Zips are read in the browser, lazily: only the central directory is read up front and each photo when it's needed,
+// so a 1 GB zip never sits in memory. Entries are stored or deflated (DecompressionStream). Folders, macOS metadata
+// and anything that isn't a file are skipped.
+async function unzip(file) {
+  const tailLen = Math.min(file.size, 65557);
+  const tail = new DataView(await file.slice(file.size - tailLen).arrayBuffer());
+  let end = -1;
+  for (let i = tailLen - 22; i >= 0; i--) if (tail.getUint32(i, true) === 0x06054b50) { end = i; break; }
+  if (end < 0) throw new Error(`${file.name} isn't a zip file.`);
+  let count = tail.getUint16(end + 10, true), size = tail.getUint32(end + 12, true), off = tail.getUint32(end + 16, true);
+  if ((off === 0xffffffff || count === 0xffff || size === 0xffffffff) && end >= 20 && tail.getUint32(end - 20, true) === 0x07064b50) {
+    const z = Number(tail.getBigUint64(end - 12, true));
+    const r = new DataView(await file.slice(z, z + 56).arrayBuffer());
+    count = Number(r.getBigUint64(32, true)); size = Number(r.getBigUint64(40, true)); off = Number(r.getBigUint64(48, true));
+  }
+  const cd = new DataView(await file.slice(off, off + size).arrayBuffer());
+  const u8 = new Uint8Array(cd.buffer);
+  const out = [];
+  for (let k = 0, p = 0; k < count; k++) {
+    if (cd.getUint32(p, true) !== 0x02014b50) throw new Error(`${file.name} looks damaged.`);
+    const method = cd.getUint16(p + 10, true), nlen = cd.getUint16(p + 28, true), xlen = cd.getUint16(p + 30, true), clen = cd.getUint16(p + 32, true);
+    let csize = cd.getUint32(p + 20, true), at = cd.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nlen));
+    // Zip64: real sizes and offset sit in the 0x0001 extra field, in this order, only where the header says 0xffffffff.
+    for (let x = p + 46 + nlen; x < p + 46 + nlen + xlen; ) {
+      const id = cd.getUint16(x, true), len = cd.getUint16(x + 2, true);
+      if (id === 1) {
+        let y = x + 4;
+        if (cd.getUint32(p + 24, true) === 0xffffffff) y += 8;
+        if (csize === 0xffffffff) { csize = Number(cd.getBigUint64(y, true)); y += 8; }
+        if (at === 0xffffffff) at = Number(cd.getBigUint64(y, true));
+      }
+      x += 4 + len;
+    }
+    p += 46 + nlen + xlen + clen;
+    const base = name.split("/").pop();
+    if (!base || name.includes("__MACOSX/") || base.startsWith(".") || (method !== 0 && method !== 8)) continue;
+    out.push({ name: base, path: name, read: async () => {
+      const lh = new DataView(await file.slice(at, at + 30).arrayBuffer());
+      const start = at + 30 + lh.getUint16(26, true) + lh.getUint16(28, true);
+      const raw = file.slice(start, start + csize);
+      return method === 0 ? raw : new Response(raw.stream().pipeThrough(new DecompressionStream("deflate-raw"))).blob();
+    } });
+  }
+  return out;
+}
+
+// A photo file -> an upright bitmap. Browsers read JPG/PNG/WebP (applying the camera's rotation); HEIC goes through libheif.
+let heifLib;
+async function decodePhoto(blob, name) {
+  try { return await createImageBitmap(blob, { imageOrientation: "from-image" }); }
+  catch (e) {
+    if (!/\.(heic|heif)$/i.test(name)) throw e;
+    heifLib ||= import(LIBS.heif).then((m) => m.default());
+    const lib = await heifLib;
+    const imgs = new lib.HeifDecoder().decode(new Uint8Array(await blob.arrayBuffer()));
+    if (!imgs.length) throw e;
+    const im = imgs[0], data = new ImageData(im.get_width(), im.get_height());
+    await new Promise((ok, no) => im.display(data, (r) => (r ? ok() : no(e))));
+    for (const i of imgs) i.free?.();
+    return createImageBitmap(data);
+  }
+}
+function scaled(img, max) {
+  const k = Math.min(1, max / Math.max(img.width, img.height));
+  const c = h("canvas", { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+  c.getContext("2d", { willReadFrequently: true }).drawImage(img, 0, 0, c.width, c.height);
+  return c;
+}
+const toJpeg = (c, q) => new Promise((ok) => c.toBlob(ok, "image/jpeg", q));
+
+// Look-alike fingerprint: a softened 24x24 grey copy, scaled so two photos compare by correlation (1 = the same
+// picture, 0 = unrelated). It ignores exposure changes and tolerates the small shifts between burst shots.
+function fingerprint(c) {
+  const n = 24, t = h("canvas", { width: n, height: n }), x = t.getContext("2d", { willReadFrequently: true });
+  x.filter = "blur(1px)";
+  x.drawImage(c, 0, 0, n, n);
+  const d = x.getImageData(0, 0, n, n).data, g = new Float32Array(n * n);
+  let m = 0, v = 0;
+  for (let i = 0; i < g.length; i++) { g[i] = d[i * 4] * 0.299 + d[i * 4 + 1] * 0.587 + d[i * 4 + 2] * 0.114; m += g[i]; }
+  m /= g.length;
+  for (let i = 0; i < g.length; i++) { g[i] -= m; v += g[i] * g[i]; }
+  v = Math.sqrt(v) || 1;
+  for (let i = 0; i < g.length; i++) g[i] /= v;
+  return g;
+}
+const likeness = (a, b) => { let c = 0; for (let i = 0; i < a.length; i++) c += a[i] * b[i]; return c; };
+// Sharpness: how much fine detail there is (variance of the Laplacian on a grey copy). Blurry shots score low.
+function sharpness(c) {
+  const s = scaled(c, 600), w = s.width, hh = s.height, d = s.getContext("2d").getImageData(0, 0, w, hh).data;
+  const g = new Float32Array(w * hh);
+  for (let i = 0; i < g.length; i++) g[i] = d[i * 4] * 0.299 + d[i * 4 + 1] * 0.587 + d[i * 4 + 2] * 0.114;
+  let sum = 0, sq = 0, n = 0;
+  for (let y = 1; y < hh - 1; y++) for (let x = 1; x < w - 1; x++) {
+    const i = y * w + x, v = 4 * g[i] - g[i - 1] - g[i + 1] - g[i - w] - g[i + w];
+    sum += v; sq += v * v; n++;
+  }
+  return n ? sq / n - (sum / n) ** 2 : 0;
+}
+
+// Auto crop: where the people are, as a CSS position ("across% down%") that the home page and gallery keep in frame
+// when they crop the photo. The face finder only sees small faces when they fill enough of its view, so a group photo
+// is also checked in overlapping tiles. Faces much smaller than the biggest (people in the background) are ignored.
+// Returns null when there are no faces: the photo is then cropped around its centre.
+let faceFinder;
+async function findFaces(c) {
+  faceFinder ||= (async () => {
+    const { FaceDetector, FilesetResolver } = await import(LIBS.vision + "/vision_bundle.mjs");
+    const files = await FilesetResolver.forVisionTasks(LIBS.vision + "/wasm");
+    return FaceDetector.createFromOptions(files, { baseOptions: { modelAssetPath: LIBS.face }, runningMode: "IMAGE", minDetectionConfidence: 0.6 });
+  })();
+  const det = await faceFinder, W = c.width, H = c.height, boxes = [];
+  const look = (sx, sy, sw, sh) => {
+    const k = Math.min(1, 256 / Math.max(sw, sh));
+    const t = h("canvas", { width: Math.round(sw * k), height: Math.round(sh * k) });
+    t.getContext("2d").drawImage(c, sx, sy, sw, sh, 0, 0, t.width, t.height);
+    for (const f of det.detect(t).detections) {
+      const b = f.boundingBox; if (!b) continue;
+      boxes.push({ x: sx + b.originX / k, y: sy + b.originY / k, w: b.width / k, h: b.height / k, score: f.categories?.[0]?.score ?? 0.5 });
+    }
+  };
+  // Whole photo, then ever smaller overlapping tiles (half, quarter, sixth of the short side), for faces far away.
+  const side = Math.min(W, H);
+  look(0, 0, W, H);
+  for (const k of [2, 4, 6]) {
+    const t = side / k, step = t / 2;
+    for (let y = 0; y + t <= H + 1; y += step) for (let x = 0; x + t <= W + 1; x += step) look(x, y, t, t);
+  }
+  // Tiles overlap, so a real face is found several times; a one-off find is usually a false alarm (a hand, a pattern).
+  const faces = [];
+  for (const b of boxes.sort((p, q) => q.score - p.score)) {
+    const f = faces.find((f) => {
+      const ix = Math.max(0, Math.min(f.x + f.w, b.x + b.w) - Math.max(f.x, b.x)), iy = Math.max(0, Math.min(f.y + f.h, b.y + b.h) - Math.max(f.y, b.y));
+      return ix * iy > 0.3 * Math.min(f.w * f.h, b.w * b.h);
+    });
+    if (f) f.votes++; else faces.push({ ...b, votes: 1 });
+  }
+  const real = faces.filter((f) => (f.votes >= 3 && f.score >= 0.75) || f.score >= 0.9).sort((p, q) => q.w - p.w);
+  if (!real.length) return [];
+  return real.filter((f) => f.w >= real[0].w * 0.65);
+}
+async function autoCrop(img) {
+  const c = scaled(img, 1600);
+  let faces;
+  try { faces = await findFaces(c); } catch { return null; }
+  if (!faces.length) return null;
+  const x0 = Math.min(...faces.map((f) => f.x)), x1 = Math.max(...faces.map((f) => f.x + f.w));
+  const y0 = Math.min(...faces.map((f) => f.y)), y1 = Math.max(...faces.map((f) => f.y + f.h));
+  const pct = (v) => Math.max(0, Math.min(100, Math.round(v)));
+  // Across: the middle of the faces. Down: a little below the faces, so heads keep some room above them.
+  return `${pct((((x0 + x1) / 2) / c.width) * 100)}% ${pct((((y0 + y1) / 2 + (y1 - y0) * 0.15) / c.height) * 100)}%`;
+}
+
+// Gallery options, remembered in this browser, used for every upload and set.
+const galleryOpts = (() => { try { return { group: true, crop: true, level: "normal", ...JSON.parse(localStorage.getItem("galleryOpts") || "{}") }; } catch { return { group: true, crop: true, level: "normal" }; } })();
+const saveOpts = () => { try { localStorage.setItem("galleryOpts", JSON.stringify(galleryOpts)); } catch {} };
+function optsLine() {
+  const box = (k, label) => h("label", {}, h("input", { type: "checkbox", checked: galleryOpts[k], onchange: (e) => { galleryOpts[k] = e.target.checked; saveOpts(); } }), label);
+  return h("div", { class: "opts-line" }, box("group", "Group duplicates and bursts so I pick which to keep"), box("crop", "Auto crop around faces"));
+}
+
+// Read every photo once for a small preview, its fingerprint and sharpness. (Faces are found later, only for the
+// photos kept: it takes a second or two a photo.)
+async function analysePhotos(items, progress) {
+  const out = [], failed = [];
+  for (const [i, it] of items.entries()) {
+    progress(`Reading photo ${i + 1} of ${items.length}…`);
+    let img;
+    try { img = await decodePhoto(await it.read(), it.name); } catch { failed.push(it.name); continue; }
+    const small = scaled(img, 800);
+    out.push({ ...it, preview: URL.createObjectURL(await toJpeg(small, 0.8)), hash: fingerprint(small), sharp: sharpness(small) });
+    img.close?.();
+  }
+  return { photos: out, failed };
+}
+
+// Near-duplicates and bursts: in shot order, a photo joins the group before it when it looks like any photo in it.
+const LEVELS = { strict: ["Strict", 0.93], normal: ["Normal", 0.85], loose: ["Loose", 0.72] };
+function groupPhotos(list, level) {
+  const t = LEVELS[level][1], groups = [];
+  for (const p of list) {
+    const g = groups.at(-1);
+    if (g && g.some((q) => likeness(q.hash, p.hash) >= t)) g.push(p); else groups.push([p]);
+  }
+  return groups;
+}
+const best = (g) => g.reduce((a, b) => (b.sharp > a.sharp ? b : a));
+
+function overlay(...kids) {
+  const el = h("div", { class: "overlay" }, h("div", { class: "sheet" }, ...kids));
+  document.body.append(el);
+  document.body.style.overflow = "hidden";
+  return () => { el.remove(); document.body.style.overflow = ""; };
+}
+
+// Pick the photos to keep: each group of look-alikes starts with its sharpest photo picked; click any photo to add or drop it.
+function choosePhotos(photos, { action = "Add" } = {}) {
+  return new Promise((done) => {
+    let groups, chosen;
+    const mid = h("div", { class: "mid" }), count = h("span", { class: "grow muted" }), go = h("button", { class: "b primary" });
+    const reset = () => { groups = groupPhotos(photos, galleryOpts.level); chosen = new Set(groups.map((g) => (g.length > 1 ? [best(g)] : g)).flat()); draw(); };
+    const seg = h("div", { class: "seg" }, Object.entries(LEVELS).map(([k, [label]]) => h("button", { type: "button", class: k === galleryOpts.level ? "on" : "", onclick: (e) => {
+      galleryOpts.level = k; saveOpts(); for (const b of seg.children) b.classList.toggle("on", b === e.currentTarget); reset();
+    } }, label)));
+    const tile = (p, g) => {
+      const t = h("button", { type: "button", class: "pick" + (chosen.has(p) ? " on" : ""), title: p.name, style: `background-image:url("${p.preview}")`, onclick: () => {
+        chosen.has(p) ? chosen.delete(p) : chosen.add(p); t.classList.toggle("on", chosen.has(p)); tally();
+      } }, h("span", { class: "tick" }, "✓"), g.length > 1 && p === best(g) ? h("span", { class: "best" }, "Sharpest") : null);
+      return t;
+    };
+    const tally = () => {
+      count.textContent = `${chosen.size} of ${photos.length} picked`;
+      go.textContent = `${action} ${chosen.size} photo${chosen.size === 1 ? "" : "s"}`;
+      go.disabled = !chosen.size;
+    };
+    function draw() {
+      const blocks = [];
+      let singles = [];
+      const flush = () => { if (singles.length) blocks.push(h("div", { class: "grp" }, h("div", { class: "lab" }, singles.length === 1 ? "No look-alikes" : `${singles.length} with no look-alikes`), h("div", { class: "picks" }, singles.map((p) => tile(p, [p]))))); singles = []; };
+      for (const g of groups) {
+        if (g.length === 1) { singles.push(g[0]); continue; }
+        flush();
+        blocks.push(h("div", { class: "grp" }, h("div", { class: "lab" }, `${g.length} look-alikes`), h("div", { class: "picks" }, g.map((p) => tile(p, g)))));
+      }
+      flush();
+      mid.replaceChildren(...blocks);
+      tally();
+    }
+    const close = overlay(
+      h("div", { class: "top" },
+        h("div", { class: "grow" }, h("h2", {}, "Choose photos"),
+          h("p", { class: "muted" }, "Look-alike shots are grouped, with the sharpest one picked. Click any photo to add or drop it.")),
+        h("label", { class: "f", style: "margin:0" }, h("span", {}, "Grouping"), seg)),
+      mid,
+      h("div", { class: "foot" }, count,
+        h("button", { class: "b small", type: "button", onclick: reset }, "Sharpest of each"),
+        h("button", { class: "b small", type: "button", onclick: () => { chosen = new Set(photos); draw(); } }, "All"),
+        h("button", { class: "b small", type: "button", onclick: () => { chosen = new Set(); draw(); } }, "None"),
+        h("button", { class: "b", type: "button", onclick: () => { close(); done(null); } }, "Cancel"), go));
+    go.onclick = () => { close(); done(chosen); };
+    reset();
+  });
+}
+
+// Set where a photo crops by hand: click or drag on the photo, and see how the home page and gallery will crop it.
+function cropEditor(src, position) {
+  return new Promise((done) => {
+    let pos = position || "50% 50%";
+    const parse = (s) => (s.match(/-?[\d.]+/g) || [50, 50]).map(Number);
+    const img = h("img", { src, alt: "", draggable: false });
+    const dot = h("span", { class: "dot" });
+    const stageEl = h("div", { class: "stage" }, img, dot);
+    const views = [["Home page, wide screen", "2.2 / 1"], ["Home page, phone", "9 / 16"], ["Gallery tile", "3 / 2"]].map(([label, ar]) => [label, h("div", { class: "pv", style: `aspect-ratio:${ar};${ar.startsWith("9") ? "max-width:120px;" : ""}background-image:url("${src.replace(/"/g, "%22")}")` })]);
+    const note = h("div", { class: "muted", style: "font-size:13px" });
+    const show = () => {
+      const [x, y] = parse(pos);
+      dot.style.left = x + "%"; dot.style.top = y + "%";
+      for (const [, v] of views) v.style.backgroundPosition = pos;
+    };
+    const pick = (e) => {
+      const r = img.getBoundingClientRect();
+      const x = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * 100), y = Math.round(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) * 100);
+      pos = `${x}% ${y}%`; note.textContent = ""; show();
+    };
+    stageEl.addEventListener("pointerdown", (e) => { stageEl.setPointerCapture(e.pointerId); pick(e); });
+    stageEl.addEventListener("pointermove", (e) => { if (e.buttons) pick(e); });
+    const auto = h("button", { class: "b small", type: "button", onclick: async () => {
+      auto.disabled = true; note.textContent = "Finding faces…";
+      try {
+        const p = await autoCrop(await decodePhoto(await (await fetch(src)).blob(), "x.jpg"));
+        if (p) { pos = p; note.textContent = "Cropped around the faces."; } else note.textContent = "No faces found. Click where the crop should centre.";
+      } catch { note.textContent = "Couldn't read this photo."; }
+      auto.disabled = false; show();
+    } }, "Auto crop");
+    const close = overlay(
+      h("div", { class: "top" }, h("div", { class: "grow" }, h("h2", {}, "Crop"), h("p", { class: "muted" }, "Click or drag on the photo to choose the spot that always stays in frame."))),
+      h("div", { class: "mid crop" }, stageEl, h("div", {}, views.flatMap(([label, v]) => [h("div", { class: "lab" }, label), v]))),
+      h("div", { class: "foot" }, note, h("span", { class: "grow" }), auto,
+        h("button", { class: "b small", type: "button", onclick: () => { pos = "50% 50%"; show(); } }, "Centre"),
+        h("button", { class: "b", type: "button", onclick: () => { close(); done(undefined); } }, "Cancel"),
+        h("button", { class: "b primary", type: "button", onclick: () => { close(); done(pos === "50% 50%" ? null : pos); } }, "Save crop")));
+    show();
+  });
+}
+
+// Photos from zips and loose image files, in shot order. With grouping on, every photo is read and you pick which to
+// keep; only those are uploaded (all of a 400-photo zip would make the site's repository huge). The zip's folder names
+// become the photos' descriptions.
+async function addPhotos(set, files, progress) {
+  const items = [];
+  for (const f of files) {
+    if (/\.zip$/i.test(f.name) || f.type.includes("zip")) items.push(...(await unzip(f)));
+    else items.push({ name: f.name, path: f.name, read: async () => f });
+  }
+  const photos = items.filter((i) => PHOTO_RE.test(i.name)).sort((a, b) => a.path.localeCompare(b.path, undefined, { numeric: true }));
+  if (!photos.length) throw new Error("No photos found (JPG, PNG, WebP or HEIC).");
+  // Folder names under the zip's top folder say what the photos are ("Macro Regime").
+  const dirs = photos.map((p) => p.path.split("/").slice(0, -1));
+  const common = dirs.reduce((c, d) => c.filter((x, i) => d[i] === x), dirs[0]).length;
+  for (const [i, p] of photos.entries()) p.alt = dirs[i].length > common ? dirs[i].at(-1) : undefined;
+
+  let chosen = photos, failed = [];
+  if (galleryOpts.group && photos.length > 1) {
+    const r = await analysePhotos(photos, progress);
+    failed = r.failed;
+    progress("");
+    const pick = await choosePhotos(r.photos);
+    for (const p of r.photos) URL.revokeObjectURL(p.preview);
+    if (!pick) return null;
+    chosen = r.photos.filter((p) => pick.has(p));
+  }
+  const dir = "public/gallery/" + (set.folder || slug(`${set.title}-${set.date}`));
+  let n = Math.max(0, ...set.photos.map((p) => Number((p.src.match(/\/(\d+)\.jpg$/) || [])[1]) || 0));
+  for (const [i, p] of chosen.entries()) {
+    progress(`Saving photo ${i + 1} of ${chosen.length}…`);
+    let img;
+    try { img = await decodePhoto(await p.read(), p.name); } catch { failed.push(p.name); continue; }
+    const position = galleryOpts.crop ? await autoCrop(img) : null;
+    const full = await toJpeg(scaled(img, 2400), 0.85), thumb = await toJpeg(scaled(img, 800), 0.8);
+    img.close?.();
+    let path;
+    do { n++; path = `${dir}/${String(n).padStart(2, "0")}.jpg`; } while (exists(path));
+    stageUpload(path, await toBase64(full), full);
+    stageUpload(path.replace(/\.jpg$/, "-sm.jpg"), await toBase64(thumb), thumb);
+    set.photos.push({ src: publicUrl(path), ...(p.alt ? { alt: p.alt } : {}), ...(position ? { position } : {}) });
+  }
+  progress("");
+  return { added: chosen.length - failed.filter((f) => chosen.some((c) => c.name === f)).length, failed };
+}
+
+// A set's own photos as items the tools above can read (pending uploads included).
+const setItems = (set) => set.photos.map((p) => ({ name: p.src.split("/").pop(), path: p.src, photo: p, read: async () => (await fetch(previewSrc(p.src))).blob() }));
+
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthText = (d) => { const m = /^(\d{4})-(\d{2})/.exec(d || ""); return m ? `${MONTH_NAMES[+m[2] - 1]} ${m[1]}` : d || "No date"; };
+const thumbOf = (src) => { const sm = src.replace(/(\.\w+)$/, "-sm$1"); const p = repoPath(sm); return p && exists(p) ? sm : src; };
+
+const galleryOpen = new Set();
+async function galleryPage() {
+  const file = "content/gallery.yml";
+  const s = SECTIONS.gallery;
+  const text = await load(file);
+  const data = (text && loadYaml(text)) || {};
+  data.events = Array.isArray(data.events) ? data.events : [];
+  const byDate = () => data.events.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  const save = () => { byDate(); stage(file, dumpYaml(data, S.text[file] ?? "", true)); };
+  const redraw = () => { renderNav(); render(); };
+
+  // New set: name, month, then a zip (or photos).
+  const err = h("div", { class: "err" });
+  const prog = h("div", { class: "progress" });
+  const nt = h("input", { type: "text", placeholder: "Firm Day" });
+  const nd = h("input", { type: "month", value: new Date().toISOString().slice(0, 7) });
+  const np = h("input", { type: "text", placeholder: "Toronto" });
+  const nr = h("input", { type: "text", placeholder: "1st place" });
+  const nf = h("input", { type: "file", multiple: true, accept: ".zip,application/zip,image/*" });
+  const add = h("button", { class: "b primary", onclick: async () => {
+    err.textContent = "";
+    if (!nt.value.trim() || !nd.value) return (err.textContent = "Give the set a name and a month.");
+    if (!nf.files.length) return (err.textContent = "Choose a zip of photos (or the photos themselves).");
+    const set = { title: nt.value.trim(), date: nd.value, ...(np.value.trim() ? { place: np.value.trim() } : {}), ...(nr.value.trim() ? { result: nr.value.trim() } : {}), photos: [] };
+    add.disabled = true;
+    try {
+      const r = await addPhotos(set, nf.files, (m) => (prog.textContent = m));
+      if (!r) { prog.textContent = ""; add.disabled = false; return; }
+      data.events.push(set); galleryOpen.add(set.title + set.date); save();
+      toast(`${r.added} photos added to “${set.title}”.${r.failed.length ? ` Skipped ${r.failed.length} this browser can't read (${r.failed.slice(0, 3).join(", ")}).` : ""} Check them below, then Publish.`);
+      redraw();
+    } catch (e) { err.textContent = e.message; prog.textContent = ""; add.disabled = false; }
+  } }, "Add set");
+  const form = h("div", { class: "card" },
+    h("h2", { style: "margin:0 0 10px;font-size:16px;color:var(--ink)" }, "Add a photo set"),
+    h("div", { class: "grid2" },
+      h("label", { class: "f" }, h("span", {}, "Name"), nt), h("label", { class: "f" }, h("span", {}, "Month"), nd),
+      h("label", { class: "f" }, h("span", {}, "Place (optional)"), np), h("label", { class: "f" }, h("span", {}, "Result (optional)"), nr),
+      h("label", { class: "f wide" }, h("span", {}, "Zip of photos"), h("div", { class: "drop" }, nf),
+        h("div", { class: "muted", style: "font-size:12px;margin-top:3px" }, "JPG, PNG or iPhone HEIC. Photos are resized for the web here before upload, and start shown in the gallery and the home page rotation."))),
+    optsLine(), err, h("div", { class: "row" }, add), prog);
+
+  const sets = byDate().map((set) => {
+    set.photos = Array.isArray(set.photos) ? set.photos : [];
+    const key = set.title + set.date;
+    const shown = set.photos.filter((p) => !p.hidden).length;
+    const meta = () => `${monthText(set.date)} · ${shown} of ${set.photos.length} shown`;
+    const one = (k, label, attrs = {}) => h("label", { class: "f" }, h("span", {}, label), h("input", { type: attrs.type || "text", value: set[k] ?? "", oninput: (e) => { const v = e.target.value.trim(); if (v) set[k] = v; else if (k === "place" || k === "result") delete set[k]; save(); } }));
+    const sp = h("div", { class: "progress" });
+    const more = h("input", { type: "file", multiple: true, accept: ".zip,application/zip,image/*", style: "display:none", onchange: async () => {
+      try { const r = await addPhotos(set, more.files, (m) => (sp.textContent = m)); more.value = ""; if (!r) return; save(); toast(`${r.added} photos added.`); redraw(); }
+      catch (e) { sp.textContent = ""; toast(e.message, true); }
+    } });
+    // Look-alikes among the set's photos: the ones you pick are shown, the rest hidden (not deleted).
+    const dupes = async () => {
+      const r = await analysePhotos(setItems(set), (m) => (sp.textContent = m));
+      sp.textContent = "";
+      const pick = await choosePhotos(r.photos, { action: "Show" });
+      for (const p of r.photos) URL.revokeObjectURL(p.preview);
+      if (!pick) return;
+      for (const p of r.photos) { if (pick.has(p)) delete p.photo.hidden; else p.photo.hidden = true; }
+      save(); redraw();
+      toast(`${pick.size} photos shown, ${r.photos.length - pick.size} hidden. Hidden ones can be ticked back on.`);
+    };
+    const cropAll = async () => {
+      if (!confirm("Auto crop every photo in this set around the faces in it? This replaces crops set by hand on photos with faces.")) return;
+      let i = 0, found = 0;
+      for (const it of setItems(set)) {
+        sp.textContent = `Cropping photo ${++i} of ${set.photos.length}…`;
+        try { const img = await decodePhoto(await it.read(), it.name); const pos = await autoCrop(img); img.close?.(); if (pos) { it.photo.position = pos; found++; } } catch {}
+      }
+      sp.textContent = ""; save(); redraw();
+      toast(`${found} photos cropped around faces. ${set.photos.length - found} with no faces kept their crop.`);
+    };
+    const grid = h("div", { class: "photos" }, set.photos.map((p, i) => {
+      const tile = h("div", { class: "photo" + (p.hidden ? " off" : "") },
+        h("div", { class: "img", style: `background-image:url("${previewSrc(thumbOf(p.src)).replace(/"/g, "%22")}");background-position:${p.position || "50% 50%"}` }, i === 0 && h("span", { class: "lead" }, "Lead")),
+        h("div", { class: "opts" },
+          h("label", {}, h("input", { type: "checkbox", checked: !p.hidden, onchange: (e) => { if (e.target.checked) delete p.hidden; else p.hidden = true; save(); redraw(); } }), "Show on site"),
+          h("label", {}, h("input", { type: "checkbox", checked: p.hero !== false, disabled: !!p.hidden, onchange: (e) => { if (e.target.checked) delete p.hero; else p.hero = false; save(); } }), "Home page rotation"),
+          h("div", { class: "row" },
+            i > 0 ? h("button", { type: "button", onclick: () => { set.photos.unshift(...set.photos.splice(i, 1)); save(); redraw(); } }, "Make lead") : h("span"),
+            h("button", { type: "button", onclick: async () => {
+              const r = await cropEditor(previewSrc(p.src), p.position);
+              if (r === undefined) return;
+              if (r) p.position = r; else delete p.position;
+              save(); redraw();
+            } }, "Crop"),
+            h("button", { type: "button", class: "danger", onclick: () => {
+              if (!confirm("Delete this photo from the site?")) return;
+              set.photos.splice(i, 1);
+              for (const f of [repoPath(p.src), repoPath(p.src.replace(/(\.\w+)$/, "-sm$1"))]) if (f && f.startsWith("public/gallery/") && exists(f)) { if (S.pending.get(f)?.base64) S.pending.delete(f); else stageDelete(f); }
+              save(); redraw();
+            } }, "Delete"))));
+      return tile;
+    }));
+    const el = h("div", { class: "item" + (galleryOpen.has(key) ? "" : " closed") },
+      h("div", { class: "head", onclick: () => { el.classList.toggle("closed"); el.classList.contains("closed") ? galleryOpen.delete(key) : galleryOpen.add(key); } },
+        h("span", { class: "t" }, set.title || "(untitled)"), h("span", { class: "m" }, meta())),
+      h("div", { class: "body" },
+        h("div", { class: "grid2", style: "margin-top:10px" }, one("title", "Name"), one("date", "Month", { type: "month" }), one("place", "Place (optional)"), one("result", "Result (optional)")),
+        h("div", { class: "row", style: "margin-bottom:4px" },
+          h("span", { class: "muted grow", style: "font-size:13px" }, "Untick a photo to hide it. The lead photo shows large at the top of the set. Crop sets the spot that stays in frame."),
+          h("button", { class: "b small", type: "button", onclick: () => more.click() }, "Add photos"), more,
+          h("button", { class: "b small", type: "button", onclick: dupes }, "Find look-alikes"),
+          h("button", { class: "b small", type: "button", onclick: cropAll }, "Auto crop all"),
+          h("button", { class: "b small danger", type: "button", onclick: () => {
+            if (!confirm(`Delete the whole “${set.title}” set and its photos?`)) return;
+            data.events.splice(data.events.indexOf(set), 1);
+            for (const p of set.photos) for (const f of [repoPath(p.src), repoPath(p.src.replace(/(\.\w+)$/, "-sm$1"))]) if (f && f.startsWith("public/gallery/") && exists(f)) { if (S.pending.get(f)?.base64) S.pending.delete(f); else stageDelete(f); }
+            save(); redraw();
+          } }, "Delete set")),
+        optsLine(), sp, grid));
+    return el;
+  });
+  return [...title(s.label, s.sub), form, h("h2", { style: "margin:20px 0 10px;font-size:16px;color:var(--ink)" }, "Sets"), ...sets];
 }
 
 /* ---------- publish ---------- */
@@ -597,6 +1105,7 @@ window.addEventListener("beforeunload", (e) => { if (S.pending.size) { e.prevent
     $("who").textContent = me.name;
     await refreshFiles();
     if (!S.files["content/achievements.yml"]) delete SECTIONS.achievements;
+    if (!S.files["content/gallery.yml"]) delete SECTIONS.gallery;
     renderNav(); render();
   } catch (e) { $("main").replaceChildren(h("p", { class: "err" }, e.message)); }
 })();
