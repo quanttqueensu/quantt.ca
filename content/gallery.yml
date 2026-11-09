@@ -59,6 +59,7 @@ events:
       - src: "/gallery/fiam-2026/10.jpg"
         position: "72% 36%"
         alt: "Working on the model"
+        hero: false
       - src: "/gallery/fiam-2026/11.jpg"
         position: "46% 35%"
         alt: "After the results"
@@ -189,6 +190,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/24.jpg"
         alt: "Binomial Pricing team"
         position: "48% 48%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/25.jpg"
         alt: "Binomial Pricing team"
         position: "50% 41%"
