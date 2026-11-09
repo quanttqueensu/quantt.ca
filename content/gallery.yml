@@ -16,6 +16,9 @@
 #                                # gallery grid crops it (across, down). Set by admin's auto crop
 #                                # (around faces) or its Crop button. Default "50% 50%".
 
+# Photo the home page opens on: "random" (a different one each visit) or a photo's src.
+heroStart: "random"
+
 events:
   - title: "McGill-FIAM Asset Management Hackathon 2026"
     place: "Montréal"

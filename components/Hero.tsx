@@ -2,7 +2,7 @@ import HeroSlides from "./HeroSlides";
 import MediaSlot from "./MediaSlot";
 import RotatingPhrase from "./RotatingPhrase";
 import { Button } from "./ui";
-import { getHeroPhotos, getSiteConfig } from "@/lib/content";
+import { getHeroPhotos, getHeroStart, getSiteConfig } from "@/lib/content";
 
 /** Full-bleed photo (rotating through the gallery when it has photos) with the headline over a navy fade. The header sits on top. */
 export default function Hero() {
@@ -12,7 +12,7 @@ export default function Hero() {
   return (
     <section className="cs-hero cs-reveal on-blue" aria-labelledby="hero-title">
       {slides.length > 0 ? (
-        <HeroSlides photos={slides} />
+        <HeroSlides photos={slides} start={getHeroStart()} />
       ) : (
       <MediaSlot
         src={media?.hero}

@@ -982,6 +982,22 @@ async function galleryPage() {
         h("div", { class: "muted", style: "font-size:12px;margin-top:3px" }, "JPG, PNG or iPhone HEIC. Photos are resized for the web here before upload, and start shown in the gallery and the home page rotation."))),
     optsLine(), err, h("div", { class: "row" }, add), prog);
 
+  // Which photo the home page opens on: random each visit, or one chosen here.
+  const startPhoto = data.heroStart && data.heroStart !== "random" ? data.events.flatMap((e) => e.photos || []).find((p) => p.src === data.heroStart) : null;
+  const startOk = startPhoto && !startPhoto.hidden && startPhoto.hero !== false;
+  const setStart = (src) => { if (src) data.heroStart = src; else data.heroStart = "random"; save(); redraw(); };
+  const radio = (on, label, onclick) => h("label", {}, h("input", { type: "radio", name: "heroStart", checked: on, onchange: onclick }), label);
+  const home = h("div", { class: "card" },
+    h("h2", { style: "margin:0 0 8px;font-size:16px;color:var(--ink)" }, "Home page opening photo"),
+    h("div", { class: "opts-line" },
+      radio(!startPhoto, "A random photo each visit", () => setStart(null)),
+      radio(!!startPhoto, "Always this photo", () => { if (!startPhoto) toast("Click “Start home page here” on a photo below to choose it."); redraw(); })),
+    startPhoto
+      ? h("div", { class: "row", style: "margin-top:6px" },
+          h("div", { class: "asset" }, h("div", { class: "thumb", style: `background-image:url("${previewSrc(thumbOf(startPhoto.src)).replace(/"/g, "%22")}");background-size:cover;background-position:${startPhoto.position || "50% 50%"}` })),
+          h("span", { class: startOk ? "muted" : "err", style: "font-size:13px" }, startOk ? "Chosen with “Start home page here” on a photo below." : "This photo is hidden or out of the home page rotation, so the home page opens on a random photo."))
+      : h("div", { class: "muted", style: "font-size:13px;margin-top:4px" }, "To always open on one photo, click “Start home page here” on it below."));
+
   const sets = byDate().map((set) => {
     set.photos = Array.isArray(set.photos) ? set.photos : [];
     const key = set.title + set.date;
@@ -1020,6 +1036,9 @@ async function galleryPage() {
         h("div", { class: "opts" },
           h("label", {}, h("input", { type: "checkbox", checked: !p.hidden, onchange: (e) => { if (e.target.checked) delete p.hidden; else p.hidden = true; save(); redraw(); } }), "Show on site"),
           h("label", {}, h("input", { type: "checkbox", checked: p.hero !== false, disabled: !!p.hidden, onchange: (e) => { if (e.target.checked) delete p.hero; else p.hero = false; save(); } }), "Home page rotation"),
+          p.hero !== false && !p.hidden && (data.heroStart === p.src
+            ? h("div", { class: "row" }, h("span", { style: "font-size:12px;font-weight:600;color:var(--green)" }, "Home page starts here"), h("button", { type: "button", onclick: () => setStart(null) }, "Undo"))
+            : h("div", { class: "row" }, h("button", { type: "button", onclick: () => setStart(p.src) }, "Start home page here"))),
           h("div", { class: "row" },
             i > 0 ? h("button", { type: "button", onclick: () => { set.photos.unshift(...set.photos.splice(i, 1)); save(); redraw(); } }, "Make lead") : h("span"),
             h("button", { type: "button", onclick: async () => {
@@ -1055,7 +1074,7 @@ async function galleryPage() {
         optsLine(), sp, grid));
     return el;
   });
-  return [...title(s.label, s.sub), form, h("h2", { style: "margin:20px 0 10px;font-size:16px;color:var(--ink)" }, "Sets"), ...sets];
+  return [...title(s.label, s.sub), home, form, h("h2", { style: "margin:20px 0 10px;font-size:16px;color:var(--ink)" }, "Sets"), ...sets];
 }
 
 /* ---------- publish ---------- */
