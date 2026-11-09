@@ -215,6 +215,18 @@ export function getGallery(): GalleryEvent[] {
     .map(({ e }) => e);
 }
 
+/**
+ * Which photo the home hero opens on: "random" (a different one each visit, the default), or the index in
+ * getHeroPhotos() of the photo set as `heroStart` in gallery.yml. A start photo that is hidden or out of the
+ * rotation falls back to random.
+ */
+export function getHeroStart(): number | "random" {
+  if (!fs.existsSync(path.join(contentDir, "gallery.yml"))) return "random";
+  const start = readYaml<{ heroStart?: string | null }>("gallery.yml").heroStart;
+  const i = start && start !== "random" ? getHeroPhotos().findIndex((p) => p.src === start) : -1;
+  return i >= 0 ? i : "random";
+}
+
 /** Photos the home hero rotates through: every shown gallery photo not marked `hero: false`. */
 export function getHeroPhotos(): GalleryPhoto[] {
   return getGallery().flatMap((e) => e.photos.filter((p) => p.hero !== false));
