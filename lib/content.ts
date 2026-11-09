@@ -161,7 +161,12 @@ function readMdDir<T>(dir: string): (T & { body: string })[] {
 
 export interface GalleryPhoto {
   src: string;
-  alt: string;
+  /** Grid thumbnail: a "-sm" copy next to the photo when there is one, else the photo. */
+  thumb?: string;
+  /** Defaults to the set's title. */
+  alt?: string;
+  /** true keeps the photo off the site (gallery and hero). */
+  hidden?: boolean;
   /** false keeps the photo out of the home hero rotation. */
   hero?: boolean;
   /** CSS object-position ("across down") kept in frame when the hero crops the photo. */
@@ -170,20 +175,47 @@ export interface GalleryPhoto {
 
 export interface GalleryEvent {
   title: string;
+  /** "YYYY-MM": orders the sets and is shown as "Month YYYY". */
+  date: string;
   place?: string;
-  date?: string;
   result?: string;
   photos: GalleryPhoto[];
 }
 
-/** Events for /gallery, in file order (newest first). Missing file means no gallery. */
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/** "2026-10" -> "October 2026". Anything else is shown as written. */
+export function monthLabel(date: string): string {
+  const m = /^(\d{4})-(\d{2})/.exec(date);
+  return m && MONTHS[Number(m[2]) - 1] ? `${MONTHS[Number(m[2]) - 1]} ${m[1]}` : date;
+}
+
+const thumbFor = (src: string) => {
+  const sm = src.replace(/(\.\w+)$/, "-sm$1");
+  return src.startsWith("/") && fs.existsSync(path.join(process.cwd(), "public", sm)) ? sm : src;
+};
+
+/** Sets for /gallery, newest month first, hidden photos left out. Missing file means no gallery. */
 export function getGallery(): GalleryEvent[] {
   if (!fs.existsSync(path.join(contentDir, "gallery.yml"))) return [];
   const events = readYaml<{ events?: GalleryEvent[] | null }>("gallery.yml").events ?? [];
-  return events.map((e) => ({ ...e, photos: e.photos ?? [] })).filter((e) => e.photos.length > 0);
+  return events
+    .map((e, i) => ({
+      e: {
+        ...e,
+        date: String(e.date ?? ""),
+        photos: (e.photos ?? [])
+          .filter((p) => p?.src && !p.hidden)
+          .map((p) => ({ ...p, alt: p.alt || e.title, thumb: thumbFor(p.src) })),
+      },
+      i,
+    }))
+    .filter(({ e }) => e.photos.length > 0)
+    .sort((x, y) => y.e.date.localeCompare(x.e.date) || x.i - y.i)
+    .map(({ e }) => e);
 }
 
-/** Photos the home hero rotates through: every gallery photo not marked `hero: false`. */
+/** Photos the home hero rotates through: every shown gallery photo not marked `hero: false`. */
 export function getHeroPhotos(): GalleryPhoto[] {
   return getGallery().flatMap((e) => e.photos.filter((p) => p.hero !== false));
 }

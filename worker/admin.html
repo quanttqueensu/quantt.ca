@@ -34,7 +34,7 @@
   label.f > span { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--meta); margin-bottom: 4px; }
   label.f.check { display: flex; gap: 8px; align-items: center; }
   label.f.check > span { margin: 0; }
-  input[type=text], input[type=url], input[type=date], input[type=number], select, textarea { width: 100%; font: inherit; color: var(--ink); padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+  input[type=text], input[type=url], input[type=date], input[type=month], input[type=number], select, textarea { width: 100%; font: inherit; color: var(--ink); padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
   input:focus, select:focus, textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue); }
   textarea { min-height: 70px; resize: vertical; }
   textarea.md, textarea.raw { min-height: 260px; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -74,6 +74,18 @@
   #toast { position: fixed; right: 20px; bottom: 80px; z-index: 7; max-width: 380px; padding: 12px 16px; border-radius: 6px; background: var(--navy); color: #fff; font-size: 14px; display: none; }
   #toast.on { display: block; }
   #toast.bad { background: var(--red); }
+  .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 12px; }
+  .photo { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; }
+  .photo .img { aspect-ratio: 3 / 2; background: var(--panel) center / cover no-repeat; position: relative; }
+  .photo .img .lead { position: absolute; left: 6px; top: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--navy); color: #fff; }
+  .photo.off .img { opacity: .35; filter: grayscale(1); }
+  .photo .opts { padding: 6px 8px; font-size: 13px; display: grid; gap: 2px; }
+  .photo .opts label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .photo .opts .row { justify-content: space-between; margin-top: 2px; }
+  .photo .opts button { border: 0; background: none; padding: 0; font: inherit; font-size: 12px; color: var(--blue); cursor: pointer; }
+  .photo .opts button.danger { color: var(--red); }
+  .drop { border: 1px dashed var(--line); border-radius: 6px; padding: 14px; background: #fff; }
+  .progress { font-size: 13px; color: var(--meta); margin-top: 8px; }
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
     nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 0; }
@@ -402,6 +414,8 @@ const SECTIONS = {
     sort: (a, b) => (a.fm.chapter ?? 99) - (b.fm.chapter ?? 99), create: (name, all) => ({ chapter: all.length + 1, title: name }), fileName: (fm) => `week${fm.chapter}.md`,
     fields: [{ key: "chapter", label: "Chapter", type: "number" }, { key: "title", label: "Title" }, { key: "topics", label: "Topics (one per line)", type: "lines", wide: true },
       { key: "trading_track", label: "Trading track (one per line)", type: "lines" }, { key: "development_track", label: "Development track (one per line)", type: "lines" }], body: "Notes (Markdown)" },
+  gallery: { label: "Gallery", file: "content/gallery.yml", also: "public/gallery/", custom: () => galleryPage(),
+    sub: "Photo sets on /gallery, newest month first. Every shown photo also rotates on the home page in random order." },
   files: { label: "All files", sub: "Every content file and upload. Edit raw text, or add and remove files." },
 };
 
@@ -409,7 +423,7 @@ function renderNav() {
   const dirty = (k) => {
     const s = SECTIONS[k];
     const prefix = s.file || s.dir || (k === "team" ? "content/team/" : null);
-    return [...S.pending.keys()].some((p) => (prefix ? p.startsWith(prefix) : k === "files"));
+    return [...S.pending.keys()].some((p) => (prefix ? p.startsWith(prefix) || (s.also && p.startsWith(s.also)) : k === "files"));
   };
   $("nav").replaceChildren(...Object.entries(SECTIONS).map(([k, s]) =>
     h("button", { class: S.section === k ? "on" : "", onclick: () => go(k) }, s.label, dirty(k) && h("span", { class: "dot", title: "Unpublished changes" }))));
@@ -422,7 +436,7 @@ async function render() {
   const s = SECTIONS[S.section];
   main.replaceChildren(h("p", { class: "muted" }, "Loading…"));
   try {
-    const view = s.file ? yamlPage(s) : s.dir ? mdCollection(s, s.dir) : S.section === "team" ? teamPage() : filesPage();
+    const view = s.custom ? s.custom() : s.file ? yamlPage(s) : s.dir ? mdCollection(s, s.dir) : S.section === "team" ? teamPage() : filesPage();
     main.replaceChildren(...(await view).filter(Boolean));
   } catch (e) { main.replaceChildren(h("p", { class: "err" }, e.message)); }
 }
@@ -525,7 +539,7 @@ async function filesPage() {
     }
     up.value = ""; render(); renderNav();
   } });
-  const folder = h("select", { style: "width:auto" }, ["public/images/photos", "public/images/partners", "public/images/team", "public/images/papers", "public/papers", "public/achievements"].map((d) => h("option", { value: d }, d.replace(/^public/, ""))));
+  const folder = h("select", { style: "width:auto" }, ["public/images/photos", "public/images/partners", "public/images/team", "public/images/papers", "public/papers", "public/achievements", "public/gallery"].map((d) => h("option", { value: d }, d.replace(/^public/, ""))));
   return [...title("All files", SECTIONS.files.sub),
     h("div", { class: "row", style: "margin-bottom:12px" }, folder, h("button", { class: "b primary", onclick: () => up.click() }, "Upload files"), up),
     h("table", {}, h("thead", {}, h("tr", {}, h("th", {}, "File"), h("th", {}, ""))), h("tbody", {}, paths.map((p) => {
@@ -548,6 +562,178 @@ async function rawEditor(path) {
     stage(path, ta.value);
   } });
   return [h("div", { class: "row back" }, h("button", { class: "b small", onclick: () => { S.view = null; render(); } }, "← All files")), ...title(path.split("/").pop(), path), err, ta];
+}
+
+/* ---------- gallery ---------- */
+// Zips are read in the browser: the central directory lists every file, and each one is either stored or
+// deflated (DecompressionStream). Folders, macOS metadata and anything that isn't a photo are skipped.
+async function unzip(file) {
+  const u8 = new Uint8Array(await file.arrayBuffer());
+  const dv = new DataView(u8.buffer);
+  let end = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { end = i; break; }
+  if (end < 0) throw new Error(`${file.name} isn't a zip file.`);
+  let count = dv.getUint16(end + 10, true), off = dv.getUint32(end + 16, true);
+  if ((off === 0xffffffff || count === 0xffff) && end >= 20 && dv.getUint32(end - 20, true) === 0x07064b50) {
+    const z = Number(dv.getBigUint64(end - 12, true));
+    count = Number(dv.getBigUint64(z + 32, true)); off = Number(dv.getBigUint64(z + 48, true));
+  }
+  const out = [];
+  for (let k = 0; k < count; k++) {
+    if (dv.getUint32(off, true) !== 0x02014b50) throw new Error(`${file.name} looks damaged.`);
+    const method = dv.getUint16(off + 10, true), nlen = dv.getUint16(off + 28, true), xlen = dv.getUint16(off + 30, true), clen = dv.getUint16(off + 32, true);
+    let size = dv.getUint32(off + 20, true), at = dv.getUint32(off + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nlen));
+    // Zip64: real sizes and offset sit in the 0x0001 extra field, in this order, only where the header says 0xffffffff.
+    for (let x = off + 46 + nlen; x < off + 46 + nlen + xlen; ) {
+      const id = dv.getUint16(x, true), len = dv.getUint16(x + 2, true);
+      if (id === 1) {
+        let y = x + 4;
+        if (dv.getUint32(off + 24, true) === 0xffffffff) y += 8;
+        if (size === 0xffffffff) { size = Number(dv.getBigUint64(y, true)); y += 8; }
+        if (at === 0xffffffff) at = Number(dv.getBigUint64(y, true));
+      }
+      x += 4 + len;
+    }
+    off += 46 + nlen + xlen + clen;
+    const base = name.split("/").pop();
+    if (!base || name.includes("__MACOSX/") || base.startsWith(".")) continue;
+    const start = at + 30 + dv.getUint16(at + 26, true) + dv.getUint16(at + 28, true);
+    const data = u8.subarray(start, start + size);
+    if (method === 0) out.push({ name: base, blob: new Blob([data]) });
+    else if (method === 8) out.push({ name: base, blob: await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).blob() });
+  }
+  return out;
+}
+
+// One photo -> a 2400px JPEG for the hero and full view, and an 800px one for the grid. Phone photos come out
+// upright: createImageBitmap applies the camera's rotation.
+async function galleryImages(blob) {
+  const img = await createImageBitmap(blob, { imageOrientation: "from-image" });
+  const jpeg = async (max, q) => {
+    const k = Math.min(1, max / Math.max(img.width, img.height));
+    const c = h("canvas", { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return new Promise((ok) => c.toBlob(ok, "image/jpeg", q));
+  };
+  return { full: await jpeg(2400, 0.85), thumb: await jpeg(800, 0.8) };
+}
+
+// Photos from zips and loose image files, in name order, staged under the set's folder after any it already has.
+async function addPhotos(set, files, progress) {
+  const items = [];
+  for (const f of files) {
+    if (/\.zip$/i.test(f.name) || f.type.includes("zip")) items.push(...(await unzip(f)));
+    else items.push({ name: f.name, blob: f });
+  }
+  const photos = items.filter((i) => /\.(jpe?g|png|webp|heic|heif)$/i.test(i.name)).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  if (!photos.length) throw new Error("No photos found (JPG, PNG or WebP).");
+  const dir = "public/gallery/" + (set.folder || slug(`${set.title}-${set.date}`));
+  let n = Math.max(0, ...set.photos.map((p) => Number((p.src.match(/\/(\d+)\.jpg$/) || [])[1]) || 0));
+  const skipped = [];
+  for (const [i, p] of photos.entries()) {
+    progress(`Preparing photo ${i + 1} of ${photos.length}…`);
+    let out;
+    try { out = await galleryImages(p.blob); } catch { skipped.push(p.name); continue; }
+    let path;
+    do { n++; path = `${dir}/${String(n).padStart(2, "0")}.jpg`; } while (exists(path));
+    stageUpload(path, await toBase64(out.full), out.full);
+    const sm = path.replace(/\.jpg$/, "-sm.jpg");
+    stageUpload(sm, await toBase64(out.thumb), out.thumb);
+    set.photos.push({ src: publicUrl(path) });
+  }
+  return { added: photos.length - skipped.length, skipped };
+}
+
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthText = (d) => { const m = /^(\d{4})-(\d{2})/.exec(d || ""); return m ? `${MONTH_NAMES[+m[2] - 1]} ${m[1]}` : d || "No date"; };
+const thumbOf = (src) => { const sm = src.replace(/(\.\w+)$/, "-sm$1"); const p = repoPath(sm); return p && exists(p) ? sm : src; };
+
+const galleryOpen = new Set();
+async function galleryPage() {
+  const file = "content/gallery.yml";
+  const s = SECTIONS.gallery;
+  const text = await load(file);
+  const data = (text && loadYaml(text)) || {};
+  data.events = Array.isArray(data.events) ? data.events : [];
+  const byDate = () => data.events.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  const save = () => { byDate(); stage(file, dumpYaml(data, S.text[file] ?? "", true)); };
+  const redraw = () => { renderNav(); render(); };
+
+  // New set: name, month, then a zip (or photos).
+  const err = h("div", { class: "err" });
+  const prog = h("div", { class: "progress" });
+  const nt = h("input", { type: "text", placeholder: "Firm Day" });
+  const nd = h("input", { type: "month", value: new Date().toISOString().slice(0, 7) });
+  const np = h("input", { type: "text", placeholder: "Toronto" });
+  const nr = h("input", { type: "text", placeholder: "1st place" });
+  const nf = h("input", { type: "file", multiple: true, accept: ".zip,application/zip,image/*" });
+  const add = h("button", { class: "b primary", onclick: async () => {
+    err.textContent = "";
+    if (!nt.value.trim() || !nd.value) return (err.textContent = "Give the set a name and a month.");
+    if (!nf.files.length) return (err.textContent = "Choose a zip of photos (or the photos themselves).");
+    const set = { title: nt.value.trim(), date: nd.value, ...(np.value.trim() ? { place: np.value.trim() } : {}), ...(nr.value.trim() ? { result: nr.value.trim() } : {}), photos: [] };
+    add.disabled = true;
+    try {
+      const { added, skipped } = await addPhotos(set, nf.files, (m) => (prog.textContent = m));
+      data.events.push(set); galleryOpen.add(set.title + set.date); save();
+      toast(`${added} photos added to “${set.title}”.${skipped.length ? ` Skipped ${skipped.length} this browser can't read (${skipped.slice(0, 3).join(", ")}).` : ""} Untick any you don't want, then Publish.`);
+      redraw();
+    } catch (e) { err.textContent = e.message; prog.textContent = ""; add.disabled = false; }
+  } }, "Add set");
+  const form = h("div", { class: "card" },
+    h("h2", { style: "margin:0 0 10px;font-size:16px;color:var(--ink)" }, "Add a photo set"),
+    h("div", { class: "grid2" },
+      h("label", { class: "f" }, h("span", {}, "Name"), nt), h("label", { class: "f" }, h("span", {}, "Month"), nd),
+      h("label", { class: "f" }, h("span", {}, "Place (optional)"), np), h("label", { class: "f" }, h("span", {}, "Result (optional)"), nr),
+      h("label", { class: "f wide" }, h("span", {}, "Zip of photos"), h("div", { class: "drop" }, nf),
+        h("div", { class: "muted", style: "font-size:12px;margin-top:3px" }, "Photos are resized for the web here before upload. Every photo starts shown in the gallery and the home page rotation."))),
+    err, h("div", { class: "row" }, add), prog);
+
+  const sets = byDate().map((set) => {
+    set.photos = Array.isArray(set.photos) ? set.photos : [];
+    const key = set.title + set.date;
+    const shown = set.photos.filter((p) => !p.hidden).length;
+    const meta = () => `${monthText(set.date)} · ${shown} of ${set.photos.length} shown`;
+    const one = (k, label, attrs = {}) => h("label", { class: "f" }, h("span", {}, label), h("input", { type: attrs.type || "text", value: set[k] ?? "", oninput: (e) => { const v = e.target.value.trim(); if (v) set[k] = v; else if (k === "place" || k === "result") delete set[k]; save(); } }));
+    const more = h("input", { type: "file", multiple: true, accept: ".zip,application/zip,image/*", style: "display:none", onchange: async () => {
+      try { const { added } = await addPhotos(set, more.files, (m) => toast(m)); save(); toast(`${added} photos added.`); redraw(); }
+      catch (e) { toast(e.message, true); }
+    } });
+    const grid = h("div", { class: "photos" }, set.photos.map((p, i) => {
+      const tile = h("div", { class: "photo" + (p.hidden ? " off" : "") },
+        h("div", { class: "img", style: `background-image:url("${previewSrc(thumbOf(p.src)).replace(/"/g, "%22")}")` }, i === 0 && h("span", { class: "lead" }, "Lead")),
+        h("div", { class: "opts" },
+          h("label", {}, h("input", { type: "checkbox", checked: !p.hidden, onchange: (e) => { if (e.target.checked) delete p.hidden; else p.hidden = true; save(); redraw(); } }), "Show on site"),
+          h("label", {}, h("input", { type: "checkbox", checked: p.hero !== false, disabled: !!p.hidden, onchange: (e) => { if (e.target.checked) delete p.hero; else p.hero = false; save(); } }), "Home page rotation"),
+          h("div", { class: "row" },
+            i > 0 ? h("button", { type: "button", onclick: () => { set.photos.unshift(...set.photos.splice(i, 1)); save(); redraw(); } }, "Make lead") : h("span"),
+            h("button", { type: "button", class: "danger", onclick: () => {
+              if (!confirm("Delete this photo from the site?")) return;
+              set.photos.splice(i, 1);
+              for (const f of [repoPath(p.src), repoPath(p.src.replace(/(\.\w+)$/, "-sm$1"))]) if (f && f.startsWith("public/gallery/") && exists(f)) { if (S.pending.get(f)?.base64) S.pending.delete(f); else stageDelete(f); }
+              save(); redraw();
+            } }, "Delete"))));
+      return tile;
+    }));
+    const el = h("div", { class: "item" + (galleryOpen.has(key) ? "" : " closed") },
+      h("div", { class: "head", onclick: () => { el.classList.toggle("closed"); el.classList.contains("closed") ? galleryOpen.delete(key) : galleryOpen.add(key); } },
+        h("span", { class: "t" }, set.title || "(untitled)"), h("span", { class: "m" }, meta())),
+      h("div", { class: "body" },
+        h("div", { class: "grid2", style: "margin-top:10px" }, one("title", "Name"), one("date", "Month", { type: "month" }), one("place", "Place (optional)"), one("result", "Result (optional)")),
+        h("div", { class: "row", style: "margin-bottom:4px" },
+          h("span", { class: "muted grow", style: "font-size:13px" }, "Untick a photo to hide it. The lead photo shows large at the top of the set."),
+          h("button", { class: "b small", type: "button", onclick: () => more.click() }, "Add photos"), more,
+          h("button", { class: "b small danger", type: "button", onclick: () => {
+            if (!confirm(`Delete the whole “${set.title}” set and its photos?`)) return;
+            data.events.splice(data.events.indexOf(set), 1);
+            for (const p of set.photos) for (const f of [repoPath(p.src), repoPath(p.src.replace(/(\.\w+)$/, "-sm$1"))]) if (f && f.startsWith("public/gallery/") && exists(f)) { if (S.pending.get(f)?.base64) S.pending.delete(f); else stageDelete(f); }
+            save(); redraw();
+          } }, "Delete set")),
+        grid));
+    return el;
+  });
+  return [...title(s.label, s.sub), form, h("h2", { style: "margin:20px 0 10px;font-size:16px;color:var(--ink)" }, "Sets"), ...sets];
 }
 
 /* ---------- publish ---------- */
@@ -597,6 +783,7 @@ window.addEventListener("beforeunload", (e) => { if (S.pending.size) { e.prevent
     $("who").textContent = me.name;
     await refreshFiles();
     if (!S.files["content/achievements.yml"]) delete SECTIONS.achievements;
+    if (!S.files["content/gallery.yml"]) delete SECTIONS.gallery;
     renderNav(); render();
   } catch (e) { $("main").replaceChildren(h("p", { class: "err" }, e.message)); }
 })();

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import GalleryGrid from "@/components/GalleryGrid";
 import { PageIntro, Wrap } from "@/components/ui";
-import { getGallery } from "@/lib/content";
+import { getGallery, monthLabel } from "@/lib/content";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/gallery" },
@@ -20,7 +20,7 @@ export default function GalleryPage() {
             <section key={e.title} className="cs-gallery-event" aria-label={e.title}>
               <div className="cs-gallery-event__head">
                 <h2 className="cs-h2">{e.title}</h2>
-                <p>{[e.place, e.date, e.result].filter(Boolean).join(", ")}</p>
+                <p>{[e.place, monthLabel(e.date), e.result].filter(Boolean).join(", ")}</p>
               </div>
               <GalleryGrid photos={e.photos} />
             </section>

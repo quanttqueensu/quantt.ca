@@ -8,6 +8,8 @@ import { GitHub, editable } from "./github.js";
 import { PHOTO_PATH, photo } from "./photos.js";
 
 const MAX_UPLOAD = 8 * 1024 * 1024;
+// A gallery zip arrives as one save: every photo, its thumbnail and gallery.yml.
+const MAX_CHANGES = 250;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -54,7 +56,8 @@ async function api(request, env, url, who) {
     }
     const body = await request.json().catch(() => null);
     const changes = Array.isArray(body?.changes) ? body.changes : [];
-    if (!changes.length || changes.length > 50) return json({ error: "Nothing to save." }, 400);
+    if (!changes.length) return json({ error: "Nothing to save." }, 400);
+    if (changes.length > MAX_CHANGES) return json({ error: `Too many files in one save (${changes.length}). Publish at most ${MAX_CHANGES} at a time.` }, 400);
     for (const c of changes) {
       if (!editable(c.path)) return json({ error: `Can't save ${c.path}.` }, 400);
       if (c.base64 !== undefined && c.base64.length * 0.75 > MAX_UPLOAD) return json({ error: `${c.path} is over 8 MB.` }, 400);

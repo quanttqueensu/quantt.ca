@@ -40,9 +40,9 @@ export default function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
       <ul className="cs-gallery">
         {photos.map((p, i) => (
           <li key={p.src} className={i === 0 ? "cs-gallery__lead" : ""}>
-            <button type="button" onClick={() => show(i)} aria-label={`View photo: ${p.alt}`}>
+            <button type="button" onClick={() => show(i)} aria-label={`View photo: ${p.alt ?? ""}`}>
               {/* eslint-disable-next-line @next/next/no-img-element -- static export, images served as-is */}
-              <img src={p.src} alt={p.alt} loading={i < 5 ? "eager" : "lazy"} decoding="async" />
+              <img src={i === 0 ? p.src : p.thumb || p.src} alt={p.alt ?? ""} loading={i < 5 ? "eager" : "lazy"} decoding="async" />
             </button>
           </li>
         ))}
@@ -62,7 +62,7 @@ export default function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
         {current && (
           <figure>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={current.src} alt={current.alt} />
+            <img src={current.src} alt={current.alt ?? ""} />
             <figcaption>
               <span>{current.alt}</span>
               <span className="cs-lightbox__count">

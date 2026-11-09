@@ -1,24 +1,42 @@
-# Photo gallery at /gallery, newest event first. The home hero rotates through every
-# photo here unless the photo has `hero: false` (use it for portraits, close-ups and
-# anything busy, like prize cheques, that would sit under the headline).
+# Photo gallery at /gallery. Easiest to edit in quantt.ca/admin > Gallery, where a zip of photos becomes a new set.
+# Sets show newest first by `date` (YYYY-MM). The home hero rotates, in random order, through every photo
+# in every set unless the photo is hidden or has `hero: false`.
 #
 # events:
 #   - title: "Event name"
+#     date: "2026-10"            # year and month, for order and the "October 2026" label
 #     place: "City"              # optional
-#     date: "Month YYYY"         # free text, shown as written
 #     result: "1st place"        # optional
 #     photos:                    # first photo is the large lead shot
-#       - src: "/gallery/<event>/01.jpg"   # files live in public/gallery/<event>/
-#         alt: "What the photo shows"
-#         hero: false            # optional: keep it out of the home hero
+#       - src: "/gallery/<set>/01.jpg"   # files live in public/gallery/<set>/; a 01-sm.jpg beside it is the grid thumbnail
+#         alt: "What the photo shows"    # optional, defaults to the set title
+#         hidden: true           # optional: keep it off the site (gallery and hero)
+#         hero: false            # optional: keep it out of the home hero only
 #         position: "60% 25%"    # optional: the point to keep in frame when the hero crops
 #                                # it (across, down). Wide screens crop top and bottom,
 #                                # phones crop the sides. Default "50% 50%".
 
 events:
+  - title: "Firm Day"
+    date: "2026-01"
+    place: "Toronto"
+    photos:
+      - { src: "/gallery/firm-day-2026-01/01.jpg" }
+      - { src: "/gallery/firm-day-2026-01/02.jpg" }
+      - { src: "/gallery/firm-day-2026-01/03.jpg" }
+      - { src: "/gallery/firm-day-2026-01/04.jpg" }
+      - { src: "/gallery/firm-day-2026-01/05.jpg" }
+      - { src: "/gallery/firm-day-2026-01/06.jpg" }
+      - { src: "/gallery/firm-day-2026-01/07.jpg" }
+      - { src: "/gallery/firm-day-2026-01/08.jpg" }
+      - { src: "/gallery/firm-day-2026-01/09.jpg" }
+      - { src: "/gallery/firm-day-2026-01/10.jpg" }
+      - { src: "/gallery/firm-day-2026-01/11.jpg" }
+      - { src: "/gallery/firm-day-2026-01/12.jpg" }
+
   - title: "McGill-FIAM Asset Management Hackathon 2026"
     place: "Montréal"
-    date: "October 2026"
+    date: "2026-10"
     result: "1st and 2nd place"
     photos:
       - { src: "/gallery/fiam-2026/01.jpg", position: "68% 25%", alt: "QUANTT presenting in the final" }
@@ -41,7 +59,7 @@ events:
 
   - title: "Y Combinator x Greptile Hackathon 2026"
     place: "San Francisco"
-    date: "August 2026"
+    date: "2026-08"
     result: "3rd place"
     photos:
       - { src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg", position: "45% 50%", alt: "Pitching RepoWorld" }
