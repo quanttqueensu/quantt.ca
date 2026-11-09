@@ -63,8 +63,9 @@ events:
       - src: "/gallery/fiam-2026/12.jpg"
         position: "66% 29%"
         alt: "Celebrating the results"
-      - src: "/gallery/fiam-2026/13.jpg"
         hero: false
+        hidden: true
+      - src: "/gallery/fiam-2026/13.jpg"
         alt: "The winning team"
         position: "46% 30%"
       - src: "/gallery/fiam-2026/14.jpg"
@@ -90,6 +91,7 @@ events:
       - src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg"
         position: "48% 45%"
         alt: "Pitching RepoWorld"
+        hero: false
       - src: "/achievements/yc-greptile-hackathon-2026/team-on-stage.jpg"
         alt: "On stage after placing 3rd"
         hero: false
@@ -107,6 +109,7 @@ events:
         alt: "QUANTT members at the conference"
         position: "51% 45%"
       - src: "/gallery/quantt-conference-2026-03/02.jpg"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/03.jpg"
         alt: "QUANTT members at the conference"
         position: "49% 59%"
@@ -115,7 +118,9 @@ events:
         position: "50% 53%"
       - src: "/gallery/quantt-conference-2026-03/05.jpg"
         position: "85% 61%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/06.jpg"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/07.jpg"
         hero: false
         position: "50% 32%"
@@ -134,8 +139,10 @@ events:
       - src: "/gallery/quantt-conference-2026-03/12.jpg"
         hero: false
         position: "52% 4%"
+        hidden: true
       - src: "/gallery/quantt-conference-2026-03/13.jpg"
         position: "46% 47%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/14.jpg"
         alt: "QUANTT members at the conference"
         position: "53% 46%"
@@ -145,9 +152,11 @@ events:
       - src: "/gallery/quantt-conference-2026-03/16.jpg"
         alt: "Macro Regime team"
         position: "71% 71%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/17.jpg"
         alt: "Macro Regime team"
         position: "49% 51%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/18.jpg"
         alt: "Macro Regime team"
         position: "53% 42%"
@@ -158,15 +167,18 @@ events:
       - src: "/gallery/quantt-conference-2026-03/20.jpg"
         alt: "Binomial Pricing team"
         position: "78% 55%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/21.jpg"
         alt: "Binomial Pricing team"
         position: "11% 63%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/22.jpg"
         alt: "Binomial Pricing team"
         position: "57% 68%"
       - src: "/gallery/quantt-conference-2026-03/23.jpg"
         alt: "Binomial Pricing team"
         position: "41% 62%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/24.jpg"
         alt: "Binomial Pricing team"
         position: "48% 48%"
@@ -176,9 +188,11 @@ events:
       - src: "/gallery/quantt-conference-2026-03/26.jpg"
         alt: "Equities Hedged team"
         position: "36% 43%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/27.jpg"
         alt: "Equities Hedged team"
         position: "57% 49%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/28.jpg"
         alt: "Equities Hedged team"
         hero: false
@@ -189,6 +203,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/30.jpg"
         alt: "Intraday Volatility team"
         position: "20% 54%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/31.jpg"
         alt: "Intraday Volatility team"
         position: "6% 70%"
@@ -211,6 +226,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/37.jpg"
         alt: "Pairs Trading team"
         position: "49% 56%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/38.jpg"
         alt: "Pairs Trading team"
         position: "45% 44%"
@@ -224,6 +240,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/41.jpg"
         alt: "Directors of Communication"
         position: "47% 42%"
+        hero: false
 
   - title: "Firm Day"
     date: "2026-01"
@@ -251,4 +268,7 @@ events:
         position: "40% 52%"
       - src: "/gallery/firm-day-2026-01/11.jpg"
         position: "46% 38%"
+        hero: false
       - src: "/gallery/firm-day-2026-01/12.jpg"
+        hero: false
+        hidden: true
