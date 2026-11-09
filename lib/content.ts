@@ -169,7 +169,7 @@ export interface GalleryPhoto {
   hidden?: boolean;
   /** false keeps the photo out of the home hero rotation. */
   hero?: boolean;
-  /** CSS object-position ("across down") kept in frame when the hero crops the photo. */
+  /** CSS object-position ("across down") kept in frame when the hero or the gallery grid crops the photo. */
   position?: string;
 }
 

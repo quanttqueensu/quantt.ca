@@ -12,102 +12,243 @@
 #         alt: "What the photo shows"    # optional, defaults to the set title
 #         hidden: true           # optional: keep it off the site (gallery and hero)
 #         hero: false            # optional: keep it out of the home hero only
-#         position: "60% 25%"    # optional: the point to keep in frame when the hero crops
-#                                # it (across, down). Wide screens crop top and bottom,
-#                                # phones crop the sides. Default "50% 50%".
+#         position: "60% 25%"    # optional: the point to keep in frame when the home page or the
+#                                # gallery grid crops it (across, down). Set by admin's auto crop
+#                                # (around faces) or its Crop button. Default "50% 50%".
 
 events:
-  - title: "Firm Day"
-    date: "2026-01"
-    place: "Toronto"
-    photos:
-      - { src: "/gallery/firm-day-2026-01/01.jpg" }
-      - { src: "/gallery/firm-day-2026-01/02.jpg" }
-      - { src: "/gallery/firm-day-2026-01/03.jpg" }
-      - { src: "/gallery/firm-day-2026-01/04.jpg" }
-      - { src: "/gallery/firm-day-2026-01/05.jpg" }
-      - { src: "/gallery/firm-day-2026-01/06.jpg" }
-      - { src: "/gallery/firm-day-2026-01/07.jpg" }
-      - { src: "/gallery/firm-day-2026-01/08.jpg" }
-      - { src: "/gallery/firm-day-2026-01/09.jpg" }
-      - { src: "/gallery/firm-day-2026-01/10.jpg" }
-      - { src: "/gallery/firm-day-2026-01/11.jpg" }
-      - { src: "/gallery/firm-day-2026-01/12.jpg" }
-
   - title: "McGill-FIAM Asset Management Hackathon 2026"
     place: "Montréal"
     date: "2026-10"
     result: "1st and 2nd place"
     photos:
-      - { src: "/gallery/fiam-2026/01.jpg", position: "68% 25%", alt: "QUANTT presenting in the final" }
-      - { src: "/gallery/fiam-2026/02.jpg", hero: false, alt: "The 1st place team with the prize cheque" }
-      - { src: "/gallery/fiam-2026/03.jpg", hero: false, alt: "The 2nd place team with the prize cheque" }
-      - { src: "/gallery/fiam-2026/04.jpg", hero: false, alt: "Both QUANTT teams with their prize cheques" }
-      - { src: "/gallery/fiam-2026/05.jpg", position: "60% 70%", alt: "Walking to the venue in Montréal" }
-      - { src: "/gallery/fiam-2026/06.jpg", position: "55% 10%", alt: "Answering questions in the final" }
-      - { src: "/gallery/fiam-2026/07.jpg", alt: "Pitching to the judges", hero: false }
-      - { src: "/gallery/fiam-2026/08.jpg", position: "60% 50%", alt: "The final round" }
-      - { src: "/gallery/fiam-2026/09.jpg", alt: "Planning the pitch on a whiteboard", hero: false }
-      - { src: "/gallery/fiam-2026/10.jpg", position: "72% 30%", alt: "Working on the model" }
-      - { src: "/gallery/fiam-2026/11.jpg", position: "75% 15%", alt: "After the results" }
-      - { src: "/gallery/fiam-2026/12.jpg", position: "60% 20%", alt: "Celebrating the results" }
-      - { src: "/gallery/fiam-2026/13.jpg", hero: false, alt: "The winning team" }
-      - { src: "/gallery/fiam-2026/14.jpg", position: "75% 50%", alt: "The final round audience" }
-      - { src: "/gallery/fiam-2026/15.jpg", hero: false, alt: "At the reception" }
-      - { src: "/gallery/fiam-2026/16.jpg", alt: "The judges scoring the final", hero: false }
-      - { src: "/gallery/fiam-2026/17.jpg", position: "50% 50%", alt: "The venue in Montréal" }
+      - src: "/gallery/fiam-2026/01.jpg"
+        position: "52% 33%"
+        alt: "QUANTT presenting in the final"
+      - src: "/gallery/fiam-2026/02.jpg"
+        hero: false
+        alt: "The 1st place team with the prize cheque"
+        position: "48% 28%"
+      - src: "/gallery/fiam-2026/03.jpg"
+        hero: false
+        alt: "The 2nd place team with the prize cheque"
+        position: "45% 25%"
+      - src: "/gallery/fiam-2026/04.jpg"
+        hero: false
+        alt: "Both QUANTT teams with their prize cheques"
+        position: "50% 27%"
+      - src: "/gallery/fiam-2026/05.jpg"
+        position: "52% 69%"
+        alt: "Walking to the venue in Montréal"
+      - src: "/gallery/fiam-2026/06.jpg"
+        position: "41% 33%"
+        alt: "Answering questions in the final"
+      - src: "/gallery/fiam-2026/07.jpg"
+        alt: "Pitching to the judges"
+        hero: false
+        position: "50% 30%"
+      - src: "/gallery/fiam-2026/08.jpg"
+        position: "87% 49%"
+        alt: "The final round"
+      - src: "/gallery/fiam-2026/09.jpg"
+        alt: "Planning the pitch on a whiteboard"
+        hero: false
+        position: "22% 52%"
+      - src: "/gallery/fiam-2026/10.jpg"
+        position: "72% 36%"
+        alt: "Working on the model"
+      - src: "/gallery/fiam-2026/11.jpg"
+        position: "46% 35%"
+        alt: "After the results"
+      - src: "/gallery/fiam-2026/12.jpg"
+        position: "66% 29%"
+        alt: "Celebrating the results"
+      - src: "/gallery/fiam-2026/13.jpg"
+        hero: false
+        alt: "The winning team"
+        position: "46% 30%"
+      - src: "/gallery/fiam-2026/14.jpg"
+        position: "46% 41%"
+        alt: "The final round audience"
+      - src: "/gallery/fiam-2026/15.jpg"
+        hero: false
+        alt: "At the reception"
+        position: "54% 41%"
+      - src: "/gallery/fiam-2026/16.jpg"
+        alt: "The judges scoring the final"
+        hero: false
+        position: "51% 44%"
+      - src: "/gallery/fiam-2026/17.jpg"
+        position: "50% 50%"
+        alt: "The venue in Montréal"
 
   - title: "Y Combinator x Greptile Hackathon 2026"
     place: "San Francisco"
     date: "2026-08"
     result: "3rd place"
     photos:
-      - { src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg", position: "45% 50%", alt: "Pitching RepoWorld" }
-      - { src: "/achievements/yc-greptile-hackathon-2026/team-on-stage.jpg", alt: "On stage after placing 3rd", hero: false }
-      - { src: "/achievements/yc-greptile-hackathon-2026/repoworld.jpg", alt: "RepoWorld", hero: false }
+      - src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg"
+        position: "48% 45%"
+        alt: "Pitching RepoWorld"
+      - src: "/achievements/yc-greptile-hackathon-2026/team-on-stage.jpg"
+        alt: "On stage after placing 3rd"
+        hero: false
+        position: "36% 47%"
+      - src: "/achievements/yc-greptile-hackathon-2026/repoworld.jpg"
+        alt: "RepoWorld"
+        hero: false
+        position: "53% 62%"
 
   - title: "QUANTT Conference"
     date: "2026-03"
     place: "Kingston"
     photos:
-      - { src: "/gallery/quantt-conference-2026-03/01.jpg", alt: "QUANTT members at the conference", position: "50% 35%" }
-      - { src: "/gallery/quantt-conference-2026-03/02.jpg" }
-      - { src: "/gallery/quantt-conference-2026-03/03.jpg", alt: "QUANTT members at the conference" }
-      - { src: "/gallery/quantt-conference-2026-03/04.jpg", alt: "QUANTT members at the conference", position: "50% 40%" }
-      - { src: "/gallery/quantt-conference-2026-03/05.jpg" }
-      - { src: "/gallery/quantt-conference-2026-03/06.jpg" }
-      - { src: "/gallery/quantt-conference-2026-03/07.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/08.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/09.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/10.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/11.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/12.jpg", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/13.jpg", position: "50% 30%" }
-      - { src: "/gallery/quantt-conference-2026-03/14.jpg", alt: "QUANTT members at the conference" }
-      - { src: "/gallery/quantt-conference-2026-03/15.jpg", alt: "QUANTT members at the conference", position: "50% 30%" }
-      - { src: "/gallery/quantt-conference-2026-03/16.jpg", alt: "Macro Regime team" }
-      - { src: "/gallery/quantt-conference-2026-03/17.jpg", alt: "Macro Regime team" }
-      - { src: "/gallery/quantt-conference-2026-03/18.jpg", alt: "Macro Regime team", position: "50% 40%" }
-      - { src: "/gallery/quantt-conference-2026-03/19.jpg", alt: "Macro Regime team", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/20.jpg", alt: "Binomial Pricing team" }
-      - { src: "/gallery/quantt-conference-2026-03/21.jpg", alt: "Binomial Pricing team" }
-      - { src: "/gallery/quantt-conference-2026-03/22.jpg", alt: "Binomial Pricing team" }
-      - { src: "/gallery/quantt-conference-2026-03/23.jpg", alt: "Binomial Pricing team" }
-      - { src: "/gallery/quantt-conference-2026-03/24.jpg", alt: "Binomial Pricing team" }
-      - { src: "/gallery/quantt-conference-2026-03/25.jpg", alt: "Binomial Pricing team", position: "50% 35%" }
-      - { src: "/gallery/quantt-conference-2026-03/26.jpg", alt: "Equities Hedged team" }
-      - { src: "/gallery/quantt-conference-2026-03/27.jpg", alt: "Equities Hedged team" }
-      - { src: "/gallery/quantt-conference-2026-03/28.jpg", alt: "Equities Hedged team", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/29.jpg", alt: "Equities Hedged team" }
-      - { src: "/gallery/quantt-conference-2026-03/30.jpg", alt: "Intraday Volatility team" }
-      - { src: "/gallery/quantt-conference-2026-03/31.jpg", alt: "Intraday Volatility team" }
-      - { src: "/gallery/quantt-conference-2026-03/32.jpg", alt: "Intraday Volatility team" }
-      - { src: "/gallery/quantt-conference-2026-03/33.jpg", alt: "Intraday Volatility team" }
-      - { src: "/gallery/quantt-conference-2026-03/34.jpg", alt: "Pairs Trading team" }
-      - { src: "/gallery/quantt-conference-2026-03/35.jpg", alt: "Pairs Trading team", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/36.jpg", alt: "Pairs Trading team" }
-      - { src: "/gallery/quantt-conference-2026-03/37.jpg", alt: "Pairs Trading team" }
-      - { src: "/gallery/quantt-conference-2026-03/38.jpg", alt: "Pairs Trading team" }
-      - { src: "/gallery/quantt-conference-2026-03/39.jpg", alt: "Conference co-chairs", hero: false }
-      - { src: "/gallery/quantt-conference-2026-03/40.jpg", alt: "Conference co-chairs", position: "50% 25%" }
-      - { src: "/gallery/quantt-conference-2026-03/41.jpg", alt: "Directors of Communication", position: "50% 35%" }
+      - src: "/gallery/quantt-conference-2026-03/01.jpg"
+        alt: "QUANTT members at the conference"
+        position: "51% 45%"
+      - src: "/gallery/quantt-conference-2026-03/02.jpg"
+      - src: "/gallery/quantt-conference-2026-03/03.jpg"
+        alt: "QUANTT members at the conference"
+        position: "49% 59%"
+      - src: "/gallery/quantt-conference-2026-03/04.jpg"
+        alt: "QUANTT members at the conference"
+        position: "50% 53%"
+      - src: "/gallery/quantt-conference-2026-03/05.jpg"
+        position: "85% 61%"
+      - src: "/gallery/quantt-conference-2026-03/06.jpg"
+      - src: "/gallery/quantt-conference-2026-03/07.jpg"
+        hero: false
+        position: "50% 32%"
+      - src: "/gallery/quantt-conference-2026-03/08.jpg"
+        hero: false
+        position: "27% 53%"
+      - src: "/gallery/quantt-conference-2026-03/09.jpg"
+        hero: false
+        position: "40% 50%"
+      - src: "/gallery/quantt-conference-2026-03/10.jpg"
+        hero: false
+        position: "77% 62%"
+      - src: "/gallery/quantt-conference-2026-03/11.jpg"
+        hero: false
+        position: "6% 18%"
+      - src: "/gallery/quantt-conference-2026-03/12.jpg"
+        hero: false
+        position: "52% 4%"
+      - src: "/gallery/quantt-conference-2026-03/13.jpg"
+        position: "46% 47%"
+      - src: "/gallery/quantt-conference-2026-03/14.jpg"
+        alt: "QUANTT members at the conference"
+        position: "53% 46%"
+      - src: "/gallery/quantt-conference-2026-03/15.jpg"
+        alt: "QUANTT members at the conference"
+        position: "54% 38%"
+      - src: "/gallery/quantt-conference-2026-03/16.jpg"
+        alt: "Macro Regime team"
+        position: "71% 71%"
+      - src: "/gallery/quantt-conference-2026-03/17.jpg"
+        alt: "Macro Regime team"
+        position: "49% 51%"
+      - src: "/gallery/quantt-conference-2026-03/18.jpg"
+        alt: "Macro Regime team"
+        position: "53% 42%"
+      - src: "/gallery/quantt-conference-2026-03/19.jpg"
+        alt: "Macro Regime team"
+        hero: false
+        position: "65% 52%"
+      - src: "/gallery/quantt-conference-2026-03/20.jpg"
+        alt: "Binomial Pricing team"
+        position: "78% 55%"
+      - src: "/gallery/quantt-conference-2026-03/21.jpg"
+        alt: "Binomial Pricing team"
+        position: "11% 63%"
+      - src: "/gallery/quantt-conference-2026-03/22.jpg"
+        alt: "Binomial Pricing team"
+        position: "57% 68%"
+      - src: "/gallery/quantt-conference-2026-03/23.jpg"
+        alt: "Binomial Pricing team"
+        position: "41% 62%"
+      - src: "/gallery/quantt-conference-2026-03/24.jpg"
+        alt: "Binomial Pricing team"
+        position: "48% 48%"
+      - src: "/gallery/quantt-conference-2026-03/25.jpg"
+        alt: "Binomial Pricing team"
+        position: "50% 41%"
+      - src: "/gallery/quantt-conference-2026-03/26.jpg"
+        alt: "Equities Hedged team"
+        position: "36% 43%"
+      - src: "/gallery/quantt-conference-2026-03/27.jpg"
+        alt: "Equities Hedged team"
+        position: "57% 49%"
+      - src: "/gallery/quantt-conference-2026-03/28.jpg"
+        alt: "Equities Hedged team"
+        hero: false
+        position: "52% 35%"
+      - src: "/gallery/quantt-conference-2026-03/29.jpg"
+        alt: "Equities Hedged team"
+        position: "50% 32%"
+      - src: "/gallery/quantt-conference-2026-03/30.jpg"
+        alt: "Intraday Volatility team"
+        position: "20% 54%"
+      - src: "/gallery/quantt-conference-2026-03/31.jpg"
+        alt: "Intraday Volatility team"
+        position: "6% 70%"
+      - src: "/gallery/quantt-conference-2026-03/32.jpg"
+        alt: "Intraday Volatility team"
+        position: "50% 56%"
+      - src: "/gallery/quantt-conference-2026-03/33.jpg"
+        alt: "Intraday Volatility team"
+        position: "51% 45%"
+      - src: "/gallery/quantt-conference-2026-03/34.jpg"
+        alt: "Pairs Trading team"
+        position: "55% 56%"
+      - src: "/gallery/quantt-conference-2026-03/35.jpg"
+        alt: "Pairs Trading team"
+        hero: false
+        position: "89% 53%"
+      - src: "/gallery/quantt-conference-2026-03/36.jpg"
+        alt: "Pairs Trading team"
+        position: "51% 50%"
+      - src: "/gallery/quantt-conference-2026-03/37.jpg"
+        alt: "Pairs Trading team"
+        position: "49% 56%"
+      - src: "/gallery/quantt-conference-2026-03/38.jpg"
+        alt: "Pairs Trading team"
+        position: "45% 44%"
+      - src: "/gallery/quantt-conference-2026-03/39.jpg"
+        alt: "Conference co-chairs"
+        hero: false
+        position: "47% 50%"
+      - src: "/gallery/quantt-conference-2026-03/40.jpg"
+        alt: "Conference co-chairs"
+        position: "42% 32%"
+      - src: "/gallery/quantt-conference-2026-03/41.jpg"
+        alt: "Directors of Communication"
+        position: "47% 42%"
+
+  - title: "Firm Day"
+    date: "2026-01"
+    place: "Toronto"
+    photos:
+      - src: "/gallery/firm-day-2026-01/01.jpg"
+        position: "48% 54%"
+      - src: "/gallery/firm-day-2026-01/02.jpg"
+        position: "52% 47%"
+      - src: "/gallery/firm-day-2026-01/03.jpg"
+        position: "52% 57%"
+      - src: "/gallery/firm-day-2026-01/04.jpg"
+        position: "54% 28%"
+      - src: "/gallery/firm-day-2026-01/05.jpg"
+        position: "41% 30%"
+      - src: "/gallery/firm-day-2026-01/06.jpg"
+        position: "53% 41%"
+      - src: "/gallery/firm-day-2026-01/07.jpg"
+        position: "16% 57%"
+      - src: "/gallery/firm-day-2026-01/08.jpg"
+        position: "58% 26%"
+      - src: "/gallery/firm-day-2026-01/09.jpg"
+        position: "48% 45%"
+      - src: "/gallery/firm-day-2026-01/10.jpg"
+        position: "40% 52%"
+      - src: "/gallery/firm-day-2026-01/11.jpg"
+        position: "46% 38%"
+      - src: "/gallery/firm-day-2026-01/12.jpg"
