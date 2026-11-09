@@ -26,7 +26,6 @@ events:
     result: "1st and 2nd place"
     photos:
       - src: "/gallery/fiam-2026/04.jpg"
-        hero: false
         alt: "Both QUANTT teams with their prize cheques"
         position: "50% 27%"
       - src: "/gallery/fiam-2026/01.jpg"
@@ -63,6 +62,7 @@ events:
       - src: "/gallery/fiam-2026/11.jpg"
         position: "46% 35%"
         alt: "After the results"
+        hero: false
       - src: "/gallery/fiam-2026/12.jpg"
         position: "66% 29%"
         alt: "Celebrating the results"
@@ -116,6 +116,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/03.jpg"
         alt: "QUANTT members at the conference"
         position: "49% 59%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/04.jpg"
         alt: "QUANTT members at the conference"
         position: "50% 53%"
@@ -152,6 +153,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/15.jpg"
         alt: "QUANTT members at the conference"
         position: "54% 38%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/16.jpg"
         alt: "Macro Regime team"
         position: "71% 71%"
@@ -163,6 +165,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/18.jpg"
         alt: "Macro Regime team"
         position: "53% 42%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/19.jpg"
         alt: "Macro Regime team"
         hero: false
@@ -204,6 +207,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/29.jpg"
         alt: "Equities Hedged team"
         position: "50% 32%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/30.jpg"
         alt: "Intraday Volatility team"
         position: "20% 54%"
@@ -211,15 +215,18 @@ events:
       - src: "/gallery/quantt-conference-2026-03/31.jpg"
         alt: "Intraday Volatility team"
         position: "6% 70%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/32.jpg"
         alt: "Intraday Volatility team"
         position: "50% 56%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/33.jpg"
         alt: "Intraday Volatility team"
         position: "51% 45%"
       - src: "/gallery/quantt-conference-2026-03/34.jpg"
         alt: "Pairs Trading team"
         position: "55% 56%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/35.jpg"
         alt: "Pairs Trading team"
         hero: false
@@ -227,6 +234,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/36.jpg"
         alt: "Pairs Trading team"
         position: "51% 50%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/37.jpg"
         alt: "Pairs Trading team"
         position: "49% 56%"
@@ -242,6 +250,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/40.jpg"
         alt: "Conference co-chairs"
         position: "42% 32%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/41.jpg"
         alt: "Directors of Communication"
         position: "47% 42%"
@@ -259,6 +268,7 @@ events:
         position: "52% 57%"
       - src: "/gallery/firm-day-2026-01/04.jpg"
         position: "54% 28%"
+        hero: false
       - src: "/gallery/firm-day-2026-01/05.jpg"
         position: "41% 30%"
       - src: "/gallery/firm-day-2026-01/06.jpg"
