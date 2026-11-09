@@ -70,7 +70,7 @@ events:
     date: "2026-03"
     place: "Kingston"
     photos:
-      - { src: "/gallery/quantt-conference-2026-03/01.jpg", alt: "QUANTT members at the conference" }
+      - { src: "/gallery/quantt-conference-2026-03/01.jpg", alt: "QUANTT members at the conference", position: "50% 35%" }
       - { src: "/gallery/quantt-conference-2026-03/02.jpg" }
       - { src: "/gallery/quantt-conference-2026-03/03.jpg", alt: "QUANTT members at the conference" }
       - { src: "/gallery/quantt-conference-2026-03/04.jpg", alt: "QUANTT members at the conference", position: "50% 40%" }
