@@ -1,5 +1,5 @@
 ---
-name: "Theo Leone"
+name: "Simon Jarvis"
 role: "General Member"
 tier: "member"
 department: "Macro Regime"

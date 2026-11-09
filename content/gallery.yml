@@ -65,3 +65,49 @@ events:
       - { src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg", position: "45% 50%", alt: "Pitching RepoWorld" }
       - { src: "/achievements/yc-greptile-hackathon-2026/team-on-stage.jpg", alt: "On stage after placing 3rd", hero: false }
       - { src: "/achievements/yc-greptile-hackathon-2026/repoworld.jpg", alt: "RepoWorld", hero: false }
+
+  - title: "QUANTT Conference"
+    date: "2026-03"
+    place: "Kingston"
+    photos:
+      - { src: "/gallery/quantt-conference-2026-03/01.jpg", alt: "QUANTT members at the conference" }
+      - { src: "/gallery/quantt-conference-2026-03/02.jpg" }
+      - { src: "/gallery/quantt-conference-2026-03/03.jpg", alt: "QUANTT members at the conference" }
+      - { src: "/gallery/quantt-conference-2026-03/04.jpg", alt: "QUANTT members at the conference", position: "50% 40%" }
+      - { src: "/gallery/quantt-conference-2026-03/05.jpg" }
+      - { src: "/gallery/quantt-conference-2026-03/06.jpg" }
+      - { src: "/gallery/quantt-conference-2026-03/07.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/08.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/09.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/10.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/11.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/12.jpg", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/13.jpg", position: "50% 30%" }
+      - { src: "/gallery/quantt-conference-2026-03/14.jpg", alt: "QUANTT members at the conference" }
+      - { src: "/gallery/quantt-conference-2026-03/15.jpg", alt: "QUANTT members at the conference", position: "50% 30%" }
+      - { src: "/gallery/quantt-conference-2026-03/16.jpg", alt: "Macro Regime team" }
+      - { src: "/gallery/quantt-conference-2026-03/17.jpg", alt: "Macro Regime team" }
+      - { src: "/gallery/quantt-conference-2026-03/18.jpg", alt: "Macro Regime team", position: "50% 40%" }
+      - { src: "/gallery/quantt-conference-2026-03/19.jpg", alt: "Macro Regime team", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/20.jpg", alt: "Binomial Pricing team" }
+      - { src: "/gallery/quantt-conference-2026-03/21.jpg", alt: "Binomial Pricing team" }
+      - { src: "/gallery/quantt-conference-2026-03/22.jpg", alt: "Binomial Pricing team" }
+      - { src: "/gallery/quantt-conference-2026-03/23.jpg", alt: "Binomial Pricing team" }
+      - { src: "/gallery/quantt-conference-2026-03/24.jpg", alt: "Binomial Pricing team" }
+      - { src: "/gallery/quantt-conference-2026-03/25.jpg", alt: "Binomial Pricing team", position: "50% 35%" }
+      - { src: "/gallery/quantt-conference-2026-03/26.jpg", alt: "Equities Hedged team" }
+      - { src: "/gallery/quantt-conference-2026-03/27.jpg", alt: "Equities Hedged team" }
+      - { src: "/gallery/quantt-conference-2026-03/28.jpg", alt: "Equities Hedged team", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/29.jpg", alt: "Equities Hedged team" }
+      - { src: "/gallery/quantt-conference-2026-03/30.jpg", alt: "Intraday Volatility team" }
+      - { src: "/gallery/quantt-conference-2026-03/31.jpg", alt: "Intraday Volatility team" }
+      - { src: "/gallery/quantt-conference-2026-03/32.jpg", alt: "Intraday Volatility team" }
+      - { src: "/gallery/quantt-conference-2026-03/33.jpg", alt: "Intraday Volatility team" }
+      - { src: "/gallery/quantt-conference-2026-03/34.jpg", alt: "Pairs Trading team" }
+      - { src: "/gallery/quantt-conference-2026-03/35.jpg", alt: "Pairs Trading team", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/36.jpg", alt: "Pairs Trading team" }
+      - { src: "/gallery/quantt-conference-2026-03/37.jpg", alt: "Pairs Trading team" }
+      - { src: "/gallery/quantt-conference-2026-03/38.jpg", alt: "Pairs Trading team" }
+      - { src: "/gallery/quantt-conference-2026-03/39.jpg", alt: "Conference co-chairs", hero: false }
+      - { src: "/gallery/quantt-conference-2026-03/40.jpg", alt: "Conference co-chairs", position: "50% 25%" }
+      - { src: "/gallery/quantt-conference-2026-03/41.jpg", alt: "Directors of Communication", position: "50% 35%" }
