@@ -175,6 +175,7 @@ events:
       - src: "/gallery/quantt-conference-2026-03/22.jpg"
         alt: "Binomial Pricing team"
         position: "57% 68%"
+        hero: false
       - src: "/gallery/quantt-conference-2026-03/23.jpg"
         alt: "Binomial Pricing team"
         position: "41% 62%"
@@ -227,6 +228,7 @@ events:
         alt: "Pairs Trading team"
         position: "49% 56%"
         hero: false
+        hidden: true
       - src: "/gallery/quantt-conference-2026-03/38.jpg"
         alt: "Pairs Trading team"
         position: "45% 44%"
