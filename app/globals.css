@@ -965,3 +965,49 @@
   }
 }
 
+
+@layer components {
+  /* ---------- home hero: cross-fade through the gallery ---------- */
+  .cs-hero__slides img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity 1.2s var(--cs-ease);
+  }
+  .cs-hero__slides img.is-active { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-hero__slides img { transition: none; }
+  }
+
+  /* ---------- gallery: per event, a large lead photo then an even 3:2 grid ---------- */
+  .cs-gallery-event + .cs-gallery-event { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--cs-line-soft); }
+  .cs-gallery-event__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; }
+  .cs-gallery-event__head .cs-h2 { font-size: clamp(22px, 2vw, 28px); }
+  .cs-gallery-event__head p { font-size: 14px; line-height: 20px; color: var(--cs-meta); }
+  .cs-gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .cs-gallery li { aspect-ratio: 3 / 2; background: var(--cs-panel); }
+  .cs-gallery li.cs-gallery__lead { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  .cs-gallery button { display: block; width: 100%; height: 100%; padding: 0; border: 0; cursor: zoom-in; }
+  .cs-gallery button:focus-visible { outline: 2px solid var(--cs-blue); outline-offset: 2px; }
+  .cs-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 900px) {
+    .cs-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  }
+
+  /* ---------- lightbox ---------- */
+  .cs-lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--cs-footer); color: #fff; }
+  .cs-lightbox::backdrop { background: transparent; }
+  .cs-lightbox figure { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 64px 72px 24px; }
+  .cs-lightbox img { max-width: 100%; max-height: calc(100dvh - 140px); object-fit: contain; }
+  .cs-lightbox figcaption { display: flex; gap: 24px; font-size: 15px; color: rgba(255, 255, 255, .85); }
+  .cs-lightbox__count { color: var(--cs-on-dark-muted); font-variant-numeric: tabular-nums; }
+  .cs-lightbox__btn { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: #fff; cursor: pointer; }
+  .cs-lightbox__btn svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+  .cs-lightbox__btn:focus-visible { outline: 2px solid var(--cs-accent); }
+  .cs-lightbox__prev { left: 12px; top: 50%; transform: translateY(-50%); }
+  .cs-lightbox__next { right: 12px; top: 50%; transform: translateY(-50%); }
+  .cs-lightbox__close { right: 12px; top: 12px; }
+  @media (max-width: 640px) {
+    .cs-lightbox figure { padding: 64px 0 24px; }
+    .cs-lightbox__prev, .cs-lightbox__next { top: auto; bottom: 12px; transform: none; }
+    .cs-lightbox figcaption { padding: 0 72px; flex-direction: column; gap: 4px; text-align: center; }
+  }
+}

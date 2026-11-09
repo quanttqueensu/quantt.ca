@@ -159,6 +159,33 @@ function readMdDir<T>(dir: string): (T & { body: string })[] {
   });
 }
 
+export interface GalleryPhoto {
+  src: string;
+  alt: string;
+  /** false keeps the photo out of the home hero rotation. */
+  hero?: boolean;
+}
+
+export interface GalleryEvent {
+  title: string;
+  place?: string;
+  date?: string;
+  result?: string;
+  photos: GalleryPhoto[];
+}
+
+/** Events for /gallery, in file order (newest first). Missing file means no gallery. */
+export function getGallery(): GalleryEvent[] {
+  if (!fs.existsSync(path.join(contentDir, "gallery.yml"))) return [];
+  const events = readYaml<{ events?: GalleryEvent[] | null }>("gallery.yml").events ?? [];
+  return events.map((e) => ({ ...e, photos: e.photos ?? [] })).filter((e) => e.photos.length > 0);
+}
+
+/** Photos the home hero rotates through: every gallery photo not marked `hero: false`. */
+export function getHeroPhotos(): GalleryPhoto[] {
+  return getGallery().flatMap((e) => e.photos.filter((p) => p.hero !== false));
+}
+
 export function getSiteConfig(): SiteConfig {
   return readYaml<SiteConfig>("config.yml");
 }
