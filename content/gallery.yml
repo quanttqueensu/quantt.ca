@@ -11,6 +11,9 @@
 #       - src: "/gallery/<event>/01.jpg"   # files live in public/gallery/<event>/
 #         alt: "What the photo shows"
 #         hero: false            # optional: keep it out of the home hero
+#         position: "60% 25%"    # optional: the point to keep in frame when the hero crops
+#                                # it (across, down). Wide screens crop top and bottom,
+#                                # phones crop the sides. Default "50% 50%".
 
 events:
   - title: "McGill-FIAM Asset Management Hackathon 2026"
@@ -18,29 +21,29 @@ events:
     date: "October 2026"
     result: "1st and 2nd place"
     photos:
-      - { src: "/gallery/fiam-2026/01.jpg", alt: "QUANTT presenting in the final" }
+      - { src: "/gallery/fiam-2026/01.jpg", position: "68% 25%", alt: "QUANTT presenting in the final" }
       - { src: "/gallery/fiam-2026/02.jpg", hero: false, alt: "The 1st place team with the prize cheque" }
       - { src: "/gallery/fiam-2026/03.jpg", hero: false, alt: "The 2nd place team with the prize cheque" }
       - { src: "/gallery/fiam-2026/04.jpg", hero: false, alt: "Both QUANTT teams with their prize cheques" }
-      - { src: "/gallery/fiam-2026/05.jpg", alt: "Walking to the venue in Montréal" }
-      - { src: "/gallery/fiam-2026/06.jpg", alt: "Answering questions in the final" }
+      - { src: "/gallery/fiam-2026/05.jpg", position: "60% 70%", alt: "Walking to the venue in Montréal" }
+      - { src: "/gallery/fiam-2026/06.jpg", position: "55% 10%", alt: "Answering questions in the final" }
       - { src: "/gallery/fiam-2026/07.jpg", alt: "Pitching to the judges", hero: false }
-      - { src: "/gallery/fiam-2026/08.jpg", alt: "The final round" }
+      - { src: "/gallery/fiam-2026/08.jpg", position: "60% 50%", alt: "The final round" }
       - { src: "/gallery/fiam-2026/09.jpg", alt: "Planning the pitch on a whiteboard", hero: false }
-      - { src: "/gallery/fiam-2026/10.jpg", alt: "Working on the model" }
-      - { src: "/gallery/fiam-2026/11.jpg", alt: "After the results" }
-      - { src: "/gallery/fiam-2026/12.jpg", alt: "Celebrating the results" }
+      - { src: "/gallery/fiam-2026/10.jpg", position: "72% 30%", alt: "Working on the model" }
+      - { src: "/gallery/fiam-2026/11.jpg", position: "75% 15%", alt: "After the results" }
+      - { src: "/gallery/fiam-2026/12.jpg", position: "60% 20%", alt: "Celebrating the results" }
       - { src: "/gallery/fiam-2026/13.jpg", hero: false, alt: "The winning team" }
-      - { src: "/gallery/fiam-2026/14.jpg", alt: "The final round audience" }
-      - { src: "/gallery/fiam-2026/15.jpg", alt: "At the reception" }
+      - { src: "/gallery/fiam-2026/14.jpg", position: "75% 50%", alt: "The final round audience" }
+      - { src: "/gallery/fiam-2026/15.jpg", hero: false, alt: "At the reception" }
       - { src: "/gallery/fiam-2026/16.jpg", alt: "The judges scoring the final", hero: false }
-      - { src: "/gallery/fiam-2026/17.jpg", alt: "The venue in Montréal" }
+      - { src: "/gallery/fiam-2026/17.jpg", position: "50% 50%", alt: "The venue in Montréal" }
 
   - title: "Y Combinator x Greptile Hackathon 2026"
     place: "San Francisco"
     date: "August 2026"
     result: "3rd place"
     photos:
-      - { src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg", alt: "Pitching RepoWorld" }
+      - { src: "/achievements/yc-greptile-hackathon-2026/pitching-repoworld.jpg", position: "45% 50%", alt: "Pitching RepoWorld" }
       - { src: "/achievements/yc-greptile-hackathon-2026/team-on-stage.jpg", alt: "On stage after placing 3rd", hero: false }
       - { src: "/achievements/yc-greptile-hackathon-2026/repoworld.jpg", alt: "RepoWorld", hero: false }

@@ -7,7 +7,9 @@ import { useEffect, useRef, useState } from "react";
  * The first photo is in the static HTML; each next photo loads one step ahead of being shown.
  * Holds still for reduced motion and while the tab is hidden.
  */
-export default function HeroSlides({ photos, interval = 6000 }: { photos: string[]; interval?: number }) {
+type Slide = { src: string; position?: string };
+
+export default function HeroSlides({ photos, interval = 6000 }: { photos: Slide[]; interval?: number }) {
   const [active, setActive] = useState(0);
   const [loaded, setLoaded] = useState(false);
   // Highest index mounted so far: the photo after the current one is always loading in the background.
@@ -48,7 +50,7 @@ export default function HeroSlides({ photos, interval = 6000 }: { photos: string
 
   return (
     <div className="cs-hero__media cs-hero__slides" aria-hidden="true">
-      {photos.map((src, i) =>
+      {photos.map(({ src, position }, i) =>
         i <= reach ? (
           // eslint-disable-next-line @next/next/no-img-element -- static export, images served as-is
           <img
@@ -59,6 +61,7 @@ export default function HeroSlides({ photos, interval = 6000 }: { photos: string
             decoding="async"
             fetchPriority={i === 0 ? "high" : "low"}
             className={i === active ? "is-active" : ""}
+            style={position ? { objectPosition: position } : undefined}
           />
         ) : null
       )}

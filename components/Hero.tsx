@@ -7,7 +7,7 @@ import { getHeroPhotos, getSiteConfig } from "@/lib/content";
 /** Full-bleed photo (rotating through the gallery when it has photos) with the headline over a navy fade. The header sits on top. */
 export default function Hero() {
   const { media } = getSiteConfig();
-  const slides = getHeroPhotos().map((p) => p.src);
+  const slides = getHeroPhotos().map((p) => ({ src: p.src, position: p.position }));
 
   return (
     <section className="cs-hero cs-reveal on-blue" aria-labelledby="hero-title">
