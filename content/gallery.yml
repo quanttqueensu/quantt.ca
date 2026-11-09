@@ -22,6 +22,10 @@ events:
     date: "2026-10"
     result: "1st and 2nd place"
     photos:
+      - src: "/gallery/fiam-2026/04.jpg"
+        hero: false
+        alt: "Both QUANTT teams with their prize cheques"
+        position: "50% 27%"
       - src: "/gallery/fiam-2026/01.jpg"
         position: "52% 33%"
         alt: "QUANTT presenting in the final"
@@ -33,10 +37,6 @@ events:
         hero: false
         alt: "The 2nd place team with the prize cheque"
         position: "45% 25%"
-      - src: "/gallery/fiam-2026/04.jpg"
-        hero: false
-        alt: "Both QUANTT teams with their prize cheques"
-        position: "50% 27%"
       - src: "/gallery/fiam-2026/05.jpg"
         position: "52% 69%"
         alt: "Walking to the venue in Montréal"
