@@ -18,6 +18,10 @@
   header a { color: #fff; font-size: 13px; }
   #deploy { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,.12); }
   #deploy:empty { display: none; }
+  #deploy.bad { background: var(--red); }
+  #notice { padding: 8px 20px; background: #fff4d6; color: #7a5200; font-size: 14px; border-bottom: 1px solid var(--line); }
+  #notice.bad { background: #fde8e7; color: var(--red); }
+  #notice:empty { display: none; }
   .layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 46px); }
   nav { background: #fff; border-right: 1px solid var(--line); padding: 12px 0; }
   nav button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 9px 20px; font: inherit; color: var(--ink); cursor: pointer; }
@@ -137,6 +141,7 @@
   <span class="who" id="who"></span>
   <a href="/" target="_blank" rel="noopener">View site</a>
 </header>
+<div id="notice"></div>
 <div class="layout">
   <nav id="nav"></nav>
   <main id="main"><p class="muted">Loading…</p></main>
@@ -172,26 +177,38 @@ function toast(msg, bad) {
   t.textContent = msg; t.className = "on" + (bad ? " bad" : "");
   clearTimeout(toastTimer); toastTimer = setTimeout(() => (t.className = ""), bad ? 9000 : 4000);
 }
+// Errors carry the HTTP status and the JSON body (e.g. `stale` on a 409).
 async function api(path, init) {
   const res = await fetch("/admin/api" + path, init);
   if (!res.ok) {
     const j = await res.json().catch(() => ({}));
-    throw new Error(j.error || `Request failed (${res.status})`);
+    if (j.code === "github-token") notice(j.error, true);
+    throw Object.assign(new Error(j.error || `Request failed (${res.status})`), { status: res.status, data: j });
   }
   return (res.headers.get("content-type") || "").includes("json") ? res.json() : res.text();
 }
+// A line under the header that stays until the page is reloaded.
+function notice(msg, bad) { $("notice").textContent = msg; $("notice").className = bad ? "bad" : ""; }
 
 /* ---------- repo state ---------- */
 // files: path -> blob sha on main. text: path -> loaded text. pending: path -> change waiting to be published.
 const S = { files: {}, text: {}, pending: new Map(), previews: {}, invalid: new Set(), section: "settings", view: null };
 
-async function refreshFiles() { S.files = (await api("/files")).files; }
+async function refreshFiles() {
+  const r = await api("/files");
+  S.files = r.files;
+  // GitHub says when GITHUB_TOKEN expires: warn editors 30 days ahead, so saving doesn't just stop one day.
+  const days = r.tokenExpires ? Math.floor((Date.parse(r.tokenExpires) - Date.now()) / 86400000) : null;
+  if (days !== null && days <= 30) notice(days < 0 ? "The GitHub token has expired: ask the site admin to replace GITHUB_TOKEN on the quantt-website Worker." : `The GitHub token expires in ${days} day${days === 1 ? "" : "s"} (${r.tokenExpires.slice(0, 10)}). Ask the site admin to replace GITHUB_TOKEN on the quantt-website Worker before then.`, days < 7);
+}
 async function load(path) {
   if (S.pending.has(path)) { const p = S.pending.get(path); if (p.text !== undefined) return p.text; }
   if (!(path in S.text)) S.text[path] = S.files[path] ? await api("/file?path=" + encodeURIComponent(path)) : null;
   return S.text[path];
 }
 const exists = (path) => (S.pending.has(path) ? !S.pending.get(path).delete : !!S.files[path]);
+// A name an upload can't use: on main, or staged in this session (two uploads of "photo.jpg" become photo, photo-2).
+const taken = (path) => !!S.files[path] || S.pending.has(path);
 // Stage new text for a file; dropping it again when it matches what's on main.
 function stage(path, text) {
   const orig = S.text[path] ?? null;
@@ -305,7 +322,7 @@ function assetInput(f, obj, onChange, ctx) {
       const dir = typeof f.dir === "function" ? f.dir(ctx) : f.dir;
       const { blob, name } = await prepareUpload(picked, f.resize !== false);
       let path = `${dir}/${name}`;
-      for (let n = 2; exists(path) && !S.pending.get(path)?.base64; n++) path = `${dir}/${name.replace(/(\.\w+)$/, `-${n}$1`)}`;
+      for (let n = 2; taken(path); n++) path = `${dir}/${name.replace(/(\.\w+)$/, `-${n}$1`)}`;
       stageUpload(path, await toBase64(blob), blob);
       text.value = publicUrl(path); setVal(obj, f.key, text.value); show(); onChange();
     } catch (e) { toast(e.message, true); }
@@ -323,11 +340,13 @@ function assetInput(f, obj, onChange, ctx) {
   return h("div", { class: "asset" }, thumb, text, h("button", { class: "b small", type: "button", onclick: (e) => { e.preventDefault(); file.click(); } }, "Upload"), file);
 }
 const toBase64 = (blob) => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = bad; r.readAsDataURL(blob); });
-// Photos over 2000px are scaled down (as JPEG) so pages stay fast; logos, SVGs and PDFs go up as they are.
+// Photos over 2000px are scaled down (as JPEG) so pages stay fast; logos and PDFs go up as they are. No SVGs: they can
+// carry scripts, and uploads are served from the same site as this editor.
 async function prepareUpload(file, resize) {
   if (file.size > 8 * 1024 * 1024) throw new Error(`${file.name} is over 8 MB.`);
   const ext = (file.name.match(/\.(\w+)$/) || [, ""])[1].toLowerCase();
-  if (!/^(png|jpe?g|webp|gif|svg|pdf)$/.test(ext)) throw new Error("Upload a PNG, JPG, WebP, GIF, SVG or PDF.");
+  if (ext === "svg") throw new Error("SVG uploads aren't allowed. Save the logo as a PNG and upload that.");
+  if (!/^(png|jpe?g|webp|gif|pdf)$/.test(ext)) throw new Error("Upload a PNG, JPG, WebP, GIF or PDF.");
   const base = slug(file.name.replace(/\.\w+$/, ""));
   if (resize && /^(jpe?g|png|webp)$/.test(ext)) {
     const img = await createImageBitmap(file).catch(() => null);
@@ -924,7 +943,7 @@ async function addPhotos(set, files, progress) {
     const full = await toJpeg(scaled(img, 2400), 0.85), thumb = await toJpeg(scaled(img, 800), 0.8);
     img.close?.();
     let path;
-    do { n++; path = `${dir}/${String(n).padStart(2, "0")}.jpg`; } while (exists(path));
+    do { n++; path = `${dir}/${String(n).padStart(2, "0")}.jpg`; } while (taken(path) || taken(path.replace(/\.jpg$/, "-sm.jpg")));
     stageUpload(path, await toBase64(full), full);
     stageUpload(path.replace(/\.jpg$/, "-sm.jpg"), await toBase64(thumb), thumb);
     set.photos.push({ src: publicUrl(path), ...(p.alt ? { alt: p.alt } : {}), ...(position ? { position } : {}) });
@@ -1088,6 +1107,8 @@ $("discard").onclick = () => {
   if (!confirm("Discard all unpublished changes?")) return;
   S.pending.clear(); S.invalid.clear(); S.view = null; updateBar(); render();
 };
+// Publishing is two steps so no request is huge: each upload goes up on its own (/blob, one at a time, remembered on
+// the change so a retry skips it), then one /commit carries the text files and the uploads' shas.
 $("publish").onclick = async () => {
   if ([...S.invalid].some((p) => S.pending.has(p))) return toast("Fix the YAML error before publishing.", true);
   const btn = $("publish"); btn.disabled = true; btn.textContent = "Publishing…";
@@ -1095,26 +1116,51 @@ $("publish").onclick = async () => {
   const names = [...new Set(changes.map((c) => c.path.split("/").pop()))];
   const message = $("barMsg").value.trim() || `Edit ${names.slice(0, 3).join(", ")}${names.length > 3 ? ` and ${names.length - 3} more` : ""}`;
   try {
-    const res = await api("/commit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message, changes }) });
+    const uploads = changes.filter((c) => c.base64 !== undefined && !c.blob);
+    for (const [i, c] of uploads.entries()) {
+      btn.textContent = `Uploading ${i + 1} of ${uploads.length}…`;
+      c.blob = (await api("/blob", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ base64: c.base64 }) })).sha;
+    }
+    btn.textContent = "Publishing…";
+    const body = changes.map(({ path, sha, text, blob, delete: del }) => (del ? { path, sha, delete: true } : blob ? { path, sha, blob } : { path, sha, text }));
+    const res = await api("/commit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message, changes: body }) });
     for (const c of changes) { if (c.text !== undefined) S.text[c.path] = c.text; if (c.delete) delete S.text[c.path]; }
-    S.pending.clear(); $("barMsg").value = "";
+    // Only what went out: an edit made while publishing stays staged.
+    for (const c of changes) if (S.pending.get(c.path) === c) S.pending.delete(c.path);
+    $("barMsg").value = "";
     await refreshFiles();
     updateBar(); render();
-    toast("Published. The site updates in about two minutes.");
+    toast("Published. The site updates in a few minutes.");
     watchDeploy(res.sha);
-  } catch (e) { toast(e.message, true); }
+  } catch (e) {
+    if (e.status === 409) await conflict(e.data.stale || []);
+    else toast(e.message + (e.message.includes("GITHUB_TOKEN") ? "" : " Nothing was published; your changes are still here."), true);
+  }
   btn.disabled = false; btn.textContent = "Publish";
 };
+// Someone else changed some of these files since they were loaded. Only those are reloaded from main (their edits here
+// are dropped); every other staged change stays, ready to publish again.
+async function conflict(stale) {
+  try { await refreshFiles(); } catch (e) { return toast(e.message, true); }
+  for (const p of stale) { S.pending.delete(p); S.invalid.delete(p); delete S.text[p]; }
+  updateBar(); render();
+  const list = stale.map((p) => p.split("/").pop()).join(", ");
+  toast(`Someone else changed ${list} since you opened it. That file now shows their version: redo your edit to it, then Publish. Your other changes are kept.`, true);
+}
+// The Cloudflare build of a commit. A normal build takes a few minutes; after 15 the editor stops checking and says so.
 async function watchDeploy(sha) {
   const el = $("deploy");
-  el.textContent = "Building…";
-  for (let i = 0; i < 24; i++) {
-    await new Promise((r) => setTimeout(r, 10000));
+  el.className = ""; el.textContent = "Building…";
+  const started = Date.now();
+  while (Date.now() - started < 15 * 60000) {
+    await new Promise((r) => setTimeout(r, 15000));
+    // "unknown" while Cloudflare hasn't reported yet, or if the check can't be read: keep waiting.
     const { state } = await api("/deploy?sha=" + sha).catch(() => ({ state: "unknown" }));
-    if (state === "live") { el.textContent = "Live ✓"; setTimeout(() => (el.textContent = ""), 15000); return; }
-    if (state === "failed") { el.textContent = "Build failed"; toast("The site build failed. Your change is saved; ask in the website thread.", true); return; }
+    if (state === "live") { el.textContent = "Live ✓"; setTimeout(() => { if (el.textContent === "Live ✓") el.textContent = ""; }, 15000); return; }
+    if (state === "failed") { el.className = "bad"; el.textContent = "Build failed"; toast("The site build failed, so the site still shows the previous version. Your change is saved; ask in the website thread.", true); return; }
+    el.textContent = `Building… ${Math.round((Date.now() - started) / 60000)} min`;
   }
-  el.textContent = "";
+  el.className = "bad"; el.textContent = "Build status unknown: check Cloudflare";
 }
 window.addEventListener("beforeunload", (e) => { if (S.pending.size) { e.preventDefault(); e.returnValue = ""; } });
 

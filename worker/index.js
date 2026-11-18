@@ -6,10 +6,13 @@
 import page from "./admin.html";
 import { GitHub, editable } from "./github.js";
 import { PHOTO_PATH, photo } from "./photos.js";
+import { changeErrors } from "../lib/schema.js";
 
 const MAX_UPLOAD = 8 * 1024 * 1024;
-// A gallery zip arrives as one save: every photo, its thumbnail and gallery.yml.
+// A gallery zip is one save: every photo, its thumbnail and gallery.yml. The photos go up first, one per /blob request;
+// /commit then carries only their shas and the text files.
 const MAX_CHANGES = 250;
+const SHA = /^[0-9a-f]{40}$/;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -49,20 +52,32 @@ async function api(request, env, url, who) {
     if (!/^[0-9a-f]{40}$/.test(sha)) return json({ error: "Bad commit." }, 400);
     return json({ state: await gh.deploy(sha) });
   }
+  // JSON only, from this page: another site can't post here with the member's Access cookie.
+  const post = request.method === "POST" && (request.headers.get("content-type") || "").startsWith("application/json") && request.headers.get("origin") === url.origin;
+  if (p === "/blob" && request.method === "POST") {
+    if (!post) return json({ error: "Bad request." }, 400);
+    const body = await request.json().catch(() => null);
+    const b64 = body?.base64;
+    if (typeof b64 !== "string" || !b64 || !/^[A-Za-z0-9+/]*={0,2}$/.test(b64)) return json({ error: "Bad upload." }, 400);
+    if (b64.length * 0.75 > MAX_UPLOAD) return json({ error: "Uploads must be under 8 MB." }, 400);
+    return json({ sha: await gh.blob(b64) });
+  }
   if (p === "/commit" && request.method === "POST") {
-    // JSON only, from this page: another site can't post here with the member's Access cookie.
-    if (!(request.headers.get("content-type") || "").startsWith("application/json") || request.headers.get("origin") !== url.origin) {
-      return json({ error: "Bad request." }, 400);
-    }
+    if (!post) return json({ error: "Bad request." }, 400);
     const body = await request.json().catch(() => null);
     const changes = Array.isArray(body?.changes) ? body.changes : [];
     if (!changes.length) return json({ error: "Nothing to save." }, 400);
     if (changes.length > MAX_CHANGES) return json({ error: `Too many files in one save (${changes.length}). Publish at most ${MAX_CHANGES} at a time.` }, 400);
     for (const c of changes) {
       if (!editable(c.path)) return json({ error: `Can't save ${c.path}.` }, 400);
-      if (c.base64 !== undefined && c.base64.length * 0.75 > MAX_UPLOAD) return json({ error: `${c.path} is over 8 MB.` }, 400);
-      if (!c.delete && c.base64 === undefined && typeof c.text !== "string") return json({ error: `No content for ${c.path}.` }, 400);
+      // SVGs can carry scripts and are served from this origin: existing ones can be deleted, not added or changed.
+      if (!c.delete && /\.svg$/i.test(c.path)) return json({ error: `${c.path}: SVG uploads aren't allowed. Use PNG instead.` }, 400);
+      if (c.blob !== undefined && (!SHA.test(c.blob) || c.path.startsWith("content/"))) return json({ error: `Bad upload for ${c.path}.` }, 400);
+      if (!c.delete && c.blob === undefined && typeof c.text !== "string") return json({ error: `No content for ${c.path}. Reload the editor and try again.` }, 400);
     }
+    // The same checks the site build runs on content/, so a save can't break the next deploy.
+    const problems = changeErrors(changes);
+    if (problems.length) return json({ error: `Not published: this would break the site build. ${problems.slice(0, 5).join(". ")}.` }, 400);
     const summary = String(body.message || "Edit site content").replace(/\s+/g, " ").slice(0, 100);
     const message = `${summary}\n\nEdited at quantt.ca/admin by ${who.name} <${who.email}>`;
     return json(await gh.commit(changes, message, { name: who.name, email: who.email }));
@@ -84,7 +99,9 @@ export default {
     try {
       return await api(request, env, url, who);
     } catch (e) {
-      return json({ error: e.message }, e.status === 409 ? 409 : 500);
+      if (e.status === 409) return json({ error: e.message, stale: e.stale || [] }, 409);
+      if (e.code === "github-token") return json({ error: e.message, code: e.code }, 502);
+      return json({ error: e.message }, 500);
     }
   },
 };
