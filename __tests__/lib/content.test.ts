@@ -24,9 +24,7 @@ describe("content loading", () => {
   it("never ships an expired recruiting deadline", () => {
     const config = getSiteConfig();
     if (config.recruiting && config.recruitingUntil) {
-      expect(new Date(`${config.recruitingUntil}T23:59:59`).getTime()).toBeGreaterThanOrEqual(
-        Date.now()
-      );
+      expect(isRecruitingOpen(config)).toBe(true);
     }
   });
 
@@ -118,6 +116,13 @@ describe("isRecruitingOpen", () => {
   it("stays open through the last day and closes after it", () => {
     expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-30" }, now)).toBe(true);
     expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-29" }, now)).toBe(false);
+  });
+
+  it("ends the day in Toronto, not UTC", () => {
+    // 10 PM on Sept 30 in Toronto is already Oct 1 in UTC.
+    const late = new Date("2026-10-01T02:00:00Z");
+    expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-30" }, late)).toBe(true);
+    expect(isRecruitingOpen({ recruiting: true, recruitingUntil: "2026-09-30" }, new Date("2026-10-01T04:30:00Z"))).toBe(false);
   });
 });
 

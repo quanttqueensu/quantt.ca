@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
-import yaml from "js-yaml";
-import { isFeatureLive } from "./featured";
+import { isFeatureLive, isRecruitingOpen } from "./featured";
+import { checkContent, frontMatter, loadYaml } from "./schema.js";
+
+export { isRecruitingOpen };
 
 const contentDir = path.join(process.cwd(), "content");
 
@@ -142,10 +143,15 @@ export interface EducationChapter {
   body: string;
 }
 
+/** A content file's text, checked against lib/schema.js: a file the pages can't use stops the build with a clear message. */
+function readChecked(rel: string): string {
+  const raw = fs.readFileSync(path.join(contentDir, rel), "utf-8");
+  checkContent(`content/${rel}`, raw);
+  return raw;
+}
+
 function readYaml<T>(filename: string): T {
-  const filePath = path.join(contentDir, filename);
-  const raw = fs.readFileSync(filePath, "utf-8");
-  return yaml.load(raw) as T;
+  return loadYaml(readChecked(filename)) as T;
 }
 
 function readMdDir<T>(dir: string): (T & { body: string })[] {
@@ -153,9 +159,8 @@ function readMdDir<T>(dir: string): (T & { body: string })[] {
   if (!fs.existsSync(dirPath)) return [];
   const files = fs.readdirSync(dirPath).filter((f) => f.endsWith(".md") && !f.startsWith("_"));
   return files.map((file) => {
-    const raw = fs.readFileSync(path.join(dirPath, file), "utf-8");
-    const { data, content } = matter(raw);
-    return { ...(data as T), body: content.trim() };
+    const { data, body } = frontMatter(readChecked(`${dir}/${file}`));
+    return { ...(data as T), body: body.trim() };
   });
 }
 
@@ -236,16 +241,6 @@ export function getSiteConfig(): SiteConfig {
   return readYaml<SiteConfig>("config.yml");
 }
 
-/**
- * Whether the recruiting message should render. A dated message expires at the end
- * of `recruitingUntil`, so a stale deadline can never linger in production.
- */
-export function isRecruitingOpen(config: SiteConfig, now = new Date()): boolean {
-  if (!config.recruiting) return false;
-  if (!config.recruitingUntil) return true;
-  return new Date(`${config.recruitingUntil}T23:59:59`) >= now;
-}
-
 export function getEvents(): Event[] {
   const events = readYaml<Event[] | null>("events.yml");
   return events ?? [];
@@ -308,9 +303,7 @@ export function getTeamYears(): TeamYear[] {
   for (const dir of yearDirs) {
     const configPath = path.join(teamDir, dir.name, "config.yml");
     if (!fs.existsSync(configPath)) continue;
-    const config = yaml.load(
-      fs.readFileSync(configPath, "utf-8")
-    ) as TeamYearConfig;
+    const config = readYaml<TeamYearConfig>(`team/${dir.name}/config.yml`);
     const members = readMdDir<TeamMember>(`team/${dir.name}`).sort(
       (a, b) => a.order - b.order
     );
@@ -328,9 +321,8 @@ export function getPortfolios(): Portfolio[] {
 
   return files
     .map((file) => {
-      const raw = fs.readFileSync(path.join(dirPath, file), "utf-8");
-      const { data, content } = matter(raw);
-      const portfolio = { ...(data as Portfolio), body: content.trim() };
+      const { data, body } = frontMatter(readChecked(`portfolios/${file}`));
+      const portfolio = { ...(data as Portfolio), body: body.trim() };
       if (!portfolio.slug) {
         portfolio.slug = file.replace(/\.md$/, "");
       }

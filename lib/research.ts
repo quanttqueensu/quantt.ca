@@ -1,13 +1,13 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
-import yaml from "js-yaml";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
+import { VALUATION_SPLIT, checkContent, frontMatter, loadYaml } from "./schema.js";
 
 /**
  * Research articles: members' written research (equity research, sector notes), read on the
@@ -59,7 +59,9 @@ export function getResearchArticles(): ResearchArticle[] {
     .readdirSync(dir)
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
     .map((file) => {
-      const { data, content } = matter(fs.readFileSync(path.join(dir, file), "utf-8"));
+      const raw = fs.readFileSync(path.join(dir, file), "utf-8");
+      checkContent(`content/research/${file}`, raw);
+      const { data, body } = frontMatter(raw);
       const a = data as Partial<ResearchArticle>;
       return {
         ...a,
@@ -67,7 +69,7 @@ export function getResearchArticles(): ResearchArticle[] {
         title: a.title ?? "",
         date: String(a.date ?? ""),
         authors: a.authors ?? [],
-        body: content.trim(),
+        body: body.trim(),
       } as ResearchArticle;
     })
     .sort((a, b) => b.date.localeCompare(a.date));
@@ -118,15 +120,18 @@ const processor = unified()
   .use(remarkGfm)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
+  // Raw HTML in an article (<sup>, <sub>, ...) is kept; scripts, event handlers and the like are dropped, since the
+  // site shares its origin with /admin.
+  .use(rehypeSanitize)
   .use(rehypeStringify);
 
 /** Body HTML in parts (valuation blocks become components), plus the section headings. */
 export function renderArticle(a: ResearchArticle): { parts: ArticlePart[]; headings: Heading[] } {
   const headings: Heading[] = [];
   const seen = new Map<string, number>();
-  const chunks = a.body.split(/```valuation\n([\s\S]*?)```/);
+  const chunks = a.body.split(VALUATION_SPLIT);
   const parts: ArticlePart[] = chunks.map((chunk, i) => {
-    if (i % 2 === 1) return { kind: "valuation", data: yaml.load(chunk) as Valuation };
+    if (i % 2 === 1) return { kind: "valuation", data: loadYaml(chunk) as Valuation };
     let html = String(processor.processSync(chunk));
     html = html.replace(/<h2>([\s\S]*?)<\/h2>/g, (_m, inner: string) => {
       const text = inner.replace(/<[^>]+>/g, "");
