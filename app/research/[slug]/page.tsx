@@ -16,8 +16,12 @@ import {
 
 export const dynamicParams = false;
 
+// A static export needs at least one page here: with no articles, a placeholder that renders the 404 page.
+const NO_ARTICLES = "_none";
+
 export function generateStaticParams() {
-  return getResearchArticles().map((a) => ({ slug: a.slug }));
+  const slugs = getResearchArticles().map((a) => ({ slug: a.slug }));
+  return slugs.length ? slugs : [{ slug: NO_ARTICLES }];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

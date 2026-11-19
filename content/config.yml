@@ -4,7 +4,7 @@ recruiting: false
 recruitingDetails: "Analyst applications for 2026–2027 are opening soon — application details will be posted on Instagram."
 recruitingUrl: "/portfolios"
 # Optional expiry guard. When set, the banner stops rendering after the end of
-# this day (local time), so a stale deadline can never linger in production.
+# this day (Toronto time), so a stale deadline can never linger in production.
 # Always set this alongside any dated copy in recruitingDetails.
 # recruitingUntil: "2027-04-15"
 

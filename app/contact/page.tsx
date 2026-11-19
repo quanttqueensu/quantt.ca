@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import RecruitingCheck from "@/components/RecruitingCheck";
 import { Button, List, PageIntro, Split, Wrap } from "@/components/ui";
 import { getSiteConfig, isRecruitingOpen } from "@/lib/content";
 
@@ -27,22 +28,24 @@ export default function ContactPage() {
       />
 
       {recruiting && (
-        <section className="cs-band cs-band--flat on-blue" aria-label="Recruiting">
-          <Wrap>
-            <Split
-              onBlue
-              title="Applications Open"
-              lede={config.recruitingDetails && <p>{config.recruitingDetails}</p>}
-              cta={
-                config.recruitingUrl && (
-                  <Button href={config.recruitingUrl} variant="accent" className="mt-8">
-                    Explore the Portfolios
-                  </Button>
-                )
-              }
-            />
-          </Wrap>
-        </section>
+        <RecruitingCheck until={config.recruitingUntil}>
+          <section className="cs-band cs-band--flat on-blue" aria-label="Recruiting">
+            <Wrap>
+              <Split
+                onBlue
+                title="Applications Open"
+                lede={config.recruitingDetails && <p>{config.recruitingDetails}</p>}
+                cta={
+                  config.recruitingUrl && (
+                    <Button href={config.recruitingUrl} variant="accent" className="mt-8">
+                      Explore the Portfolios
+                    </Button>
+                  )
+                }
+              />
+            </Wrap>
+          </section>
+        </RecruitingCheck>
       )}
 
       <div className="cs-section">
