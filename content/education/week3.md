@@ -1,9 +1,10 @@
 ---
 chapter: 3
-title: GitHub, Reproducibility, and Responsible AI
+title: Signal to Strategy
 topics:
-  - "Repositories, branches, commits, and pull requests"
-  - "GitHub issues, code review, and collaborative workflows"
-  - "Reproducible project structure, documentation, and secure credential management"
-  - "Responsible use, verification, and disclosure of AI-assisted work"
+  - "Building and combining signals"
+  - "Choosing instruments"
+  - "Backtesting and validation"
+  - "Overfitting and how to avoid it"
 ---
+Turning a relationship into a tradable signal and testing it honestly.
