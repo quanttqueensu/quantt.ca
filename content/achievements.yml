@@ -23,6 +23,12 @@
 #       title: "LinkedIn post"
 
 achievements:
+  - competition: "HRT Algorena @ Waterloo Trading Competition"
+    result: "3rd place"
+    year: "2026"
+    members:
+      - "Ethan Solnik"
+
   - competition: "RITC x Smith"
     result: "1st place"
     year: "2026"
