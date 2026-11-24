@@ -128,6 +128,8 @@ export interface Portfolio {
   slug: string;
   manager?: string;
   description: string;
+  /** Public URL of the portfolio's own research site, if it has one. */
+  site?: string;
   tech: string[];
   status: "active" | "completed";
   order: number;

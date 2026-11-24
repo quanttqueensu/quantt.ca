@@ -533,6 +533,8 @@
   .cs-pf__body > * { grid-column: 2 / 4; max-width: 70ch; font-size: 16px; line-height: 1.6; color: var(--cs-text); }
   .cs-pf__body > * + * { margin-top: 12px; }
   .cs-pf__body .cs-pf__tags { font-size: 14px; color: var(--cs-meta); margin-top: 16px; }
+  .cs-pf__body .cs-pf__site a { font-size: 15px; font-weight: 600; color: var(--cs-blue-link); text-decoration: underline; text-underline-offset: 3px; }
+  .cs-pf__body .cs-pf__site a:hover { color: var(--cs-blue-hover); text-decoration-thickness: 2px; }
   .cs-pf__body[hidden] { display: none; }
   @media (max-width: 900px) {
     .cs-pf__head { grid-template-columns: minmax(0, 1fr) 24px; row-gap: 6px; padding: 16px 0; }
