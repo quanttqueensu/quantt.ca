@@ -1,9 +1,9 @@
 ---
 chapter: 2
-title: Probability for Quantitative Finance
+title: Measuring and Relationships
 topics:
-  - "Random variables and common probability distributions"
-  - "Expected value, variance, and standard deviation"
-  - "Conditional probability, independence, covariance, and correlation"
-  - "Introductory Monte Carlo simulation and interpreting uncertainty"
+  - "Returns, risk, and statistical significance"
+  - "Correlation and regression"
+  - "Factor models and machine learning"
 ---
+The statistics used to measure returns and find relationships in data.

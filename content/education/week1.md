@@ -1,9 +1,10 @@
 ---
 chapter: 1
-title: Financial Markets and Strategy Fundamentals
+title: Idea and Data
 topics:
-  - "Stocks, bonds, futures, options, swaps, and ETFs"
-  - "Long and short positions, leverage, and margin"
-  - "Bid, ask, spreads, liquidity, and order types"
-  - "From hypothesis to signal, execution, profit and loss, transaction costs, and risk"
+  - "Sources of edge and strategy types"
+  - "Writing a testable hypothesis"
+  - "Market, fundamental, and alternative data"
+  - "Point-in-time data and common biases"
 ---
+Forming a testable idea, then sourcing, cleaning, and checking the data to test it.

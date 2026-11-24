@@ -42,7 +42,7 @@ const focusAreas = [
   {
     name: "Math and Probability",
     focus: "The quantitative foundation",
-    body: "Probability, statistics, regression, time-series methods, and option pricing.",
+    body: "Probability, statistics, regression, time-series methods, and portfolio optimisation.",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function EducationPage() {
   const { media } = getSiteConfig();
 
   const items = chapters.map((ch) => ({
-    title: `Module ${ch.chapter}. ${ch.title}`,
+    title: `Part ${ch.chapter}. ${ch.title}`,
     content: (
       <div className="grid gap-8 md:grid-cols-2">
         {ch.body && <p className="max-w-[65ch] text-base text-body md:col-span-2">{ch.body}</p>}
@@ -73,7 +73,7 @@ export default function EducationPage() {
         title="Education"
         cta={
           <Button href="#modules" variant="accent">
-            Explore Every Module
+            See the Curriculum
           </Button>
         }
         photo={{
@@ -99,13 +99,16 @@ export default function EducationPage() {
 
       <section id="modules" aria-labelledby="modules-title" className="cs-section scroll-mt-28">
         <Wrap>
-          <h2 id="modules-title" className="cs-h2 cs-reveal mb-6">
-            Modules
+          <h2 id="modules-title" className="cs-h2 cs-reveal mb-3">
+            Systematic Trading
           </h2>
+          <p className="cs-lede cs-reveal mb-8 max-w-[65ch]">
+            A weekly lecture series that takes a strategy from first idea to a finished, tested product.
+          </p>
           {items.length > 0 ? (
             <Accordion items={items} />
           ) : (
-            <p className="cs-lede">The module plan is published before the curriculum starts.</p>
+            <p className="cs-lede">The curriculum is published before the series starts.</p>
           )}
         </Wrap>
       </section>
