@@ -1,8 +1,9 @@
 ---
-title: "US Credit, Closed End Fund Arbitrage"
-slug: "us-credit-cef-arbitrage"
+title: "Event Driven"
+slug: "event-driven"
 manager: "Simon Jarvis"
 description: "A relative-value credit portfolio targeting unusually large discounts and premiums in closed-end funds."
+site: "https://event-driven.quantt.ca"
 tech:
   - "Fixed Income"
   - "Credit"

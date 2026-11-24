@@ -47,6 +47,13 @@ export default function PortfolioList({ portfolios }: { portfolios: Portfolio[] 
             </h2>
             <div id={`${p.slug}-panel`} role="region" aria-label={p.title} hidden={!isOpen} className="cs-pf__body">
               {p.body?.split("\n\n").map((para, j) => <p key={j}>{para}</p>)}
+              {p.site && (
+                <p className="cs-pf__site">
+                  <a href={p.site} target="_blank" rel="noopener noreferrer">
+                    Visit {new URL(p.site).host} <span aria-hidden="true">↗</span>
+                  </a>
+                </p>
+              )}
               {p.tech.length > 0 && (
                 <p className="cs-pf__tags">
                   <span className="sr-only">Focus areas: </span>
