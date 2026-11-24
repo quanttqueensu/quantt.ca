@@ -1,5 +1,6 @@
 ---
 title: "Momentum Game Theory — Rebalancing Trading Strategy"
+homeTitle: "Momentum Game Theory"
 slug: "momentum-game-theory"
 manager: "Hugh Hayes"
 description: "A systematic ETF portfolio combining momentum with game theory to limit crowded, overlapping positions."

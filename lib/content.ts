@@ -125,6 +125,8 @@ export interface TeamYear {
 
 export interface Portfolio {
   title: string;
+  /** Shorter name for the home page portfolio tiles; the Portfolios page keeps the full title. */
+  homeTitle?: string;
   slug: string;
   manager?: string;
   description: string;
