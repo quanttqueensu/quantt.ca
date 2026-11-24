@@ -100,10 +100,10 @@ export default function EducationPage() {
       <section id="modules" aria-labelledby="modules-title" className="cs-section scroll-mt-28">
         <Wrap>
           <h2 id="modules-title" className="cs-h2 cs-reveal mb-3">
-            From Idea to Product
+            Systematic Trading
           </h2>
           <p className="cs-lede cs-reveal mb-8 max-w-[65ch]">
-            A weekly lecture series that follows one strategy from first idea to finished product.
+            A weekly lecture series that takes a strategy from first idea to a finished, tested product.
           </p>
           {items.length > 0 ? (
             <Accordion items={items} />
