@@ -23,6 +23,21 @@
 #       title: "LinkedIn post"
 
 achievements:
+  - competition: "RITC x Smith"
+    result: "1st place"
+    year: "2026"
+    members:
+      - "Gabriel Soler"
+      - "Benjamin Gorenc"
+    featured: true
+    media:
+      - type: "image"
+        url: "/achievements/ritc-x-smith-2026/ritc26-gabeben.jpg"
+        title: "Gabriel and Ben"
+      - type: "image"
+        url: "/achievements/ritc-x-smith-2026/ritc26-quantt.jpg"
+        title: "QUANTT"
+
   - competition: "FIAM Asset Management Hackathon"
     result: "1st place"
     year: "2026"
