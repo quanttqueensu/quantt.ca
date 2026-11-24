@@ -107,7 +107,6 @@ export default function Home() {
           items={portfolios.map((p) => ({
             href: `/portfolios#${p.slug}`,
             title: p.homeTitle ?? p.title,
-            byline: p.tech.slice(0, 2),
           }))}
         />
       </div>
